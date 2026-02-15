@@ -1,0 +1,20 @@
+.steps{
+  text-align:center;
+}
+
+.steps h2{
+  font-size:48px;
+  margin-bottom:60px;
+}
+
+.cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.step-card{
+  width:320px;
+  padding:40px;
+}

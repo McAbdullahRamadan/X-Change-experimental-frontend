@@ -1,0 +1,19 @@
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:80px;
+  text-align:center;
+}
+
+.stat-box h2{
+  font-size:48px;
+  font-weight:800;
+  background:linear-gradient(90deg,#00ff88,#7f5cff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.stat-box p{
+  color:#aaa;
+}

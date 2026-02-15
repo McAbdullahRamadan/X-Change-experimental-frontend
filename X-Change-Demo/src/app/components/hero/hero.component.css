@@ -1,0 +1,81 @@
+.hero{
+  text-align:center;
+  padding-top:200px;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size:45px 45px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 20px;
+  border-radius:30px;
+  background:rgba(255,255,255,0.05);
+  margin-bottom:30px;
+}
+
+
+
+h1{
+  font-size:70px;
+  font-weight:800;
+  line-height:1.1;
+}
+
+p{
+  margin-top:20px;
+  color:#aaa;
+}
+
+.buttons{
+  margin-top:40px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  cursor: pointer;
+}
+.buttons:hover{
+  cursor: pointer;
+}
+
+.primary{
+  background: linear-gradient(80deg,#00ff88,#00b3ff,#7f5cff,#ff4df8);
+  background-size:600% 600%;
+  border:none;
+  padding:14px 30px;
+  border-radius:30px;
+  color:white;
+cursor: pointer;
+  font-weight:600;
+  transition:0.3s ease;
+  animation:gradientMove 8s ease infinite;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+i{
+  background: linear-gradient( 90deg, #0f8, #7f5cff, #ff4df8);
+    background-clip: border-box;
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.outline{
+  background:transparent;
+  border:1px solid #00ff88;
+  color:#00ff88;
+  padding:14px 30px;
+  border-radius:12px;
+  cursor: pointer;
+}
+.outline:hover{
+  box-shadow: 1px 2px 10px rgba(0, 255, 136, 0.5);
+}
+

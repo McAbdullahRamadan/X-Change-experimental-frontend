@@ -1,0 +1,35 @@
+.steps {
+  text-align: center;
+  padding: 100px 0;
+}
+
+h2 {
+  font-size: 48px;
+  margin-bottom: 60px;
+}
+
+h2 span {
+  background: linear-gradient(90deg,#00ff88,#7f5cff);
+
+  -webkit-text-fill-color: transparent;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.card {
+  width: 320px;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: left;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}

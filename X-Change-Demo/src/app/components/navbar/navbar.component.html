@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="logo">
+    <!-- <div class="icon">S</div> -->
+    <img src="logo.png" alt="">
+    <!-- <span>X-Change</span> -->
+  </div>
+
+  <ul class="menu">
+    <li routerLink="/HowItWorks">How it Works</li>
+    <li>Explore Skills</li>
+    <li>Community</li>
+    <li>Pricing</li>
+  </ul>
+
+  <div class="actions">
+    <button class="login">Log In</button>
+    <button class="getstared">Get Started</button>
+    <div class="hamburger" (click)="toggleMenu()">
+      ☰
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" [class.open]="isMenuOpen">
+  <a (click)="isMenuOpen=false">How it Works</a>
+  <a (click)="isMenuOpen=false">Explore Skills</a>
+  <a (click)="isMenuOpen=false">Community</a>
+  <a (click)="isMenuOpen=false">Pricing</a>
+</div>

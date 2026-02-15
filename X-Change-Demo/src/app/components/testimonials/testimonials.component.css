@@ -1,0 +1,21 @@
+.testimonials{
+  text-align:center;
+}
+
+.testimonial{
+  padding:40px;
+  width:320px;
+}
+.cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+
+    flex-wrap:wrap;
+}
+h2{
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 60px;
+}

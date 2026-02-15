@@ -1,0 +1,158 @@
+.navbar{
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  padding: 10px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 19px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  flex-wrap:wrap;
+}
+
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+}
+
+.icon{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#00ff88,#00b3ff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.menu{
+  display:flex;
+  gap:30px;
+  list-style:none;
+  color:#aaa;
+  flex-wrap:wrap;
+  list-style:none;
+}
+.menu li{
+  cursor: pointer;
+  padding: 11px 10px;
+}
+.menu li:hover{
+  color: #1ee28a;
+  border: solid 2px;
+  border-radius: 7px;
+  box-shadow: 0px 2px 10px rgba(0, 255, 136, 0.5);
+
+}
+img{
+  width: 55px;
+  height: 54px;
+}
+.actions{
+  display:flex;
+  gap:15px;
+}
+
+.actions button{
+
+  cursor: pointer;
+  border: none;
+  padding: 16px 28px;
+  border-radius: 11px;
+  font-size: 80%;
+  font-weight: 600;
+}
+.actions .login{
+  background-color: #121419;
+  border: solid 1px #202229;
+  color: white;
+}
+.actions .getstared{
+  background-color: #1ee28a;
+  list-style:none;
+}
+.actions :hover{
+  box-shadow: 1px 1px 10px #00ff8c;
+    border: 1px solid #ffffff;
+}
+/* Hamburger hidden on desktop */
+.hamburger{
+  display:none;
+  font-size:24px;
+  cursor:pointer;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width:768px){
+
+  .menu{
+    display:none;
+  }
+
+
+
+  .hamburger{
+    display:block;
+  }
+
+}
+@media (min-width:769px){
+  .mobile-menu{
+    display:none !important;
+  }
+}
+
+/* ================= MOBILE DROPDOWN ================= */
+
+.mobile-menu{
+    position: fixed;
+    top: 97px;
+    left: 75%;
+    width: 31%;
+    background: rgba(15, 15, 25, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    cursor: pointer;
+    opacity:0;
+    visibility:hidden;
+    transition:all 0.3s ease;
+}
+
+.mobile-menu a{
+  color:white;
+  text-decoration:none;
+  padding:10px;
+  border-radius:10px;
+}
+
+.mobile-menu a:hover{
+  background:rgba(255,255,255,0.05);
+}
+
+.mobile-btn{
+  background:linear-gradient(90deg,#00ff88,#00b3ff);
+  border:none;
+  padding:12px;
+  border-radius:20px;
+}
+
+/* open state */
+.mobile-menu.open{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,0);
+}

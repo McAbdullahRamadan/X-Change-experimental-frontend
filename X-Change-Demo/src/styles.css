@@ -1,0 +1,97 @@
+
+body{
+  background:
+  radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.092), transparent 30%),
+  radial-gradient(circle at 80% 15%, rgba(211, 61, 245, 0.139), transparent 25%),
+  radial-gradient(circle at 50% 80%, rgba(23, 21, 57, 0.15), transparent 50%),
+  #000000;
+
+  color:white;
+  font-family:'Inter', sans-serif;
+  overflow-x:hidden;
+}
+
+/* ========================= */
+/* Section Spacing */
+/* ========================= */
+
+.section{
+  padding:120px 8%;
+  position:relative;
+  z-index:1;
+}
+
+/* ========================= */
+/* Gradient Text */
+/* ========================= */
+
+.gradient-text{
+  background:linear-gradient(90deg,#00ff88,#7f5cff,#ff4df8);
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent; /* fallback */
+}
+
+/* ========================= */
+/* Cards */
+/* ========================= */
+
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;
+  backdrop-filter:blur(12px);
+  transition:transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card:hover{
+  transform:translateY(-12px);
+  box-shadow:
+    0 10px 40px rgba(140,0,255,0.25),
+    0 0 25px rgba(0,255,136,0.2);
+}
+
+/* ========================= */
+/* Scroll Reveal */
+/* ========================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ========================= */
+/* Buttons */
+/* ========================= */
+
+.primary{
+  background:linear-gradient(90deg,#00ff88,#7f5cff);
+  border:none;
+  transition:all 0.35s ease;
+}
+
+.primary:hover{
+  transform:scale(1.07);
+  box-shadow:
+    0 0 20px rgba(0,255,136,0.6),
+    0 0 35px rgba(127,92,255,0.5);
+}
+
+.outline{
+  border:1px solid rgba(255,255,255,0.2);
+  background:transparent;
+  transition:all 0.3s ease;
+}
+
+.outline:hover{
+  background:linear-gradient(90deg,#00ff88,#7f5cff);
+  color:black;
+  border-color:transparent;
+}

@@ -1,0 +1,32 @@
+.skills{
+  text-align:center;
+}
+
+.skills h2{
+  font-size:48px;
+  margin-bottom:60px;
+
+}
+i{
+  color: aqua;
+    padding: 10px;
+    font-size: 24px;
+}
+h2{
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 60px;
+}
+
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+}
+.skills-grid div:hover{
+  border:1px solid #00ff88;
+}
+.skill{
+  padding:40px;
+  text-align:left;
+}
