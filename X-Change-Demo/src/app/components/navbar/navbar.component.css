@@ -33,7 +33,68 @@
   justify-content:center;
   align-items:center;
 }
+.profile-container{
+  position:relative;
+}
 
+.profile-img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid #7f5cff;
+}
+
+.profile-dropdown{
+  position:absolute;
+  right:0;
+  top:60px;
+  width:220px;
+  background:#111;
+  border-radius:16px;
+  padding:10px 0;
+  box-shadow:0 0 30px rgba(0,0,0,0.5);
+  animation:fadeIn 0.3s ease;
+}
+
+.dropdown-item{
+  padding:12px 20px;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+
+.dropdown-item:hover{
+  background:rgba(255,255,255,0.05);
+}
+
+.logout{
+  color:#ff4d4d;
+}
+
+.divider{
+  height:1px;
+  background:rgba(255,255,255,0.1);
+  margin:8px 0;
+}
+.profile-trigger{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+}
+
+.arrow{
+  font-size:12px;
+  transition:0.3s ease;
+}
+
+.arrow.rotate{
+  transform:rotate(180deg);
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(-10px);}
+  to{opacity:1; transform:translateY(0);}
+}
 .menu{
   display:flex;
   gap:30px;

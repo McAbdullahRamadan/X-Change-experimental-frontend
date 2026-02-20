@@ -1,0 +1,60 @@
+<section class="auth-section-log">
+
+  <div class="auth-card">
+
+    <h2>Welcome Back 👋</h2>
+    <p class="subtitle">Log in to continue your journey</p>
+    <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
+       Back to Home
+    </button>
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+
+      <div class="input-group">
+        <label>Email</label>
+        <input formControlName="email" autofocus type="email" placeholder="you@example.com">
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input  id="password"
+        [type]="type" formControlName="password" type="password" placeholder="••••••••">
+        <span class="spanpass" (click)="hideShowPass()" class="bi {{ eyeIcone }}"></span>
+      </div>
+
+      <button type="submit" class="primary-btn full">
+        Log In
+      </button>
+
+    </form>
+
+    <p class="switch">
+      Don t have an account?
+      <a routerLink="/register">Create one</a>
+    </p>
+    <div class="divider-line">
+      <span>OR</span>
+    </div>
+
+    <div class="social-login">
+
+      <button class="social-btn google">
+        <i class="bi bi-google"></i>
+        Continue with Google
+      </button>
+
+      <button class="social-btn linkedin">
+        <i class="bi bi-linkedin"></i>
+        Continue with LinkedIn
+      </button>
+
+      <button class="social-btn github">
+        <i class="bi bi-github"></i>
+        Continue with GitHub
+      </button>
+
+    </div>
+
+
+  </div>
+
+</section>

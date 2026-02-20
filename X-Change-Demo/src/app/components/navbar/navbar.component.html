@@ -6,19 +6,58 @@
   </div>
 
   <ul class="menu">
-    <li routerLink="/HowItWorks">How it Works</li>
-    <li>Explore Skills</li>
-    <li>Community</li>
-    <li>Pricing</li>
+    <li routerLink="/Home"><i class="bi bi-house-fill"></i> Home</li>
+    <li routerLink="/HowItWorks"><i class="bi bi-buildings"></i> How it Works</li>
+    <li><i class="bi bi-layers-half"></i> Explore Skills</li>
+    <li><i class="bi bi-people-fill"></i> Community</li>
+    <li><i class="bi bi-cash-stack"></i> Pricing</li>
   </ul>
 
   <div class="actions">
-    <button class="login">Log In</button>
-    <button class="getstared">Get Started</button>
+    <ng-container *ngIf="!isLoggedIn">
+    <button class="login" routerLink="/login"><i class="bi bi-person"></i> Log In</button>
+    <button class="login" routerLink="/register"><i class="bi bi-file-text-fill"></i> Register</button>
+     </ng-container>
     <div class="hamburger" (click)="toggleMenu()">
       ☰
     </div>
-  </div>
+    <div *ngIf="isLoggedIn" class="profile-container">
+
+      <div class="profile-trigger" (click)="toggleProfile()">
+
+        <img src="default user.png" class="profile-img">
+
+        <span class="arrow"
+              [class.rotate]="showProfileMenu">
+          ▼
+        </span>
+
+      </div>
+
+      <div class="profile-dropdown" *ngIf="showProfileMenu">
+        <div class="dropdown-item">My Profile</div>
+        <div class="dropdown-item">Account Settings</div>
+        <div class="dropdown-item">Device Management</div>
+
+        <div class="divider"></div>
+
+        <div class="dropdown-item theme-toggle"
+                (click)="toggleTheme()">
+
+                {{ isDark ? 'Light Mode ☀️' : 'Dark Mode 🌙' }}
+
+           </div>
+
+        <div class="divider"></div>
+
+        <div class="dropdown-item logout"
+             (click)="logout()">Sign Out</div>
+      </div>
+
+    </div>
+
+ </div>
+
 </nav>
 <div class="mobile-menu" [class.open]="isMenuOpen">
   <a (click)="isMenuOpen=false">How it Works</a>

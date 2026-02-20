@@ -1,0 +1,82 @@
+
+.spanpass{
+  position: absolute;
+  right: 150px;
+  cursor: pointer;
+  top: 391px;
+  font-size: 18px;
+  color: #aaa;
+  transition: 0.3s ease;
+  flex-wrap:wrap;
+}
+
+.spanpass:hover{
+  color:#58ef1c;
+  transform:scale(1.1);
+}
+/* Divider */
+.divider-line{
+  display:flex;
+  align-items:center;
+  margin:25px 0;
+  color:rgba(255,255,255,0.4);
+  font-size:14px;
+}
+
+.divider-line::before,
+.divider-line::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:rgba(255,255,255,0.1);
+}
+
+.divider-line span{
+  margin:0 15px;
+}
+
+/* Social Buttons */
+.social-login{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.social-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:white;
+  cursor:pointer;
+  transition:0.3s ease;
+  font-weight:500;
+}
+
+/* Hover Effect عام */
+.social-btn:hover{
+  transform:translateY(1px);
+  box-shadow:0 0 20px rgba(127,92,255,0.3);
+}
+
+/* Google */
+.google:hover{
+  border-color:#db4437;
+  box-shadow:0 0 20px rgba(219,68,55,0.4);
+}
+
+/* LinkedIn */
+.linkedin:hover{
+  border-color:#0077b5;
+  box-shadow:0 0 20px rgba(0,119,181,0.4);
+}
+
+/* GitHub */
+.github:hover{
+  border-color:#999;
+  box-shadow:0 0 20px rgba(255,255,255,0.3);
+}

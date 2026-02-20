@@ -13,6 +13,12 @@ import { TestimonialsComponent } from './components/testimonials/testimonials.co
 import { StatsComponent } from './sections/stats/stats.component';
 import { CommunityComponent } from './components/community/community.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
+import { authInterceptor } from './Interceptor/Auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -26,13 +32,20 @@ import { FooterComponent } from './components/footer/footer.component';
     TestimonialsComponent,
     StatsComponent,
     CommunityComponent,
-    FooterComponent
+    FooterComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+
   ],
-  providers: [],
+  providers: [AuthService,provideHttpClient(withInterceptors([authInterceptor]))],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

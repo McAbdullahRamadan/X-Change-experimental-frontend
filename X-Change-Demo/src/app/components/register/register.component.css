@@ -1,0 +1,44 @@
+.row{
+  display:flex;
+  gap:65px;
+  margin-bottom:20px;
+}
+
+.input-group{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.input-group label{
+  font-size:13px;
+  color:#bbb;
+  margin-bottom:6px;
+}
+
+.input-group input,
+.input-group select{
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:white;
+  outline:none;
+  transition:0.3s ease;
+}
+.input-group select option{
+  background:#040404cd;
+  color:white;
+}
+.input-group input:focus,
+.input-group select:focus{
+  border-color:#7f5cff;
+  box-shadow:0 0 15px rgba(127,92,255,0.3);
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .row{
+    flex-direction:column;
+  }
+}
