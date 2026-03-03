@@ -3,6 +3,7 @@
   justify-content:center;
   gap:80px;
   text-align:center;
+  background: var(--home-bg);
 }
 
 .stat-box h2{

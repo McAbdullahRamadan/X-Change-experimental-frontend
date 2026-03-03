@@ -1,7 +1,8 @@
 .footer{
-  background:#0b0b12;
+  background: var(--home-bg);
   padding:80px 20px 30px;
-  border-top:1px solid rgba(255,255,255,0.05);
+  border-top:2px solid rgba(255,255,255,0.05);
+  border: solid 2px var(--boder-footer);
 }
 
 .footer-container{
@@ -11,6 +12,7 @@
   justify-content:space-between;
   flex-wrap:wrap;
   gap:50px;
+
 }
 
 .footer-brand{
@@ -33,7 +35,7 @@
 }
 
 .footer-brand p{
-  color:#888;
+  color: var(--text-main);
   font-size:14px;
   margin:15px 0;
 }
@@ -57,11 +59,12 @@
 
 .footer-links h4{
   margin-bottom:15px;
+  color: var(--text-main);
 }
 
 .footer-links a{
   display:block;
-  color:#888;
+  color: var(--text-main);
   margin-bottom:10px;
   cursor:pointer;
   transition:0.3s;

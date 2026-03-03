@@ -1,0 +1,134 @@
+<div class="dashboard" [class.dark]="isDark">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- Logo Card -->
+    <div class="logo-card">
+      <div class="logo-icon">
+        <i class="bi bi-box-fill"></i>
+      </div>
+      <h3>X-Change</h3>
+
+    </div>
+
+      <hr id="Hr">
+
+
+
+    <nav class="menu">
+      <a class="active">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <a>
+        <i class="bi bi-pie-chart"></i>
+        <span>Charts</span>
+      </a>
+
+      <a>
+        <i class="bi bi-box-seam"></i>
+        <span>Apps</span>
+      </a>
+
+      <a>
+        <i class="bi bi-layers"></i>
+        <span>Elements</span>
+      </a>
+
+      <a>
+        <i class="bi bi-ui-checks-grid"></i>
+        <span>Advanced UI</span>
+      </a>
+    </nav>
+
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+
+      <div class="left-section">
+        <i class="bi bi-list menu-icon"></i>
+
+        <div class="search-box">
+          <input type="text" placeholder="Search for anything..." />
+          <i class="bi bi-search search-icon"></i>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <img src="https://flagcdn.com/w20/eg.png" class="flag" />
+
+        <i class="bi"
+        [class.bi-moon]="!isDark"
+        [class.bi-sun]="isDark"
+        (click)="toggleDarkMode()">
+     </i>
+        <i class="bi bi-envelope"></i>
+        <i class="bi bi-bell"></i>
+        <i class="bi bi-arrows-fullscreen"></i>
+
+        <div class="profile">
+          <img src="https://i.pravatar.cc/40" />
+        </div>
+      </div>
+
+    </header>
+
+    <!-- Welcome -->
+    <div class="welcome">
+      <h2>Hi, welcome back!</h2>
+      <p>Sales monitoring dashboard template.</p>
+    </div>
+
+    <!-- Cards -->
+    <section class="cards">
+
+      <div class="card blue">
+        <h6>TODAY ORDERS</h6>
+        <h3>$5,74.12</h3>
+        <small>Compared to last week</small>
+      </div>
+
+      <div class="card pink">
+        <h6>TODAY EARNINGS</h6>
+        <h3>$1,230.17</h3>
+        <small>Compared to last week</small>
+      </div>
+
+      <div class="card green">
+        <h6>TOTAL EARNINGS</h6>
+        <h3>$7,125.70</h3>
+        <small>Compared to last week</small>
+      </div>
+
+      <div class="card orange">
+        <h6>PRODUCT SOLD</h6>
+        <h3>$4,820.50</h3>
+        <small>Compared to last week</small>
+      </div>
+
+    </section>
+
+    <!-- Bottom Section -->
+    <section class="bottom-section">
+
+      <div class="chart-box">
+        <h4>ORDER STATUS</h4>
+        <div class="fake-chart"></div>
+      </div>
+
+      <div class="map-box">
+        <h4>SALES REVENUE</h4>
+        <div class="fake-map"></div>
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

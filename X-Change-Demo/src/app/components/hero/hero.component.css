@@ -6,8 +6,33 @@
     linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size:45px 45px;
+  position:relative;
+  min-height:100vh;
+  background:var(--home-bg);
+  overflow:hidden;
 }
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
 
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+
+  background-size:40px 40px;
+
+  pointer-events:none;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, var(--light-glow-green), transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--light-glow-purple), transparent 50%);
+  pointer-events:none;
+}
 .badge{
   display:inline-block;
   padding:8px 20px;
@@ -26,7 +51,7 @@ h1{
 
 p{
   margin-top:20px;
-  color:#aaa;
+  color: var(--text-main);
 }
 
 .buttons{

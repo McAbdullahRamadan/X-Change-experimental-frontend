@@ -4,6 +4,8 @@ import { HomeComponent } from './components/home/home.component';
 import { HowItWorksComponent } from './components/how-it-works/how-it-works.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { DashboardComponent } from './components_admin/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,6 +14,10 @@ const routes: Routes = [
 
   { path:'login', component: LoginComponent },
   { path:'register', component: RegisterComponent },
+  { path:'profile', component: ProfileComponent },
+  { path:'dashboard', component: DashboardComponent },
+
+
 
 ];
 

@@ -1,17 +1,139 @@
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.min.css";
-body{
-  background:
-  radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.092), transparent 30%),
-  radial-gradient(circle at 80% 15%, rgba(211, 61, 245, 0.139), transparent 25%),
-  radial-gradient(circle at 50% 80%, rgba(23, 21, 57, 0.15), transparent 50%),
-  #000000;
 
-  color:white;
-  font-family:'Inter', sans-serif;
-  overflow-x:hidden;
+
+:root{
+
+  /* Light Mode Default */
+  --bg-main: #cdd0d521;
+  --bg-card: #ffffff;
+  --text-main: #111111;
+  --text-muted: #383838;
+  --border-color: #e6e6e6;
+
+  --primary-gradient: linear-gradient(90deg,#00cc66,#6a5cff);
+  --home-bg: radial-gradient(circle at 5% 60%, rgba(0, 204, 102, 0.27), transparent 35%),
+  radial-gradient(circle at 90% 70%, rgba(169, 85, 247, 0.285), transparent 50%),
+  radial-gradient(circle at 50% 80%, rgba(0, 0, 0, 0.03), transparent 50%),
+  #f7f9fc;
+
+  --grid-color:rgba(0, 0, 0, 0.149);
+  --card-bg:white;
+  --card-border:rgba(0,0,0,0.1);
+
+  --light-glow-green:rgba(0,204,102,0.12);
+  --light-glow-purple:rgba(106,92,255,0.12);
+   /* Light Mode */
+   --footer-bg:#f5f7fb;
+   --footer-border:#e5e7ef;
+   --footer-text:#222;
+   --footer-muted:#666;
+   --footer-card:#ffffff;
+   --boder-footer:rgba(0, 0, 0, 0.448);
+   --cta-bg:#ffffff;
+   --cta-card-bg:#ffffff;
+   --cta-border:#e6e6e6;
+   --cta-muted:#555;
+   --secondary-bg:#f1f3f9;
+   --dropdown-bg:#ffffff;
+   --dropdown-menu:#ffffff00;
+
+   --dropdown-border:#000000;
+   --dropdown-text:#111;
+   --dropdown-hover:#f3f5fa;
+   --dropdown-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
+/* =========================
+   DARK MODE
+========================= */
 
+body.dark-mode{
+
+  --home-bg:
+  radial-gradient(circle at 5% 50%, rgba(111, 223, 171, 0.156), transparent 38%),
+  radial-gradient(circle at 90% 60%, rgba(211, 61, 245, 0.139), transparent 35%),
+  radial-gradient(circle at 20% 20%, rgba(23, 21, 57, 0.15), transparent 6px),
+  #000000;
+  --grid-color:rgba(255,255,255,0.04);
+  --card-bg:rgba(20,20,35,0.9);
+  --card-border:rgba(255,255,255,0.05);
+  --light-glow-green:rgba(0, 255, 136, 0.09);
+  --light-glow-purple:rgba(108,99,255,0.15);
+  --bg-card: rgb(0, 0, 0);
+  --text-main: #ffffff;
+  --text-muted: #ffffff;
+  --border-color: rgba(255,255,255,0.1);
+  --footer-bg:#0b0b12;
+  --footer-border:rgba(255,255,255,0.05);
+  --footer-text:#ffffff;
+  --footer-muted:#888;
+  --footer-card:#1a1a25;
+  --boder-footer:#ffffffca;
+
+  --cta-bg:radial-gradient(circle at 50% 50%, rgba(0,255,136,0.1), transparent 60%);
+  --cta-card-bg:rgba(20,20,35,0.9);
+  --cta-border:rgba(255,255,255,0.05);
+  --cta-muted:#aaa;
+  --secondary-bg:#2a2a3a;
+
+  --dropdown-bg:#0f0f18;
+  --dropdown-border:rgba(0,255,136,0.3);
+  --dropdown-text:#ffffff;
+  --dropdown-menu:#0f0f18;
+  --dropdown-hover:rgba(0,255,136,0.08);
+  --dropdown-shadow:0 0 25px rgba(0,255,136,0.4);
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+body{
+  padding: 0;
+  margin: 0;
+  background: var(--home-bg);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Sections */
+.section{
+  padding:120px 8%;
+}
+
+/* Cards */
+.card{
+  background: var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:20px;
+  transition:0.3s ease;
+}
+
+/* Text */
+p{
+  color: var(--text-muted);
+}
+
+/* Inputs */
+input, select{
+  background: var(--bg-card);
+  border:1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+/* Buttons */
+.primary{
+  background: var(--primary-gradient);
+  color:white;
+  border:none;
+}
+
+/* Navbar */
+.navbar{
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+}
 /* ========================= */
 /* Section Spacing */
 /* ========================= */
@@ -38,13 +160,13 @@ body{
 /* Cards */
 /* ========================= */
 
-.card{
+/* .card{
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(255,255,255,0.08);
   border-radius:20px;
   backdrop-filter:blur(12px);
   transition:transform 0.4s ease, box-shadow 0.4s ease;
-}
+} */
 
 .card:hover{
   transform:translateY(-12px);
@@ -153,6 +275,7 @@ body{
 
 .auth-card h2{
   margin-bottom:10px;
+  color: white;
 }
 
 .subtitle{

@@ -3,6 +3,15 @@
     <!-- <div class="icon">S</div> -->
     <img src="logo.png" alt="">
     <!-- <span>X-Change</span> -->
+    <div class="theme-toggle-btn" (click)="toggleTheme()">
+
+      <i class="bi"
+         [ngClass]="isDark ? 'bi-moon-fill' : 'bi-sun-fill'">
+      </i>
+
+      {{ isDark ? 'Dark' : 'Light' }}
+
+    </div>
   </div>
 
   <ul class="menu">
@@ -35,22 +44,16 @@
       </div>
 
       <div class="profile-dropdown" *ngIf="showProfileMenu">
-        <div class="dropdown-item">My Profile</div>
+        <div class="dropdown-item"  routerLink="/profile" (click)="showProfileMenu=false" >My Profile</div>
         <div class="dropdown-item">Account Settings</div>
         <div class="dropdown-item">Device Management</div>
 
-        <div class="divider"></div>
 
-        <div class="dropdown-item theme-toggle"
-                (click)="toggleTheme()">
 
-                {{ isDark ? 'Light Mode ☀️' : 'Dark Mode 🌙' }}
-
-           </div>
 
         <div class="divider"></div>
 
-        <div class="dropdown-item logout"
+        <div class="dropdown-item logout" id="outdeng"
              (click)="logout()">Sign Out</div>
       </div>
 

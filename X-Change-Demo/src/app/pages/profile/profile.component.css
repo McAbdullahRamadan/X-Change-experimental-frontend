@@ -1,0 +1,94 @@
+.profile-page{
+  padding-top:120px;
+  min-height:100vh;
+}
+
+.profile-cover{
+  height:250px;
+  background:linear-gradient(135deg,#00cc66,#6a5cff);
+
+}
+
+.profile-card{
+  max-width:1000px;
+  margin:-100px auto 50px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:25px;
+  padding:40px;
+  backdrop-filter:blur(20px);
+}
+
+.profile-header{
+  display:flex;
+  align-items:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.profile-avatar{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  border:5px solid white;
+  object-fit:cover;
+}
+
+.profile-info h2{
+  margin:0;
+}
+
+.title{
+  font-weight:600;
+  color:#6a5cff;
+}
+
+.location{
+  color:#888;
+  font-size:14px;
+}
+
+.edit-btn{
+  margin-left:auto;
+  padding:10px 20px;
+  border-radius:25px;
+  border:none;
+  cursor:pointer;
+  background:#111;
+  color:white;
+}
+
+.profile-section{
+  margin-top:40px;
+}
+
+.profile-section h3{
+  margin-bottom:15px;
+}
+
+.skills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.skills span{
+  padding:8px 14px;
+  border-radius:20px;
+  background:rgba(0,0,0,0.05);
+  font-size:13px;
+}
+@media(max-width:768px){
+
+  .profile-header{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  .edit-btn{
+    margin-left:0;
+    margin-top:15px;
+  }
+
+}

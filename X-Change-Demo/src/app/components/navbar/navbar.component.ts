@@ -19,27 +19,31 @@ export class NavbarComponent {
 
   isDark = false;
 
-toggleTheme(){
-  this.isDark = !this.isDark;
+  ngOnInit(){
+    const savedTheme = localStorage.getItem('theme');
 
-  if(this.isDark){
-    document.body.classList.add('dark-mode');
-  } else {
-    document.body.classList.remove('dark-mode');
+    if(savedTheme === 'dark'){
+      this.isDark = true;
+      document.body.classList.add('dark-mode');
+    }
+
+  this.auth.isLoggedIn$.subscribe(status=>{
+    this.isLoggedIn = status;
+  });
   }
 
-  localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
-}
+  toggleTheme(){
 
-ngOnInit(){
-  this.isLoggedIn = this.auth.isLoggedIn();
+    this.isDark = !this.isDark;
 
-  const savedTheme = localStorage.getItem('theme');
-  if(savedTheme === 'dark'){
-    this.isDark = true;
-    document.body.classList.add('dark-mode');
+    if(this.isDark){
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme','dark');
+    }else{
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('theme','light');
+    }
   }
-}
 
   toggleProfile(){
     this.showProfileMenu = !this.showProfileMenu;
