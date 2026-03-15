@@ -6,18 +6,39 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { DashboardComponent } from './components_admin/dashboard/dashboard.component';
+import { EditprofileComponent } from './pages/editprofile/editprofile.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent }, // الصفحة الرئيسية
+  { path: 'home', redirectTo: '', pathMatch: 'full' }, // إعادة توجيه home إلى الصفحة الرئيسية
   { path: 'HowItWorks', component: HowItWorksComponent },
-  { path: 'Home', component: HomeComponent },
 
-  { path:'login', component: LoginComponent },
-  { path:'register', component: RegisterComponent },
-  { path:'profile', component: ProfileComponent },
-  { path:'dashboard', component: DashboardComponent },
+  // مسارات عامة
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
 
+  // مسارات محمية (تتطلب تسجيل دخول)
+  {
+    path: 'profile/:username',  // 👈 هنا أضفنا :username
+    component: ProfileComponent,
+    canActivate: [authGuard]
+  },
+  {
 
+      path: 'editprofile/:username',
+      component: EditprofileComponent,
+      canActivate: [authGuard]
+
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard]
+  },
+
+  // مسار للصفحات غير الموجودة (اختياري)
+  { path: '**', redirectTo: '' }
 
 ];
 

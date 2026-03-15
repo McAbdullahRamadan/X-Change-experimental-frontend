@@ -21,6 +21,8 @@ import { AuthService } from './services/auth.service';
 import { authInterceptor } from './Interceptor/Auth-interceptor';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { DashboardComponent } from './components_admin/dashboard/dashboard.component';
+import {  EditprofileComponent } from './pages/editprofile/editprofile.component';
+
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { DashboardComponent } from './components_admin/dashboard/dashboard.compo
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
+    EditprofileComponent,
+
 
   ],
   imports: [

@@ -1,0 +1,111 @@
+<div class="edit-profile-page">
+
+
+<div>
+  <!-- رسائل التحميل والخطأ -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span>{{ error }}</span>
+  </div>
+</div>
+
+  <!-- CARD -->
+  <div class="profile-card">
+
+    <!-- HEADER -->
+    <div class="profile-header">
+      <div class="user-info">
+        <h2>{{ profileForm.get('firstName')?.value }} {{ profileForm.get('lastName')?.value }}</h2>
+      </div>
+
+      <div class="action-buttons">
+        <button class="secondary" (click)="cancel()">Cancel</button>
+        <button class="primary" (click)="onSubmit()" [disabled]="isLoading">
+          {{ isLoading ? 'Saving...' : 'Save changes' }}
+        </button>
+      </div>
+    </div>
+
+    <hr>
+
+    <h3 class="section-title">Personal details</h3>
+
+    <form [formGroup]="profileForm">
+
+      <div class="form-grid">
+        <div class="row">
+          <div class="input-group">
+            <label>First Name</label>
+            <input formControlName="firstName" type="text" placeholder="First Name">
+          </div>
+
+          <div class="input-group">
+            <label>Last Name</label>
+            <input formControlName="lastName" type="text" placeholder="Last Name">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-group">
+            <label>User Name</label>
+            <input formControlName="userName" type="text" placeholder="Username">
+          </div>
+
+          <div class="input-group">
+            <label>Email</label>
+            <input formControlName="email" type="email" placeholder="Email">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-group">
+            <label>City</label>
+            <input formControlName="city" type="text" placeholder="City">
+          </div>
+
+          <div class="input-group">
+            <label>Phone Number</label>
+            <input formControlName="phoneNumber" type="text" placeholder="Phone">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-group">
+            <label>Country</label>
+            <input formControlName="country" type="text" placeholder="Country">
+          </div>
+
+          <div class="input-group">
+            <label>University</label>
+            <input formControlName="university" type="text" placeholder="University">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-group">
+            <label>Major</label>
+            <input formControlName="major" type="text" placeholder="Major">
+          </div>
+
+          <div class="input-group">
+            <label></label>
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

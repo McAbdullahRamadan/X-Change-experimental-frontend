@@ -1,0 +1,262 @@
+.edit-profile-page{
+  min-height: 100vh;
+  padding-bottom: 60px;
+  padding-top: 151px;
+  background: var(--home-bg);
+
+}
+
+/* COVER */
+
+.cover-section{
+  position:relative;
+  height:400px;
+  overflow:visible;
+}
+
+.cover-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* PROFILE IMAGE */
+
+.profile-image{
+  position: absolute;
+  bottom: -89px;
+  left: 51px;
+}
+
+.profile-image img{
+  width: 180px;
+  height: 169px;
+  border-radius: 50%;
+  border: 5px solid white;
+  object-fit: cover;
+}
+
+.edit-icon{
+  position: absolute;
+  bottom: 0;
+  color: #000000f7;
+  right: -20px;
+  font-size: 151%;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+/* CARD */
+
+.profile-card{
+  width:70%;
+  margin:auto;
+  background: var(--home-bg);
+  border: solid 1px var(--boder-footer);
+  border-radius:10px;
+  padding:60px 40px 40px;
+  margin-top:120px;
+  box-shadow: rgba(1, 0, 0, 0.24) 1px 9px 30px;
+}
+
+/* HEADER */
+
+.profile-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.user-info h2{
+  margin:0;
+  font-size:22px;
+}
+
+.followers{
+  color:#3498db;
+  font-size:14px;
+  margin-top:5px;
+}
+
+.followers span{
+  margin-right:10px;
+}
+
+/* BUTTON */
+
+.save-btn{
+  border:1px solid #3498db;
+  color:#3498db;
+  background:white;
+  padding:8px 18px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:500;
+}
+
+.save-btn:hover{
+  background:#3498db;
+  color:white;
+}
+
+/* SECTION */
+
+.section-title{
+  margin-top:20px;
+  font-size:16px;
+  color:#777;
+}
+
+/* FORM */
+
+/* .form-grid{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+} */
+
+.row{
+  display:flex;
+  gap:65px;
+  margin-bottom:20px;
+}
+
+.input-group{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.input-group label{
+  font-size:13px;
+  color:#bbb;
+  margin-bottom:6px;
+}
+.primary{
+  background: linear-gradient(80deg,#00ff88,#00b3ff,#7f5cff,#ff4df8);
+  background-size:600% 600%;
+  border:none;
+  padding:14px 30px;
+  border-radius:30px;
+  color: var(--text-main);
+  cursor: pointer;
+  font-weight:600;
+  transition:0.3s ease;
+  animation:gradientMove 8s ease infinite;
+}
+.input-group input,
+.input-group select{
+  padding:12px 14px;
+  border-radius:12px;
+  border: solid 1px var(--boder-footer);
+  background:rgba(255,255,255,0.05);
+
+  outline:none;
+  transition:0.3s ease;
+  color: var(--text-main);
+}
+.input-group select option{
+  background:#040404cd;
+  color:white;
+}
+.input-group input:focus,
+.input-group select:focus{
+  border-color:#7f5cff;
+  box-shadow:0 0 15px rgba(127,92,255,0.3);
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .row{
+    flex-direction:column;
+  }}
+
+/* FULL WIDTH */
+
+.full{
+  grid-column:span 2;
+}
+/* editprofile/editprofile.component.css */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #00ff88;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.success-message {
+  background: #00ff88;
+  color: #000;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.error-message {
+  background: #ff4444;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 12px 24px;
+  border-radius: 11px;
+  cursor: pointer;
+}
+
+.input-group input.error {
+  border-color: #ff4444;
+}
+
+.error-text {
+  color: #ff4444;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.required {
+  color: #ff4444;
+}

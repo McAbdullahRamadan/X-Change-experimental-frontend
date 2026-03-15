@@ -1,262 +1,470 @@
-.navbar{
+/* navbar.component.css */
+
+.navbar {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
-  padding: 10px 28px;
+  max-width: 1401px;
+  padding: 19px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(2px);
+  background: #ffffff00;
   border-radius: 19px;
-  border: 1px solid rgba(0, 0, 0, 0.381);
+  border: 1px solid #5e52527d;
   z-index: 1000;
-  flex-wrap:wrap;
+  transition: all 0.3s ease;
+  box-shadow: var(--dropdown-shadow);
+}
+.display-name {
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 15px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 0px;
 }
 
-.theme-toggle-btn{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 16px;
-  border-radius:25px;
-  font-size:14px;
-  cursor:pointer;
-  transition:all 0.3s ease;
-
-  background:#111;
-  color:#fff;
-  border:1px solid #111;
-}
-
-/* Hover في الليت */
-.theme-toggle-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-
-body.dark-mode .theme-toggle-btn{
-  background:rgba(255,255,255,0.05);
-  color:#fff;
-  border:1px solid rgba(255,255,255,0.1);
-}
-
-body.dark-mode .theme-toggle-btn:hover{
-  box-shadow:0 0 20px rgba(0,255,136,0.4);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:700;
-}
-
-.icon{
-  width:35px;
-  height:35px;
-  border-radius:10px;
-  background:linear-gradient(135deg,#00ff88,#00b3ff);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.profile-container{
-  position:relative;
-}
-
-.profile-img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  cursor:pointer;
-  border:2px solid #7f5cff;
-}
-
-
-.logout{
-  color:#ff4d4d;
-}
-
-.divider{
-  height:1px;
-  background:rgba(255,255,255,0.1);
-  margin:8px 0;
-}
-.profile-trigger{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  cursor:pointer;
-}
-.profile-dropdown{
-  position:absolute;
-  right:0;
-  top:60px;
-  width:240px;
-  background:var(--dropdown-bg);
-  border:1px solid var(--dropdown-border);
-  border-radius:18px;
-  padding:10px 0;
-  box-shadow:var(--dropdown-shadow);
-  transition:0.4s ease;
-}
-
-.dropdown-item{
-  padding:14px 20px;
-  cursor:pointer;
-  color:var(--dropdown-text);
-  transition:0.3s ease;
-}
-#outdeng{
-  color: red;
-}
-
-.dropdown-item:hover{
-  background:var(--dropdown-hover);
-}
-
-.divider{
-  height:1px;
-  background:var(--dropdown-border);
-  margin:8px 0;
-}
-.arrow.rotate{
-  transform:rotate(180deg);
-}
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(-10px);}
-  to{opacity:1; transform:translateY(0);}
-}
-.menu{
-  display:flex;
-  gap:30px;
-  list-style:none;
-  color:var(--text-main);
-  flex-wrap:wrap;
-  list-style:none;
-}
-.menu li{
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  padding: 11px 10px;
+  padding: 5px 12px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  direction: ltr; /* للتأكد من اتجاه النص */
 }
-.menu li:hover{
+
+.profile-trigger:hover {
+  border-color: #1ee28a;
+  background: var(--light-glow-green);
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #7f5cff;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .display-name {
+    display: none; /* نخفي الاسم في الموبايل */
+  }
+
+  .profile-trigger {
+    padding: 5px;
+  }
+}
+/* تأثير عند التمرير */
+.navbar.scrolled {
+  top: 10px;
+  background: var(--bg-card);
+  border-color: var(--dropdown-border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: 700;
+}
+
+.logo img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* زر تغيير الثيم - باستخدام ثيمك */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--dropdown-shadow);
+  border-color: #00ff88;
+}
+
+/* الوضع الداكن - زر الثيم */
+body.dark-mode .theme-toggle-btn {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  border: 1px solid var(--dropdown-border);
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+  box-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+
+/* القائمة الرئيسية */
+.menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  cursor: pointer;
+  padding: 11px 16px;
+  border-radius: 11px;
+  transition: all 0.3s ease;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.menu li i {
+  font-size: 18px;
+}
+
+.menu li:hover {
   color: #1ee28a;
-  border: solid 2px;
-  border-radius: 7px;
-  box-shadow: 0px 2px 10px rgba(0, 255, 136, 0.5);
-
-}
-img{
-  width: 55px;
-  height: 54px;
-}
-.actions{
-  display:flex;
-  gap:15px;
+  border: 1px solid #1ee28a;
+  box-shadow: 0 2px 10px rgba(30, 226, 138, 0.3);
+  background: var(--light-glow-green);
 }
 
-.actions button{
+.menu li.active {
+  color: #1ee28a;
+  border: 1px solid #1ee28a;
+  background: linear-gradient(90deg, var(--light-glow-green), var(--light-glow-purple));
+}
 
+/* الأزرار */
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.actions button {
   cursor: pointer;
   border: none;
-  padding: 16px 28px;
+  padding: 12px 24px;
   border-radius: 11px;
-  font-size: 80%;
+  font-size: 14px;
   font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
-.actions .login{
-  background-color: #121419;
-  border: solid 1px #202229;
+
+.actions .login {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.actions .login:hover {
+  border-color: #1ee28a;
+  box-shadow: 0 2px 10px rgba(30, 226, 138, 0.3);
+  transform: translateY(-2px);
+  background: var(--light-glow-green);
+}
+
+.actions .getstarted {
+  background: var(--primary-gradient);
   color: white;
-}
-.actions .getstared{
-  background-color: #1ee28a;
-  list-style:none;
-}
-.actions :hover{
-  box-shadow: 1px 1px 10px #00ff8c;
-    border: 1px solid #ffffff;
-}
-/* Hamburger hidden on desktop */
-.hamburger{
-  display:none;
-  font-size:24px;
-  cursor:pointer;
+  border: 1px solid transparent;
 }
 
-/* ================= MOBILE ================= */
-
-@media (max-width:768px){
-
-  .menu{
-    display:none;
-  }
-
-
-
-  .hamburger{
-    display:block;
-  }
-
-}
-@media (min-width:769px){
-  .mobile-menu{
-    display:none !important;
-  }
+.actions .getstarted:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0,255,136,0.6), 0 0 35px rgba(127,92,255,0.5);
 }
 
-/* ================= MOBILE DROPDOWN ================= */
+/* بروفايل المستخدم */
+.profile-container {
+  position: relative;
+}
 
-.mobile-menu{
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.profile-trigger:hover {
+  border-color: #1ee28a;
+  background: var(--light-glow-green);
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #7f5cff;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.profile-trigger:hover .profile-img {
+  border-color: #1ee28a;
+  transform: scale(1.05);
+}
+
+.arrow {
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* القائمة المنسدلة للبروفايل */
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  width: 240px;
+  background: var(--dropdown-bg);
+  border: 1px solid var(--dropdown-border);
+  border-radius: 18px;
+  padding: 8px 0;
+  box-shadow: var(--dropdown-shadow);
+  animation: fadeIn 0.3s ease;
+  z-index: 1001;
+}
+
+.dropdown-item {
+  padding: 14px 20px;
+  cursor: pointer;
+  color: var(--dropdown-text);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.dropdown-item i {
+  font-size: 18px;
+  width: 20px;
+  color: #7f5cff;
+}
+
+.dropdown-item:hover {
+  background: var(--dropdown-hover);
+  padding-left: 28px;
+}
+
+.dropdown-item.logout {
+  color: #ff4d4d;
+}
+
+.dropdown-item.logout i {
+  color: #ff4d4d;
+}
+
+.dropdown-item.logout:hover {
+  background: rgba(255, 77, 77, 0.1);
+}
+
+.divider {
+  height: 1px;
+  background: var(--dropdown-border);
+  margin: 8px 0;
+}
+
+/* القائمة الجانبية للجوال */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-main);
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background: var(--light-glow-green);
+  color: #1ee28a;
+}
+
+/* ================= MOBILE MENU ================= */
+.mobile-menu {
   position: fixed;
-  top: 108px;
-  left: 61%;
-  width: 30%;
+  top: 90px;
+  right: 10%;
+  width: 250px;
   backdrop-filter: blur(20px);
-  padding: 22px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  cursor: pointer;
+  gap: 12px;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
   z-index: 2000;
-  transform: translateY(-12px);
-  background: var(--dropdown-menu);
+  transform: translateY(-20px);
+  background: var(--dropdown-bg);
   border: 1px solid var(--dropdown-border);
   border-radius: 18px;
-
+  box-shadow: var(--dropdown-shadow);
 }
 
-.mobile-menu a{
-  color:var(--text-main);
-  border: 1px solid var(--dropdown-border);
-  text-decoration:none;
-  padding:10px;
-  border-radius:10px;
+.mobile-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-.mobile-menu a:hover{
-  background:rgba(255,255,255,0.05);
+.mobile-menu a {
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid transparent;
 }
 
-.mobile-btn{
-  background:linear-gradient(90deg,#00ff88,#00b3ff);
-  border:none;
-  padding:12px;
-  border-radius:20px;
+.mobile-menu a i {
+  font-size: 18px;
+  color: #7f5cff;
 }
-.mobile-btn:hover{
-  background:rgba(255,255,255,0.05);
-}
-/* open state */
-.mobile-menu.open{
-  opacity:1;
-  visibility:visible;
-  transform:translateY(0);
 
+.mobile-menu a:hover {
+  background: var(--dropdown-hover);
+  border-color: #1ee28a;
+  transform: translateX(5px);
+}
+
+.mobile-menu a:hover i {
+  color: #1ee28a;
+}
+
+.mobile-btn {
+  background: var(--primary-gradient);
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.mobile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .navbar {
+    width: 90%;
+    padding: 10px 20px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .actions .login span,
+  .actions .getstarted span {
+    display: none;
+  }
+
+  .actions .login i,
+  .actions .getstarted i {
+    font-size: 20px;
+  }
+
+  .actions button {
+    padding: 10px 15px;
+  }
+
+  .logo img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .theme-toggle-btn span {
+    display: none;
+  }
+
+  .theme-toggle-btn {
+    padding: 8px 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+/* أنيميشن */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تحسينات للوضع الداكن */
+body.dark-mode .profile-dropdown {
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+body.dark-mode .dropdown-item i {
+  color: #00ff88;
+}
+
+body.dark-mode .profile-trigger:hover {
+  background: rgba(0, 255, 136, 0.1);
 }

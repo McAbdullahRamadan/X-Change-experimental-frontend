@@ -1,32 +1,103 @@
-<div class="profile-page">
+<!-- profile/profile.component.html -->
+<div *ngIf="error" class="error-container">
+  <div class="error-message">
+    <p>{{error}}</p>
+    <button *ngIf="!error.includes('login') && !error.includes('Redirecting')"
+            (click)="retry()"
+            class="retry-btn">
+      Try Again
+    </button>
+    <p *ngIf="error.includes('login')" class="redirect-message">
+      Redirecting to login page...
+    </p>
+  </div>
+</div>
 
-  <!-- Cover -->
-  <div class="profile-cover"></div>
+<div class="profile-page" *ngIf="!isLoading && !error && hasUserData()">
 
-  <!-- Card -->
+  <!-- Cover with hover effect  -->
+  <div class="profile-cover"
+       (mouseenter)="hoverCover = true"
+       (mouseleave)="hoverCover = false">
+
+    <!-- صورة الغلاف -->
+    <div class="cover-image" [style.background-image]="'url(' + coverImageUrl + ')'"></div>
+
+    <!-- زر تغيير الغلاف (يظهر عند الهوفر) -->
+    <div class="cover-edit-overlay" *ngIf="hoverCover" (click)="triggerCoverInput()">
+      <i class="bi bi-camera-fill"></i>
+      <span>Change Cover</span>
+    </div>
+
+    <!-- شريط تقدم رفع الغلاف -->
+    <div class="cover-upload-progress" *ngIf="uploadingCover">
+      <div class="progress-bar" [style.width.%]="coverUploadProgress"></div>
+    </div>
+
+    <input type="file" #coverInput style="display: none"
+           (change)="onCoverSelected($event)" accept="image/*">
+  </div>
+
+  <!-- Card  -->
   <div class="profile-card">
 
     <div class="profile-header">
+      <!-- Profile Image with hover effect -->
+      <div class="profile-image-wrapper"
+           (mouseenter)="hoverProfile = true"
+           (mouseleave)="hoverProfile = false">
 
-      <img src="default user.png" class="profile-avatar">
+        <img [src]="profileImageUrl" class="profile-avatar" alt="Profile">
 
-      <div class="profile-info">
-        <h2>your Name</h2>
-        <p class="title">Full Stack Developer</p>
-        <p class="location">Egypt • Available for freelance</p>
+        <!-- أيقونة تغيير الصورة (تظهر عند الهوفر) -->
+        <div class="profile-edit-overlay" *ngIf="hoverProfile" (click)="openProfileOptions($event)">
+          <i class="bi bi-camera-fill"></i>
+        </div>
+
+        <!-- شريط تقدم رفع الصورة -->
+        <div class="profile-upload-progress" *ngIf="uploadingProfile">
+          <div class="progress-bar" [style.width.%]="profileUploadProgress"></div>
+        </div>
       </div>
 
-      <button class="edit-btn">Edit Profile</button>
+      <input type="file" #profileInput style="display: none"
+             (change)="onProfileSelected($event)" accept="image/*">
 
+      <div class="profile-info">
+        <h2>{{ (userData?.firstname || 'Your') + ' ' + (userData?.lastname || 'Name') }}</h2>
+        <p class="title">Full Stack Developer</p>
+        <p class="location">
+          {{ userData?.city || 'Egypt' }}, {{ userData?.country || 'Egypt' }} • Available for freelance
+        </p>
+      </div>
+
+      <button [routerLink]="['/editprofile', userData?.userName]" class="edit-btn">Edit Profile</button>
     </div>
 
-    <!-- About -->
+    <!-- About  -->
     <div class="profile-section">
       <h3>About</h3>
       <p>
         Passionate Full Stack Developer specialized in ASP.NET Core and Angular.
         I build scalable web applications with Clean Architecture.
       </p>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="profile-section" *ngIf="userData">
+      <h3>Contact Information</h3>
+      <p><strong>Email:</strong> {{ userData.email || 'Not provided' }}</p>
+      <p><strong>Phone:</strong> {{ userData.phoneNumber || 'Not provided' }}</p>
+      <p><strong>Username:</strong> {{ userData.userName || 'Not provided' }}</p>
+    </div>
+
+    <!-- Education -->
+    <div class="profile-section" *ngIf="userData?.university || userData?.major">
+      <h3>Education</h3>
+      <div class="experience-item">
+        <h4><strong>University : </strong> {{ userData?.university || 'University not specified' }}</h4>
+        <p><strong>Major : </strong> {{ userData?.major || 'Not specified' }}</p>
+      </div>
     </div>
 
     <!-- Skills -->
@@ -41,7 +112,7 @@
       </div>
     </div>
 
-    <!-- Experience -->
+    <!-- Experience-->
     <div class="profile-section">
       <h3>Experience</h3>
       <div class="experience-item">
@@ -53,4 +124,72 @@
 
   </div>
 
+</div>
+
+<!-- Modal for profile image options -->
+<div class="modal" *ngIf="showProfileOptions" (click)="closeProfileOptions()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Profile Picture</h3>
+    <div class="modal-actions">
+      <button class="modal-btn" (click)="viewCurrentProfileImage()">
+        <i class="bi bi-eye-fill"></i> View Photo
+      </button>
+      <button class="modal-btn" (click)="triggerProfileInput()">
+        <i class="bi bi-cloud-upload-fill"></i> Upload New
+      </button>
+      <button class="modal-btn danger" (click)="deleteCurrentProfileImage()"
+              *ngIf="profileImageUrl !== 'default user.png'">
+        <i class="bi bi-trash-fill"></i> Delete Photo
+      </button>
+      <button class="modal-btn" (click)="closeProfileOptions()">
+        <i class="bi bi-x-lg"></i> Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for cover image options -->
+<div class="modal" *ngIf="showCoverOptions" (click)="closeCoverOptions()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Cover Picture</h3>
+    <div class="modal-actions">
+      <button class="modal-btn" (click)="viewCurrentCoverImage()">
+        <i class="bi bi-eye-fill"></i> View Photo
+      </button>
+      <button class="modal-btn" (click)="triggerCoverInput()">
+        <i class="bi bi-cloud-upload-fill"></i> Upload New
+      </button>
+      <button class="modal-btn danger" (click)="deleteCurrentCoverImage()"
+              *ngIf="coverImageUrl !== 'cover.jpg'">
+        <i class="bi bi-trash-fill"></i> Delete Photo
+      </button>
+      <button class="modal-btn" (click)="closeCoverOptions()">
+        <i class="bi bi-x-lg"></i> Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Image Viewer Modal -->
+<div class="image-viewer-modal" *ngIf="viewingImage" (click)="closeImageViewer()">
+  <div class="image-viewer-content" (click)="$event.stopPropagation()">
+    <img [src]="viewingImageUrl" alt="Full size image">
+    <button class="close-btn" (click)="closeImageViewer()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Loading Template  -->
+<div class="loading-container" *ngIf="isLoading && !error">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+</div>
+
+<!-- No Data Template -->
+<div class="no-data-container" *ngIf="!isLoading && !error && !hasUserData()">
+  <p>No user data available</p>
+  <button (click)="retry()" class="retry-btn">Try Again</button>
 </div>

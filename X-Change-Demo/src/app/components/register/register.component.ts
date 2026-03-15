@@ -49,7 +49,7 @@ export class RegisterComponent  {
       return;
     }
 
-    this.auth.registeruser(this.registerForm.value)
+    this.auth.register(this.registerForm.value)
       .subscribe({
         next: () => {
           alert("Registered Successfully 🎉");
