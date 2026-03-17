@@ -7,28 +7,40 @@
     <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
        Back to Home
     </button>
+
     <form [formGroup]="registerForm" (ngSubmit)="submit()">
 
+      <!-- UserName و Email -->
       <div class="row">
         <div class="input-group">
           <label>User Name</label>
           <input formControlName="userName" type="text" placeholder="Username">
+          <div class="error-message" *ngIf="isFieldInvalid('userName')">
+            {{ getErrorMessage('userName') }}
+          </div>
         </div>
 
         <div class="input-group">
           <label>Email</label>
           <input formControlName="email" type="email" placeholder="Email">
+          <div class="error-message" *ngIf="isFieldInvalid('email')">
+            {{ getErrorMessage('email') }}
+          </div>
         </div>
       </div>
 
+      <!-- Confirm Email و Gender -->
       <div class="row">
         <div class="input-group">
           <label>Confirm Email</label>
           <input formControlName="confirmEmail" type="email" placeholder="Confirm Email">
+          <div class="error-message" *ngIf="isFieldInvalid('confirmEmail')">
+            {{ getErrorMessage('confirmEmail') }}
+          </div>
         </div>
 
         <div class="input-group">
-          <label>Gender</label>
+          <label>Gender (Optional)</label>
           <select formControlName="gender">
             <option value="">Select</option>
             <option>Male</option>
@@ -37,67 +49,97 @@
         </div>
       </div>
 
+      <!-- First Name و Last Name -->
       <div class="row">
         <div class="input-group">
           <label>First Name</label>
           <input formControlName="firstName" type="text" placeholder="First Name">
+          <div class="error-message" *ngIf="isFieldInvalid('firstName')">
+            {{ getErrorMessage('firstName') }}
+          </div>
         </div>
 
         <div class="input-group">
           <label>Last Name</label>
           <input formControlName="lastName" type="text" placeholder="Last Name">
+          <div class="error-message" *ngIf="isFieldInvalid('lastName')">
+            {{ getErrorMessage('lastName') }}
+          </div>
         </div>
       </div>
 
-
+      <!-- Password مع العين -->
       <div class="row">
         <div class="input-group">
           <label>Password</label>
-          <input formControlName="password" type="password" placeholder="Password">
+          <div class="password-wrapper">
+            <input formControlName="password" [type]="passwordType" placeholder="Password">
+            <span class="spanpass" (click)="togglePasswordVisibility()" [class]="'bi ' + passwordIcon"></span>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('password')">
+            {{ getErrorMessage('password') }}
+          </div>
         </div>
 
+        <!-- Phone Number -->
         <div class="input-group">
           <label>Phone Number</label>
           <input formControlName="phoneNumber" type="text" placeholder="Phone">
+          <div class="error-message" *ngIf="isFieldInvalid('phoneNumber')">
+            {{ getErrorMessage('phoneNumber') }}
+          </div>
         </div>
       </div>
 
+      <!-- Date Of Birth و City -->
       <div class="row">
         <div class="input-group">
           <label>Date Of Birth</label>
           <input formControlName="dateOfBirth" type="date">
+          <div class="error-message" *ngIf="isFieldInvalid('dateOfBirth')">
+            {{ getErrorMessage('dateOfBirth') }}
+          </div>
         </div>
 
         <div class="input-group">
           <label>City</label>
           <input formControlName="city" type="text" placeholder="City">
+          <div class="error-message" *ngIf="isFieldInvalid('city')">
+            {{ getErrorMessage('city') }}
+          </div>
         </div>
       </div>
 
+      <!-- Country و National ID -->
       <div class="row">
         <div class="input-group">
           <label>Country</label>
           <input formControlName="country" type="text" placeholder="Country">
+          <div class="error-message" *ngIf="isFieldInvalid('country')">
+            {{ getErrorMessage('country') }}
+          </div>
         </div>
 
         <div class="input-group">
-          <label>National ID</label>
+          <label>National ID (Optional)</label>
           <input formControlName="nationalId" type="text" placeholder="National ID">
         </div>
       </div>
 
+      <!-- University و Major -->
       <div class="row">
         <div class="input-group">
-          <label>University</label>
+          <label>University (Optional)</label>
           <input formControlName="university" type="text" placeholder="University">
         </div>
 
         <div class="input-group">
-          <label>Major</label>
+          <label>Major (Optional)</label>
           <input formControlName="major" type="text" placeholder="Major">
         </div>
       </div>
-      <button type="submit" class="primary-btn full">
+
+      <button type="submit" class="primary-btn full" [disabled]="registerForm.invalid">
         Register
       </button>
 

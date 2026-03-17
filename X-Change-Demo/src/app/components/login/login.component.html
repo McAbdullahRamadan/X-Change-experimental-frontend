@@ -7,36 +7,46 @@
     <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
        Back to Home
     </button>
+
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
 
+      <!-- Email -->
       <div class="input-group">
         <label>Email</label>
         <input formControlName="email" autofocus type="email" placeholder="you@example.com">
+        <div class="error-message" *ngIf="isFieldInvalid('email')">
+          {{ getErrorMessage('email') }}
+        </div>
       </div>
 
+      <!-- Password مع العين -->
       <div class="input-group">
         <label>Password</label>
-        <input  id="password"
-        [type]="type" formControlName="password" type="password" placeholder="••••••••">
-        <span class="spanpass" (click)="hideShowPass()" class="bi {{ eyeIcone }}"></span>
+        <div class="password-wrapper">
+          <input id="password" [type]="type" formControlName="password" placeholder="••••••••">
+          <span class="spanpass" (click)="hideShowPass()" [class]="'bi ' + eyeIcone"></span>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('password')">
+          {{ getErrorMessage('password') }}
+        </div>
       </div>
 
-      <button type="submit" class="primary-btn full">
+      <button type="submit" class="primary-btn full" [disabled]="loginForm.invalid">
         Log In
       </button>
 
     </form>
 
     <p class="switch">
-      Don t have an account?
+      Don't have an account?
       <a routerLink="/register">Create one</a>
     </p>
+
     <div class="divider-line">
       <span>OR</span>
     </div>
 
     <div class="social-login">
-
       <button class="social-btn google">
         <i class="bi bi-google"></i>
         Continue with Google
@@ -51,9 +61,7 @@
         <i class="bi bi-github"></i>
         Continue with GitHub
       </button>
-
     </div>
-
 
   </div>
 

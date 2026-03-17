@@ -1,0 +1,469 @@
+/* ====== BASE STYLES (مشترك بين التسجيل والدخول) ====== */
+.auth-section,
+.auth-section-log {
+  min-height: 100vh;
+  background: linear-gradient(132deg, #abf7fd 0%, #511653 97%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.auth-card {
+  max-width: 1000px;
+  width: 100%;
+  background: rgba(20, 15, 40, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 23px;
+  padding: 40px 45px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(127, 92, 255, 0.1) inset;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.auth-card h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  background: linear-gradient(135deg, #fff 0%, #c0b7ff 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.subtitle {
+  color: rgba(200, 200, 255, 0.6);
+  margin-bottom: 25px;
+  font-size: 1rem;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 10px 20px;
+  border-radius: 50px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.back-btn:hover {
+  background: rgba(127, 92, 255, 0.2);
+  border-color: #7f5cff;
+  color: white;
+  transform: translateX(-5px);
+}
+
+/* ====== Form Layout (مشترك) ====== */
+form {
+  margin-top: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* كل حقل في الفورم */
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #b9b3df;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+/* ========== التعديل هنا ========== */
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 17px 12px;  /* غيرناها من 6px لـ 12px عشان input ميخرجش برة */
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  background: rgb(4 4 5 / 70%);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 800;
+  outline: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box; /* مهم جداً عشان العرض يحسب مع الـ padding */
+}
+/* =============================== */
+
+/* Style للـ Date input */
+.input-group input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+.input-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.input-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b9b3df' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+}
+
+.input-group select option {
+  background: #1a1730;
+  color: white;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #877bb3;
+  box-shadow: 0 0 0 3px rgba(127, 92, 255, 0.2);
+  background: rgb(15 13 25 / 90%);
+}
+
+/* ====== زر إظهار كلمة السر (خاص بالـ Login) ====== */
+.spanpass {
+  position: absolute;
+  right: 16px;  /* زودناها شوية عشان تبعد عن النص */
+  top: 59%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #aaa;
+  transition: 0.2s ease;
+  z-index: 2;
+}
+
+.spanpass:hover {
+  color: #7f5cff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* ====== Primary Button ====== */
+.primary-btn {
+  background: linear-gradient(135deg, #7f5cff 0%, #5f3dc3 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.5px;
+  margin-top: 15px;
+}
+
+.primary-btn.full {
+  width: 100%;
+}
+
+.primary-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px -5px #5f3dc3b3;
+  background: linear-gradient(135deg, #9071ff 0%, #6f4ed6 100%);
+}
+
+/* ====== Switch بين الصفحات ====== */
+.switch {
+  text-align: center;
+  margin: 25px 0 10px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+
+.switch a {
+  color: #b5a7ff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+
+.switch a:hover {
+  color: #7f5cff;
+  text-decoration: underline;
+}
+
+/* ====== Divider ====== */
+.divider-line {
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+}
+
+.divider-line::before,
+.divider-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.divider-line span {
+  margin: 0 15px;
+}
+
+/* ====== Social Buttons ====== */
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 40px;
+  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 8, 25, 0.6);
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.social-btn i {
+  font-size: 1.3rem;
+}
+
+.social-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(20, 15, 40, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.google:hover {
+  border-color: #db4437;
+  color: white;
+}
+.google:hover i {
+  color: #db4437;
+}
+
+.linkedin:hover {
+  border-color: #0077b5;
+  color: white;
+}
+.linkedin:hover i {
+  color: #0077b5;
+}
+
+.github:hover {
+  border-color: #999;
+  color: white;
+}
+.github:hover i {
+  color: #fff;
+}
+
+/* ====== RESPONSIVE DESIGN ====== */
+
+/* أجهزة تابلت (اقل من 900px) */
+@media (max-width: 900px) {
+  .auth-card {
+    padding: 35px 30px;
+  }
+  .auth-card h2 {
+    font-size: 2rem;
+  }
+  .row {
+    gap: 15px;
+  }
+}
+
+/* أجهزة صغيرة وموبايل (اقل من 700px) */
+@media (max-width: 700px) {
+  .auth-section,
+  .auth-section-log {
+    padding: 15px;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    padding: 30px 20px;
+    border-radius: 30px;
+    margin: 10px 0;
+  }
+
+  .auth-card h2 {
+    font-size: 1.8rem;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .input-group input,
+  .input-group select {
+    padding: 15px 14px;
+  }
+
+  .social-btn {
+    padding: 16px;
+    font-size: 1rem;
+  }
+
+  .back-btn {
+    margin-bottom: 20px;
+    padding: 12px 18px;
+  }
+
+  .spanpass {
+    right: 14px;
+    font-size: 1.3rem;
+  }
+}
+
+/* أجهزة صغيرة جداً (اقل من 400px) */
+@media (max-width: 400px) {
+  .auth-card {
+    padding: 25px 15px;
+  }
+  .auth-card h2 {
+    font-size: 1.6rem;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  .primary-btn {
+    padding: 15px;
+  }
+}
+/* ====== Password Wrapper للعين في الـ Register ====== */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding: 17px 40px 17px 12px !important;  /* نعمل مساحة للعين على الشمال */
+}
+
+.password-wrapper .spanpass {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #aaa;
+  transition: 0.2s ease;
+  z-index: 2;
+}
+
+.password-wrapper .spanpass:hover {
+  color: #7f5cff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* تعديل على الموبايل */
+@media (max-width: 700px) {
+  .password-wrapper .spanpass {
+    right: 14px;
+    font-size: 1.3rem;
+  }
+}
+/* Error Message */
+/* ====== Error Messages ====== */
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  margin-top: 5px;
+  margin-left: 5px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تلوين الـ input باللون الأحمر لو فيه خطأ */
+.input-group input.ng-invalid.ng-touched,
+.input-group select.ng-invalid.ng-touched {
+  border-color: #ff4d4d !important;
+  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.1);
+}
+
+/* الـ password-wrapper مع الخطأ */
+.password-wrapper input.ng-invalid.ng-touched {
+  border-color: #ff4d4d !important;
+}
+
+/* ====== Password Wrapper للعين ====== */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding: 17px 40px 17px 12px !important;
+}
+
+.password-wrapper .spanpass {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #aaa;
+  transition: 0.2s ease;
+  z-index: 2;
+}
+
+.password-wrapper .spanpass:hover {
+  color: #7f5cff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Responsive للعين */
+@media (max-width: 700px) {
+  .password-wrapper .spanpass {
+    right: 14px;
+    font-size: 1.3rem;
+  }
+}
+
+/* تعطيل الزر لو الفورم مش صحيح */
+/* .primary-btn.full:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+} */

@@ -69,7 +69,7 @@ export class AuthService {
     }
   }
 
-  // تحديث دالة getUserIdFromToken لتكون أكثر أماناً
+
   getUserIdFromToken(): string | null {
     try {
       const token = this.getToken();

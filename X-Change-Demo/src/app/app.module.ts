@@ -22,6 +22,8 @@ import { authInterceptor } from './Interceptor/Auth-interceptor';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { DashboardComponent } from './components_admin/dashboard/dashboard.component';
 import {  EditprofileComponent } from './pages/editprofile/editprofile.component';
+import { AuthDesignComponent } from './components/auth-design/auth-design.component';
+
 
 
 @NgModule({
@@ -42,6 +44,7 @@ import {  EditprofileComponent } from './pages/editprofile/editprofile.component
     RegisterComponent,
     ProfileComponent,
     EditprofileComponent,
+    AuthDesignComponent
 
 
   ],
