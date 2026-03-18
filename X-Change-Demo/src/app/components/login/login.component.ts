@@ -49,6 +49,11 @@ export class LoginComponent  {
   getErrorMessage(fieldName: string): string {
     const field = this.loginForm.get(fieldName);
     if (!field) return '';
+
+    if (field.hasError('serverError')) {
+      return field.getError('serverError');
+    }
+
     if (field.hasError('required')) {
       return fieldName === 'email' ? 'البريد الإلكتروني مطلوب' : 'كلمة السر مطلوبة';
     }
@@ -64,49 +69,78 @@ export class LoginComponent  {
   submit() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      if (this.loginForm.get('email')?.invalid && this.loginForm.get('password')?.invalid) {
-        this.toastr.warning('البريد الإلكتروني وكلمة السر مطلوبان', 'تحذير');
-      } else if (this.loginForm.get('email')?.invalid) {
-        this.toastr.warning('البريد الإلكتروني مطلوب أو غير صحيح', 'تحذير');
-      } else if (this.loginForm.get('password')?.invalid) {
-        this.toastr.warning('كلمة السر مطلوبة (6 أحرف على الأقل)', 'تحذير');
+
+      const invalidFields = Object.keys(this.loginForm.controls).filter(
+        key => this.loginForm.get(key)?.invalid
+      );
+
+      this.toastr.warning(`يوجد ${invalidFields.length} حقول غير صحيحة`, 'تحذير', {
+        positionClass: 'toast-top-right',
+        timeOut: 3000
+      });
+
+      const firstInvalidField = Object.keys(this.loginForm.controls).find(
+        key => this.loginForm.get(key)?.invalid
+      );
+
+      if (firstInvalidField) {
+        const element = document.querySelector(`[formControlName="${firstInvalidField}"]`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
+
       return;
     }
 
-    if (this.loginForm.valid) {
-      this.auth.login(this.loginForm.value)
-        .subscribe({
-          next: (response: any) => {
-            console.log('Full response:', response);
+    this.auth.login(this.loginForm.value).subscribe({
+      next: (response: any) => {
+        console.log('Full response:', response);
 
-            // التحقق من isSuccess في الـ response
-            if (response?.isSuccess === true) {
-              // تسجيل دخول ناجح
-              this.toastr.success('تم تسجيل الدخول بنجاح! 🎉', 'مرحباً بك');
-              if (response?.data?.name) {
-                this.toastr.info(`مرحباً ${response.data.name}`, 'أهلاً بك');
-              }
-              this.router.navigate(['']);
-            } else {
-              // تسجيل دخول فاشل (isSuccess = false)
-              const errorMessage = response?.errors?.[0] || 'فشل تسجيل الدخول';
+        if (response?.isSuccess === true) {
+          this.toastr.success('تم تسجيل الدخول بنجاح! 🎉', 'مرحباً بك', {
+            positionClass: 'toast-top-right',
+            timeOut: 5000,
+            progressBar: true
+          });
 
-              if (errorMessage.includes('email')) {
-                this.toastr.error('البريد الإلكتروني غير صحيح أو غير موجود', 'خطأ');
-              } else if (errorMessage.includes('password')) {
-                this.toastr.error('كلمة السر غير صحيحة', 'خطأ');
-              } else {
-                this.toastr.error(errorMessage, 'فشل تسجيل الدخول');
-              }
-            }
-          },
-          error: err => {
-            console.log('HTTP Error:', err);
-            // هذا الكود مش هيشتغل كتير لأن الباك إند دايمًا بيدور 200
-            this.toastr.error('حدث خطأ في الاتصال بالخادم', 'خطأ');
+          if (response?.data?.name) {
+            this.toastr.info(`مرحباً ${response.data.name}`, 'أهلاً بك', {
+              positionClass: 'toast-top-right'
+            });
           }
+
+          setTimeout(() => {
+            this.router.navigate(['']);
+          }, 2000);
+        } else {
+          const errorMessage = response?.errors?.[0] || 'فشل تسجيل الدخول';
+
+          if (errorMessage.includes('email') || errorMessage.includes('Email')) {
+            this.loginForm.get('email')?.setErrors({ serverError: errorMessage });
+            this.loginForm.get('email')?.markAsTouched();
+            this.toastr.error('البريد الإلكتروني غير صحيح أو غير موجود', 'خطأ', {
+              positionClass: 'toast-top-right'
+            });
+          } else if (errorMessage.includes('password') || errorMessage.includes('Password')) {
+            this.loginForm.get('password')?.setErrors({ serverError: errorMessage });
+            this.loginForm.get('password')?.markAsTouched();
+            this.toastr.error('كلمة السر غير صحيحة', 'خطأ', {
+              positionClass: 'toast-top-right'
+            });
+          } else {
+            this.toastr.error(errorMessage, 'فشل تسجيل الدخول', {
+              positionClass: 'toast-top-right'
+            });
+          }
+        }
+      },
+      error: (err) => {
+        console.log('HTTP Error:', err);
+        this.toastr.error('حدث خطأ في الاتصال بالخادم', 'خطأ', {
+          positionClass: 'toast-top-right'
         });
-    }
+      }
+    });
   }
 }

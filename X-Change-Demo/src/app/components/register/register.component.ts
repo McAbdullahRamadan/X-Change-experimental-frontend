@@ -125,7 +125,7 @@ export class RegisterComponent  {
     }
 
     if (field.hasError('minlength')) {
-      return 'كلمة السر على الأقل 6 أحرف';
+      return 'كلمة السر على الأقل 6 تتكون من علي الاقل حرف كبير وعلي الاقل حرف صغير وارقام';
     }
 
     if (field.hasError('minAge')) {

@@ -1,7 +1,5 @@
 <section class="auth-section-log">
-
   <div class="auth-card">
-
     <h2>Welcome Back 👋</h2>
     <p class="subtitle">Log in to continue your journey</p>
     <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
@@ -9,21 +7,30 @@
     </button>
 
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
-
-      <!-- Email -->
       <div class="input-group">
         <label>Email</label>
-        <input formControlName="email" autofocus type="email" placeholder="you@example.com">
+        <input
+          formControlName="email"
+          autofocus
+          type="email"
+          placeholder="you@example.com"
+          [class.is-invalid]="isFieldInvalid('email')"
+        >
         <div class="error-message" *ngIf="isFieldInvalid('email')">
           {{ getErrorMessage('email') }}
         </div>
       </div>
 
-      <!-- Password مع العين -->
       <div class="input-group">
         <label>Password</label>
         <div class="password-wrapper">
-          <input id="password" [type]="type" formControlName="password" placeholder="••••••••">
+          <input
+            id="password"
+            [type]="type"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.is-invalid]="isFieldInvalid('password')"
+          >
           <span class="spanpass" (click)="hideShowPass()" [class]="'bi ' + eyeIcone"></span>
         </div>
         <div class="error-message" *ngIf="isFieldInvalid('password')">
@@ -31,10 +38,9 @@
         </div>
       </div>
 
-      <button type="submit" class="primary-btn full" [disabled]="loginForm.invalid">
+      <button type="submit" class="primary-btn full">
         Log In
       </button>
-
     </form>
 
     <p class="switch">
@@ -62,7 +68,5 @@
         Continue with GitHub
       </button>
     </div>
-
   </div>
-
 </section>

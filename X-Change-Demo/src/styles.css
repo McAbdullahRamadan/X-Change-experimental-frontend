@@ -486,3 +486,34 @@ input, select{
   background-color: #17a2b8 !important;
   border-right: 5px solid #0f6674 !important;
 }
+/*توستر للشاشات الكبيرة */
+@media screen and (min-width: 1200px) {
+  .custom-toast {
+    width: 450px !important;
+    font-size: 17px !important;
+  }
+}
+
+/*توستر للشاشات المتوسطة */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+  .custom-toast {
+    width: 380px !important;
+    font-size: 15px !important;
+  }
+}
+
+/*توستر للشاشات الصغيرة (الموبايل) */
+@media screen and (max-width: 767px) {
+  .custom-toast {
+    width: 90vw !important;
+    font-size: 14px !important;
+    margin: 10px !important;
+    padding: 12px !important;
+  }
+
+  /*  للتوستر على اليمين في الموبايل */
+  .toast-top-right {
+    top: 12px !important;
+    right: 12px !important;
+  }
+}
