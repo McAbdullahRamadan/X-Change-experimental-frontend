@@ -1,4 +1,3 @@
-<!-- profile/profile.component.html -->
 <div *ngIf="error" class="error-container">
   <div class="error-message">
     <p>{{error}}</p>
@@ -67,59 +66,122 @@
         <h2>{{ (userData?.firstname || 'Your') + ' ' + (userData?.lastname || 'Name') }}</h2>
         <p class="title">Full Stack Developer</p>
         <p class="location">
-          {{ userData?.city || 'Egypt' }}, {{ userData?.country || 'Egypt' }} • Available for freelance
+          {{ userData?.city || 'Egypt' }}, {{ userData?.country || 'Egypt' }}
         </p>
       </div>
 
       <button [routerLink]="['/editprofile', userData?.userName]" class="edit-btn">Edit Profile</button>
     </div>
 
-    <!-- About  -->
-    <div class="profile-section">
+
+    <div class="info-card" >
       <h3>About</h3>
-      <p>
-        Passionate Full Stack Developer specialized in ASP.NET Core and Angular.
-        I build scalable web applications with Clean Architecture.
-      </p>
-    </div>
+      <div class="info-content">
+        <p> Passionate Full Stack Developer specialized in ASP.NET Core and Angular.
+          I build scalable web applications with Clean Architecture.</p>
 
-    <!-- Contact Info -->
-    <div class="profile-section" *ngIf="userData">
-      <h3>Contact Information</h3>
-      <p><strong>Email:</strong> {{ userData.email || 'Not provided' }}</p>
-      <p><strong>Phone:</strong> {{ userData.phoneNumber || 'Not provided' }}</p>
-      <p><strong>Username:</strong> {{ userData.userName || 'Not provided' }}</p>
-    </div>
-
-    <!-- Education -->
-    <div class="profile-section" *ngIf="userData?.university || userData?.major">
-      <h3>Education</h3>
-      <div class="experience-item">
-        <h4><strong>University : </strong> {{ userData?.university || 'University not specified' }}</h4>
-        <p><strong>Major : </strong> {{ userData?.major || 'Not specified' }}</p>
       </div>
     </div>
 
-    <!-- Skills -->
-    <div class="profile-section">
-      <h3>Skills</h3>
-      <div class="skills">
-        <span>Angular</span>
-        <span>ASP.NET Core</span>
-        <span>REST APIs</span>
-        <span>SQL</span>
-        <span>Clean Architecture</span>
-      </div>
-    </div>
+    <!-- Cards Grid -->
+    <div class="cards-grid">
 
-    <!-- Experience-->
-    <div class="profile-section">
-      <h3>Experience</h3>
-      <div class="experience-item">
-        <h4>Freelance Developer</h4>
-        <p>2023 - Present</p>
-        <span>Building SaaS platforms and APIs</span>
+      <!-- Contact Info Card -->
+      <div class="info-card" *ngIf="userData">
+        <h3>Contact Information</h3>
+        <div class="info-content">
+          <p><strong>Email:</strong> {{ userData.email || 'Not provided' }}</p>
+          <p><strong>Phone:</strong> {{ userData.phoneNumber || 'Not provided' }}</p>
+        </div>
       </div>
+
+      <!-- Education Card -->
+      <div class="info-card" *ngIf="userData?.university || userData?.major">
+        <h3>Education</h3>
+        <div class="info-content">
+          <div class="education-item">
+            <div class="education-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div class="education-details">
+              <h4>{{ userData?.university || 'October High Institute' }}</h4>
+              <p>{{ userData?.major || 'Information Technology' }}</p>
+              <p class="education-date">Mar 2018 – Jul 2022</p>
+            </div>
+          </div>
+        </div>
+      </div>
+       <!-- courses Card -->
+      <div class="info-card" >
+        <h3>courses</h3>
+        <div class="info-content">
+          <p>ـــــــــــــــــــــــ</p>
+
+        </div>
+      </div>
+      <!-- Skills Card -->
+      <div class="info-card">
+        <h3>Skills</h3>
+        <div class="skills-content">
+          <div class="skills-grid">
+            <span class="skill-tag">Angular</span>
+            <span class="skill-tag">ASP.NET Core</span>
+            <span class="skill-tag">REST APIs</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Clean Architecture</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Entity Framework</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience Card -->
+      <div class="info-card">
+        <h3>Experience</h3>
+        <div class="info-content">
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <div class="experience-details">
+              <h4>Freelance Developer</h4>
+              <p class="experience-company">Self-employed</p>
+              <p class="experience-date">2023 - Present</p>
+              <p class="experience-description">Building SaaS platforms and APIs with Angular and ASP.NET Core</p>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="bi bi-building"></i>
+            </div>
+            <div class="experience-details">
+              <h4>Internship Trainee</h4>
+              <p class="experience-company">Crossworkers-Egypt</p>
+              <p class="experience-date">Oct 2022 - Dec 2023</p>
+              <p class="experience-description">Worked on Microsoft SQL Server, ASP.NET MVC and web development</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>Projects</h3>
+        <div class="info-content">
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="bi bi-folder-fill"></i>
+            </div>
+            <div class="experience-details">
+              <h4>File Project</h4>
+              <p class="experience-company">Self-File</p>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
     </div>
 
   </div>
