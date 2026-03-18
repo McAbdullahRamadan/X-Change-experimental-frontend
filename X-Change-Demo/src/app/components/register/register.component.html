@@ -1,7 +1,5 @@
 <section class="auth-section">
-
   <div class="auth-card">
-
     <h2>Create Account 🚀</h2>
     <p class="subtitle">Join the squad and start swapping skills</p>
     <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
@@ -9,12 +7,10 @@
     </button>
 
     <form [formGroup]="registerForm" (ngSubmit)="submit()">
-
-      <!-- UserName و Email -->
       <div class="row">
         <div class="input-group">
           <label>User Name</label>
-          <input formControlName="userName" type="text" placeholder="Username">
+          <input formControlName="userName" type="text" placeholder="Username" [class.is-invalid]="isFieldInvalid('userName')">
           <div class="error-message" *ngIf="isFieldInvalid('userName')">
             {{ getErrorMessage('userName') }}
           </div>
@@ -22,18 +18,17 @@
 
         <div class="input-group">
           <label>Email</label>
-          <input formControlName="email" type="email" placeholder="Email">
+          <input formControlName="email" type="email" placeholder="Email" [class.is-invalid]="isFieldInvalid('email')">
           <div class="error-message" *ngIf="isFieldInvalid('email')">
             {{ getErrorMessage('email') }}
           </div>
         </div>
       </div>
 
-      <!-- Confirm Email و Gender -->
       <div class="row">
         <div class="input-group">
           <label>Confirm Email</label>
-          <input formControlName="confirmEmail" type="email" placeholder="Confirm Email">
+          <input formControlName="confirmEmail" type="email" placeholder="Confirm Email" [class.is-invalid]="isFieldInvalid('confirmEmail')">
           <div class="error-message" *ngIf="isFieldInvalid('confirmEmail')">
             {{ getErrorMessage('confirmEmail') }}
           </div>
@@ -49,11 +44,10 @@
         </div>
       </div>
 
-      <!-- First Name و Last Name -->
       <div class="row">
         <div class="input-group">
           <label>First Name</label>
-          <input formControlName="firstName" type="text" placeholder="First Name">
+          <input formControlName="firstName" type="text" placeholder="First Name" [class.is-invalid]="isFieldInvalid('firstName')">
           <div class="error-message" *ngIf="isFieldInvalid('firstName')">
             {{ getErrorMessage('firstName') }}
           </div>
@@ -61,19 +55,18 @@
 
         <div class="input-group">
           <label>Last Name</label>
-          <input formControlName="lastName" type="text" placeholder="Last Name">
+          <input formControlName="lastName" type="text" placeholder="Last Name" [class.is-invalid]="isFieldInvalid('lastName')">
           <div class="error-message" *ngIf="isFieldInvalid('lastName')">
             {{ getErrorMessage('lastName') }}
           </div>
         </div>
       </div>
 
-      <!-- Password مع العين -->
       <div class="row">
         <div class="input-group">
           <label>Password</label>
           <div class="password-wrapper">
-            <input formControlName="password" [type]="passwordType" placeholder="Password">
+            <input formControlName="password" [type]="passwordType" placeholder="Password" [class.is-invalid]="isFieldInvalid('password')">
             <span class="spanpass" (click)="togglePasswordVisibility()" [class]="'bi ' + passwordIcon"></span>
           </div>
           <div class="error-message" *ngIf="isFieldInvalid('password')">
@@ -81,21 +74,19 @@
           </div>
         </div>
 
-        <!-- Phone Number -->
         <div class="input-group">
           <label>Phone Number</label>
-          <input formControlName="phoneNumber" type="text" placeholder="Phone">
+          <input formControlName="phoneNumber" type="text" placeholder="Phone" [class.is-invalid]="isFieldInvalid('phoneNumber')">
           <div class="error-message" *ngIf="isFieldInvalid('phoneNumber')">
             {{ getErrorMessage('phoneNumber') }}
           </div>
         </div>
       </div>
 
-      <!-- Date Of Birth و City -->
       <div class="row">
         <div class="input-group">
           <label>Date Of Birth</label>
-          <input formControlName="dateOfBirth" type="date">
+          <input formControlName="dateOfBirth" type="date" [class.is-invalid]="isFieldInvalid('dateOfBirth')">
           <div class="error-message" *ngIf="isFieldInvalid('dateOfBirth')">
             {{ getErrorMessage('dateOfBirth') }}
           </div>
@@ -103,18 +94,17 @@
 
         <div class="input-group">
           <label>City</label>
-          <input formControlName="city" type="text" placeholder="City">
+          <input formControlName="city" type="text" placeholder="City" [class.is-invalid]="isFieldInvalid('city')">
           <div class="error-message" *ngIf="isFieldInvalid('city')">
             {{ getErrorMessage('city') }}
           </div>
         </div>
       </div>
 
-      <!-- Country و National ID -->
       <div class="row">
         <div class="input-group">
           <label>Country</label>
-          <input formControlName="country" type="text" placeholder="Country">
+          <input formControlName="country" type="text" placeholder="Country" [class.is-invalid]="isFieldInvalid('country')">
           <div class="error-message" *ngIf="isFieldInvalid('country')">
             {{ getErrorMessage('country') }}
           </div>
@@ -126,7 +116,6 @@
         </div>
       </div>
 
-      <!-- University و Major -->
       <div class="row">
         <div class="input-group">
           <label>University (Optional)</label>
@@ -139,17 +128,14 @@
         </div>
       </div>
 
-      <button type="submit" class="primary-btn full" [disabled]="registerForm.invalid">
+      <button type="submit" class="primary-btn full">
         Register
       </button>
-
     </form>
 
     <p class="switch">
       Already have an account?
       <a routerLink="/login">Log in</a>
     </p>
-
   </div>
-
 </section>

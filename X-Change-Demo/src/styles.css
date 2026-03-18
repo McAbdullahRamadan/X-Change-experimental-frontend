@@ -430,3 +430,59 @@ input, select{
     background-position:0% 50%;
   }
 }
+
+
+/* اعددات توستر*/
+.custom-toast {
+  width: 500px !important; /* تغيير العرض */
+  max-width: 90vw !important; /* للشاشات الصغيرة */
+  font-size: 16px !important; /* حجم الخط */
+  padding: 20px 30px !important; /* المسافات الداخلية */
+  border-radius: 10px !important; /* تقويس الزوايا */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important; /* ظل */
+}
+
+/* تخصيص العنوان */
+.toast-title {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  margin-bottom: 30px !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* تخصيص الرسالة */
+.toast-message {
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* تخصيص شريط التقدم */
+.toast-progress {
+  height: 4px !important;
+  opacity: 0.8 !important;
+}
+
+
+
+/* تخصيص ألوان كل نوع */
+.toast-success.custom-toast {
+  background-color: #28a745 !important;
+  border-right: 5px solid #1e7e34 !important;
+}
+
+.toast-error.custom-toast {
+  background-color: #dc3545 !important;
+  border-right: 5px solid #a71d2a !important;
+}
+
+.toast-warning.custom-toast {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  border-right: 5px solid #d39e00 !important;
+}
+
+.toast-info.custom-toast {
+  background-color: #17a2b8 !important;
+  border-right: 5px solid #0f6674 !important;
+}

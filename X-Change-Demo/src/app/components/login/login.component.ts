@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: '../auth-design/auth-design.component.css'
 })
-export class LoginComponent  {  loginForm!: FormGroup;
+export class LoginComponent  {
+  loginForm!: FormGroup;
   type: string = "password";
   isText: boolean = false;
   eyeIcone: string = "bi-eye-slash";
@@ -17,7 +19,8 @@ export class LoginComponent  {  loginForm!: FormGroup;
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [
@@ -32,60 +35,76 @@ export class LoginComponent  {  loginForm!: FormGroup;
     });
   }
 
-  // إظهار/إخفاء الباسورد
   hideShowPass() {
     this.isText = !this.isText;
     this.isText ? this.eyeIcone = "bi-eye" : this.eyeIcone = "bi-eye-slash";
     this.isText ? this.type = "text" : this.type = "password";
   }
 
-  // التحقق من وجود خطأ في الحقل
   isFieldInvalid(fieldName: string): boolean {
     const field = this.loginForm.get(fieldName);
     return field ? field.invalid && (field.dirty || field.touched) : false;
   }
 
-  // رسائل الخطأ المخصصة
   getErrorMessage(fieldName: string): string {
     const field = this.loginForm.get(fieldName);
-
     if (!field) return '';
-
     if (field.hasError('required')) {
       return fieldName === 'email' ? 'البريد الإلكتروني مطلوب' : 'كلمة السر مطلوبة';
     }
-
     if (field.hasError('email') || field.hasError('pattern')) {
       return 'البريد الإلكتروني غير صحيح';
     }
-
     if (field.hasError('minlength')) {
-      return 'كلمة السر على الأقل 6 ';
+      return 'كلمة السر على الأقل 6 أحرف';
     }
-
     return '';
   }
 
   submit() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      if (this.loginForm.get('email')?.invalid && this.loginForm.get('password')?.invalid) {
+        this.toastr.warning('البريد الإلكتروني وكلمة السر مطلوبان', 'تحذير');
+      } else if (this.loginForm.get('email')?.invalid) {
+        this.toastr.warning('البريد الإلكتروني مطلوب أو غير صحيح', 'تحذير');
+      } else if (this.loginForm.get('password')?.invalid) {
+        this.toastr.warning('كلمة السر مطلوبة (6 أحرف على الأقل)', 'تحذير');
+      }
       return;
     }
 
     if (this.loginForm.valid) {
       this.auth.login(this.loginForm.value)
         .subscribe({
-          next: () => {
-            alert('Logged in successfully! 🎉');
-            this.router.navigate(['']);
+          next: (response: any) => {
+            console.log('Full response:', response);
+
+            // التحقق من isSuccess في الـ response
+            if (response?.isSuccess === true) {
+              // تسجيل دخول ناجح
+              this.toastr.success('تم تسجيل الدخول بنجاح! 🎉', 'مرحباً بك');
+              if (response?.data?.name) {
+                this.toastr.info(`مرحباً ${response.data.name}`, 'أهلاً بك');
+              }
+              this.router.navigate(['']);
+            } else {
+              // تسجيل دخول فاشل (isSuccess = false)
+              const errorMessage = response?.errors?.[0] || 'فشل تسجيل الدخول';
+
+              if (errorMessage.includes('email')) {
+                this.toastr.error('البريد الإلكتروني غير صحيح أو غير موجود', 'خطأ');
+              } else if (errorMessage.includes('password')) {
+                this.toastr.error('كلمة السر غير صحيحة', 'خطأ');
+              } else {
+                this.toastr.error(errorMessage, 'فشل تسجيل الدخول');
+              }
+            }
           },
           error: err => {
-            console.log(err);
-            if (err.status === 401) {
-              alert('البريد الإلكتروني أو كلمة السر غير صحيحة');
-            } else {
-              alert(err.error?.message || 'Login failed');
-            }
+            console.log('HTTP Error:', err);
+            // هذا الكود مش هيشتغل كتير لأن الباك إند دايمًا بيدور 200
+            this.toastr.error('حدث خطأ في الاتصال بالخادم', 'خطأ');
           }
         });
     }

@@ -23,6 +23,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { DashboardComponent } from './components_admin/dashboard/dashboard.component';
 import {  EditprofileComponent } from './pages/editprofile/editprofile.component';
 import { AuthDesignComponent } from './components/auth-design/auth-design.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -50,9 +52,30 @@ import { AuthDesignComponent } from './components/auth-design/auth-design.compon
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      // الإعدادات العامة للتوستر
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true,
+      closeButton: true,
+      newestOnTop: true,
+      tapToDismiss: false,
+      maxOpened: 5,
+      autoDismiss: true,
+      progressAnimation: 'decreasing',
+      titleClass: 'toast-title',
+      messageClass: 'toast-message',
+      easeTime: 300,
+      enableHtml: true,
+      toastClass: 'ngx-toastr custom-toast',
+    }),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+
+
 
 
   ],
