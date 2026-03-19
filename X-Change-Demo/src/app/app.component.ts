@@ -9,20 +9,22 @@ import { filter } from 'rxjs';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  showNavbar = true;
+  currentRoute: string = '';
 
-  constructor(private router: Router){
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: any) => {
+  constructor(private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.currentRoute = event.url;
+    });
+  }
 
-        if(event.url.includes('login') || event.url.includes('register')){
-          this.showNavbar = false;
-        } else {
-          this.showNavbar = true;
-        }
-
-      });
+  isAuthRoute(): boolean {
+    return this.currentRoute.includes('/login') ||
+           this.currentRoute.includes('/register') ||
+           this.currentRoute.includes('/forgot-password')||
+           this.currentRoute.includes('/verify-code')||
+           this.currentRoute.includes('/reset-password');
   }
   title = 'X-Change';
 }

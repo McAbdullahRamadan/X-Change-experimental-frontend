@@ -8,6 +8,9 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { DashboardComponent } from './components_admin/dashboard/dashboard.component';
 import { EditprofileComponent } from './pages/editprofile/editprofile.component';
 import { authGuard } from './guards/auth.guard';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, // الصفحة الرئيسية
@@ -36,6 +39,9 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard]
   },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'verify-code', component: VerifyCodeComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
 
   // مسار للصفحات غير الموجودة (اختياري)
   { path: '**', redirectTo: '' }

@@ -483,3 +483,21 @@ form {
 input.is-invalid:focus {
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
 }
+/* ====== Forgot Password Link ====== */
+.forgot-password-link {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.forgot-password-link a {
+  color: #b5a7ff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.forgot-password-link a:hover {
+  color: #7f5cff;
+  text-decoration: underline;
+}

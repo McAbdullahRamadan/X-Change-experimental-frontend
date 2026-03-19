@@ -1,0 +1,80 @@
+<section class="auth-section-verify">
+  <div class="auth-card verify-card">
+
+    <!-- Header -->
+    <div class="header-icon">
+      <i class="bi bi-shield-lock-fill"></i>
+    </div>
+
+    <h2>Verify Code 🔐</h2>
+    <p class="subtitle">
+      Enter the 6-digit code sent to<br>
+      <strong>{{ email }}</strong>
+    </p>
+
+    <button class="back-btn" routerLink="/forgot-password">
+      <i class="bi bi-arrow-left"></i> Back
+    </button>
+
+    <!-- Verification Form -->
+    <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+
+      <!-- Code Input -->
+      <div class="input-group code-input-group">
+        <label>Verification Code</label>
+        <div class="code-input-wrapper">
+          <input
+            formControlName="code"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="Enter 6-digit code"
+            [class.is-invalid]="isFieldInvalid('code')"
+            [disabled]="isLoading"
+          >
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('code')">
+          {{ getErrorMessage('code') }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="primary-btn full"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">
+          <i class="bi bi-check-circle"></i> Verify Code
+        </span>
+        <span *ngIf="isLoading">
+          <i class="bi bi-arrow-repeat spinning"></i> Verifying...
+        </span>
+      </button>
+
+    </form>
+
+    <!-- Resend Section -->
+    <div class="resend-section">
+      <p class="timer-text" *ngIf="!canResend">
+        <i class="bi bi-hourglass-split"></i>
+        Resend code in <span class="timer">{{ timer }}s</span>
+      </p>
+
+      <button
+        *ngIf="canResend"
+        class="resend-btn"
+        (click)="resendCode()"
+        [disabled]="isLoading"
+      >
+        <i class="bi bi-arrow-repeat"></i> Resend Code
+      </button>
+    </div>
+
+    <!-- Help Text -->
+    <p class="help-text">
+      Didn't receive the code? Check your spam folder
+    </p>
+
+  </div>
+</section>

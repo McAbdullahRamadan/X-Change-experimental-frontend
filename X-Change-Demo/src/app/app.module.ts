@@ -25,6 +25,10 @@ import {  EditprofileComponent } from './pages/editprofile/editprofile.component
 import { AuthDesignComponent } from './components/auth-design/auth-design.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+
 
 
 
@@ -46,7 +50,10 @@ import { ToastrModule } from 'ngx-toastr';
     RegisterComponent,
     ProfileComponent,
     EditprofileComponent,
-    AuthDesignComponent
+    AuthDesignComponent,
+    ForgotPasswordComponent,
+    VerifyCodeComponent,
+    ResetPasswordComponent
 
 
   ],

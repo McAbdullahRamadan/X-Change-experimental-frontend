@@ -1,0 +1,261 @@
+.auth-section-verify {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle at 30% 20%, rgba(0, 255, 136, 0.05), transparent 40%),
+  radial-gradient(circle at 80% 80%, rgba(140, 0, 255, 0.07), transparent 50%),
+  #05070d;
+}
+
+.verify-card {
+  max-width: 450px;
+  width: 100%;
+  padding: 40px;
+  background: rgb(0 0 0 / 94%);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.header-icon {
+  width: 80px;
+  height: 80px;
+  background: #6a5cff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.header-icon i {
+  font-size: 40px;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.subtitle strong {
+  color: #6a5cff;
+  word-wrap: break-word;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid #e0e0e0;
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 25px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.back-btn:hover {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+.code-input-group {
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.code-input-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.code-input-wrapper input {
+  width: 100%;
+  padding: 15px 10px; /* تقليل الـ padding الأفقي */
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 4px; /* تقليل الـ letter-spacing */
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-family: monospace;
+  box-sizing: border-box; /* مهم جداً */
+  max-width: 100%; /* منع الخروج */
+}
+
+.code-input-wrapper input:focus {
+  border-color: #6a5cff;
+  box-shadow: 0 0 0 3px rgba(106, 92, 255, 0.1);
+  outline: none;
+}
+
+.code-input-wrapper input.is-invalid {
+  border-color: #dc3545;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  text-align: right;
+  word-wrap: break-word;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 15px;
+  background: #6a5cff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.primary-btn:hover:not([disabled]) {
+  background: #4a3cc0;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(106, 92, 255, 0.3);
+}
+
+.primary-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.resend-section {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.timer-text {
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.timer {
+  color: #6a5cff;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.resend-btn {
+  background: none;
+  border: 2px solid #6a5cff;
+  color: #6a5cff;
+  padding: 10px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.resend-btn:hover:not([disabled]) {
+  background: #6a5cff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(106, 92, 255, 0.2);
+}
+
+.resend-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.help-text {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin-top: 20px;
+  word-wrap: break-word;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .verify-card {
+    padding: 30px 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .code-input-wrapper input {
+    font-size: 1.2rem;
+    letter-spacing: 3px; /* تقليل أكتر في الموبايل */
+    padding: 12px 8px;
+  }
+
+  .back-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .primary-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .resend-btn {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* للشاشات الصغيرة جداً */
+@media (max-width: 320px) {
+  .verify-card {
+    padding: 20px 15px;
+  }
+
+  .code-input-wrapper input {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    padding: 10px 5px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+}
