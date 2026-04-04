@@ -144,7 +144,7 @@
 }
 
 .search-input {
-  width: 30%;
+  width: 80%;
   padding: 14px 20px 14px 48px;
   background: var( --Search-courses);
   border: 1px solid #1af784;
