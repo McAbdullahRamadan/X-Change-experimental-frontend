@@ -8,7 +8,6 @@ import { HeroComponent } from './components/hero/hero.component';
 import { HowItWorksComponent } from './components/how-it-works/how-it-works.component';
 import { HomeComponent } from './components/home/home.component';
 import { StepsComponent } from './components/steps/steps.component';
-import { SkillsComponent } from './components/skills/skills.component';
 import { TestimonialsComponent } from './components/testimonials/testimonials.component';
 import { StatsComponent } from './sections/stats/stats.component';
 import { CommunityComponent } from './components/community/community.component';
@@ -30,6 +29,7 @@ import { VerifyCodeComponent } from './components/verify-code/verify-code.compon
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { LessonsComponent } from './components/courses/lessons/lessons.component';
+import { MasterSkillsComponent } from './components/courses/master-skills/master-skills.component';
 
 
 
@@ -43,7 +43,6 @@ import { LessonsComponent } from './components/courses/lessons/lessons.component
     HowItWorksComponent,
     HomeComponent,
     StepsComponent,
-    SkillsComponent,
     TestimonialsComponent,
     StatsComponent,
     CommunityComponent,
@@ -57,7 +56,8 @@ import { LessonsComponent } from './components/courses/lessons/lessons.component
     VerifyCodeComponent,
     ResetPasswordComponent,
     CoursesComponent,
-    LessonsComponent
+    LessonsComponent,
+    MasterSkillsComponent
 
 
   ],

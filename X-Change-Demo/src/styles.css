@@ -8,7 +8,7 @@
   --bg-card: #ffffff;
   --text-main: #111111;
   --text-muted: #383838;
-  --border-color: #e6e6e6;
+  --border-color: #000000;
 
   --primary-gradient: linear-gradient(90deg,#00cc66,#6a5cff);
   --home-bg: radial-gradient(circle at 5% 60%, rgba(0, 204, 102, 0.27), transparent 35%),
@@ -41,6 +41,8 @@
    --dropdown-text:#111;
    --dropdown-hover:#f3f5fa;
    --dropdown-shadow:0 10px 30px rgba(0,0,0,0.08);
+   --Search-courses:rgb(255, 255, 255);
+
 }
 
 /* =========================
@@ -62,7 +64,7 @@ body.dark-mode{
   --bg-card: rgb(0, 0, 0);
   --text-main: #ffffff;
   --text-muted: #ffffff;
-  --border-color: rgba(255,255,255,0.1);
+  --border-color: rgba(17, 206, 67, 0.318);
   --footer-bg:#0b0b12;
   --footer-border:rgba(255,255,255,0.05);
   --footer-text:#ffffff;
@@ -82,6 +84,7 @@ body.dark-mode{
   --dropdown-menu:#0f0f18;
   --dropdown-hover:rgba(0,255,136,0.08);
   --dropdown-shadow:0 0 25px rgba(0,255,136,0.4);
+  --Search-courses:rgb(0, 0, 0);
 }
 
 /* =========================

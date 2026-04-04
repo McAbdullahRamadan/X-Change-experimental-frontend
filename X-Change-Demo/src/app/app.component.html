@@ -1,8 +1,8 @@
-<!-- الـ Navbar مخفي في صفحات Auth -->
+
 <app-navbar *ngIf="!isAuthRoute()"></app-navbar>
 
-<!-- المحتوى الرئيسي -->
+
 <router-outlet></router-outlet>
 
-<!-- الفوتر مثلًا -->
-<app-footer *ngfIf="!isAuthRoute()"></app-footer>
+
+<app-footer *ngIf="!isAuthRoute()"></app-footer>

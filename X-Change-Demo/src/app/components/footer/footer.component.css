@@ -1,7 +1,7 @@
 .footer{
-  background: #12191991;
+  background: black;
   padding: 60px 72px 79px;
-  border-top: 7px solid rgba(255, 255, 255, 0.05);
+  border-top: 4px solid rgb(177 129 233 / 72%);
 }
 
 .footer-container{
@@ -34,7 +34,7 @@
 }
 
 .footer-brand p{
-  color: var(--text-main);
+  color:wheat;
   font-size:14px;
   margin:15px 0;
 }
@@ -58,12 +58,13 @@
 
 .footer-links h4{
   margin-bottom:15px;
-  color: var(--text-main);
+  color:wheat;
+  border-bottom: solid 1px;
 }
 
 .footer-links a{
   display:block;
-  color: var(--text-main);
+  color:wheat;
   margin-bottom:10px;
   cursor:pointer;
   transition:0.3s;

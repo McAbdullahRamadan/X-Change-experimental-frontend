@@ -137,16 +137,17 @@
 .search-icon {
   position: absolute;
   left: 16px;
+  cursor: pointer;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
 }
 
 .search-input {
-  width: 100%;
+  width: 30%;
   padding: 14px 20px 14px 48px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var( --Search-courses);
+  border: 1px solid #1af784;
   border-radius: 60px;
   font-size: 0.95rem;
   color: var(--text-main);

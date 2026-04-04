@@ -13,6 +13,7 @@ import { VerifyCodeComponent } from './components/verify-code/verify-code.compon
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { LessonsComponent } from './components/courses/lessons/lessons.component';
+import { MasterSkillsComponent } from './components/courses/master-skills/master-skills.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, // الصفحة الرئيسية
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'courses', component: CoursesComponent },
   { path: 'Lessons', component: LessonsComponent },
+  { path: 'master-skills', component: MasterSkillsComponent },
 
 
   // مسارات محمية (تتطلب تسجيل دخول)

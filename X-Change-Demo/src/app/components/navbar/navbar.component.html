@@ -16,7 +16,7 @@
     <li routerLink="/HowItWorks" routerLinkActive="active">
       <i class="bi bi-buildings"></i> How it Works
     </li>
-    <li  routerLink="/courses"><i class="bi bi-layers-fill"></i> courses</li>
+    <li  routerLink="/courses"><i class="bi bi-layers-fill"></i> Explore Skills</li>
     <li><i class="bi bi-people-fill"></i> Community</li>
     <li><i class="bi bi-cash-stack"></i> Pricing</li>
 
@@ -79,8 +79,8 @@
   <a routerLink="/HowItWorks" (click)="isMenuOpen=false">
     <i class="bi bi-buildings"></i> How it Works
   </a>
-  <a (click)="isMenuOpen=false">
-    <i class="bi bi-layers-half"></i> Explore Skills
+  <a (click)="isMenuOpen=false" routerLink="/courses">
+    <i class="bi bi-layers-half" ></i> Explore Skills
   </a>
   <a (click)="isMenuOpen=false">
     <i class="bi bi-people-fill"></i> Community
