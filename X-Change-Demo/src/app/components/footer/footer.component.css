@@ -1,8 +1,7 @@
 .footer{
-  background: var(--home-bg);
-  padding:80px 20px 30px;
-  border-top:2px solid rgba(255,255,255,0.05);
-  border: solid 2px var(--boder-footer);
+  background: #12191991;
+  padding: 60px 72px 79px;
+  border-top: 7px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-container{

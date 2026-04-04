@@ -1,0 +1,230 @@
+<div class="cv-shell" [class.cv-fullscreen]="isFullscreen">
+
+  <!-- ── PAGE HEADER ─────────────────────────────── -->
+  <div class="cv-header">
+    <button routerLink="/courses" class="btnBack"><i class="bi bi-box-arrow-left"></i> Back Courses</button>
+    <div class="cv-header__left">
+      <h1 class="cv-header__title">{{ courseTitle }}</h1>
+      <span class="cv-header__sub">{{ courseSubtitle }}</span>
+    </div>
+    <div class="cv-header__right">
+      <div class="cv-progress-pill">
+        <span class="cv-progress-pill__label">Progress</span>
+        <div class="cv-progress-pill__bar">
+          <div class="cv-progress-pill__fill"
+               [style.width.%]="overallProgress()"></div>
+        </div>
+        <span class="cv-progress-pill__pct">{{ overallProgress() }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN LAYOUT ──────────────────────────────── -->
+  <div class="cv-body">
+
+    <!-- ════ LEFT PANEL ════════════════════════════ -->
+    <div class="cv-main">
+
+      <!-- VIDEO WRAPPER -->
+      <div class="cv-video-wrapper">
+        <!-- Fake video screen -->
+        <div class="cv-video-screen">
+          <div class="cv-video-thumb">
+            <div class="cv-video-thumb__overlay">
+              <div class="cv-video-thumb__lesson-tag">
+                Lesson {{ activeLesson.id }} of {{ lessons.length }}
+              </div>
+              <div class="cv-video-thumb__title">{{ activeLesson.title }}</div>
+            </div>
+            <!-- Play overlay -->
+            <div class="cv-video-thumb__play-overlay"
+                 *ngIf="!isPlaying"
+                 (click)="togglePlay()">
+              <div class="cv-big-play">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIDEO CONTROLS BAR -->
+          <div class="cv-controls">
+            <!-- Play/Pause -->
+            <button class="cv-ctrl-btn" (click)="togglePlay()" title="Play / Pause">
+              <svg *ngIf="!isPlaying" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <svg *ngIf="isPlaying" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+
+            <!-- Time -->
+            <span class="cv-ctrl-time">{{ currentTime }} / {{ totalTime }}</span>
+
+            <!-- Progress bar -->
+            <div class="cv-seek-bar" (click)="seek($event)">
+              <div class="cv-seek-bar__bg">
+                <div class="cv-seek-bar__fill" [style.width.%]="progress"></div>
+                <div class="cv-seek-bar__thumb" [style.left.%]="progress"></div>
+              </div>
+            </div>
+
+            <!-- Volume -->
+            <button class="cv-ctrl-btn" (click)="toggleMute()" title="Mute">
+              <svg *ngIf="!isMuted" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+              </svg>
+              <svg *ngIf="isMuted" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              </svg>
+            </button>
+
+            <!-- Fullscreen -->
+            <button class="cv-ctrl-btn" (click)="toggleFullscreen()" title="Fullscreen">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS: Transcript / Notes -->
+      <div class="cv-tabs">
+        <button class="cv-tab-btn"
+                [class.cv-tab-btn--active]="activeTab === 'transcript'"
+                (click)="activeTab = 'transcript'">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
+          </svg>
+          Transcript
+        </button>
+        <button class="cv-tab-btn"
+                [class.cv-tab-btn--active]="activeTab === 'notes'"
+                (click)="activeTab = 'notes'">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+          My Notes
+        </button>
+      </div>
+
+      <!-- TRANSCRIPT PANEL -->
+      <div class="cv-panel" *ngIf="activeTab === 'transcript'">
+        <div class="cv-transcript">
+          <div class="cv-transcript__line"
+               *ngFor="let line of transcriptLines"
+               [class.cv-transcript__line--active]="line.time === currentTime">
+            <span class="cv-transcript__ts">{{ line.time }}</span>
+            <span class="cv-transcript__text">{{ line.text }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES PANEL -->
+      <div class="cv-panel" *ngIf="activeTab === 'notes'">
+        <textarea
+          class="cv-notes-area"
+          placeholder="Write your notes here..."
+          [(ngModel)]="notesText"
+          rows="6">
+        </textarea>
+        <div class="cv-notes-footer">
+          <span class="cv-notes-chars">{{ notesText.length }} chars</span>
+          <button class="cv-save-btn">Save Notes</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- ════ END LEFT PANEL ═══════════════════════ -->
+
+    <!-- ════ RIGHT PANEL ════════════════════════════ -->
+    <div class="cv-sidebar">
+
+      <!-- LESSONS LIST -->
+      <div class="cv-sidebar-card cv-sidebar-card--lessons">
+        <div class="cv-sidebar-card__header">
+          <h2 class="cv-sidebar-card__title">Lessons</h2>
+          <span class="cv-sidebar-card__count">
+            {{ completedCount() }}/{{ lessons.length }} done
+          </span>
+        </div>
+
+        <div class="cv-lessons-list">
+          <div class="cv-lesson-item"
+               *ngFor="let lesson of lessons"
+               [class.cv-lesson-item--active]="lesson.id === activeLesson.id"
+               [class.cv-lesson-item--done]="lesson.completed"
+               (click)="selectLesson(lesson)">
+
+            <!-- Icon -->
+            <div class="cv-lesson-item__icon">
+              <svg *ngIf="lesson.completed" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/>
+              </svg>
+              <svg *ngIf="!lesson.completed" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+              </svg>
+            </div>
+
+            <!-- Info -->
+            <div class="cv-lesson-item__info">
+              <span class="cv-lesson-item__title">{{ lesson.title }}</span>
+              <span class="cv-lesson-item__dur">{{ lesson.duration }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE CHAT -->
+      <div class="cv-sidebar-card cv-sidebar-card--chat">
+        <div class="cv-chat-header">
+          <div class="cv-chat-header__avatar">
+            <div class="cv-avatar-ring">
+              <div class="cv-avatar-initials">JD</div>
+              <div class="cv-avatar-online"></div>
+            </div>
+          </div>
+          <div class="cv-chat-header__info">
+            <span class="cv-chat-header__name">Live Chat</span>
+            <span class="cv-chat-header__status">Instructor online</span>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="cv-chat-body" #chatBody>
+          <div class="cv-chat-msg"
+               *ngFor="let msg of chatMessages"
+               [class.cv-chat-msg--user]="msg.sender === 'user'"
+               [class.cv-chat-msg--inst]="msg.sender === 'instructor'">
+            <div class="cv-chat-msg__bubble">{{ msg.text }}</div>
+            <span class="cv-chat-msg__time">{{ msg.time }}</span>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="cv-chat-input-row">
+          <input
+            class="cv-chat-input"
+            type="text"
+            placeholder="Ask a question..."
+            [(ngModel)]="chatInput"
+            (keydown)="onChatKey($event)"
+          />
+          <button class="cv-chat-send"
+                  (click)="sendMessage()"
+                  [disabled]="!chatInput.trim()">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- ════ END RIGHT PANEL ═════════════════════ -->
+
+  </div>
+</div>

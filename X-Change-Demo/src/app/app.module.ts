@@ -28,6 +28,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { CoursesComponent } from './components/courses/courses.component';
+import { LessonsComponent } from './components/courses/lessons/lessons.component';
 
 
 
@@ -53,7 +55,9 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     AuthDesignComponent,
     ForgotPasswordComponent,
     VerifyCodeComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    CoursesComponent,
+    LessonsComponent
 
 
   ],
