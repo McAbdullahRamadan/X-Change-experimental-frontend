@@ -1,86 +1,308 @@
-.footer{
-  background: black;
+.footer {
+  background: var(--footer-bg);
+  margin: 0px 119px;
   padding: 60px 72px 79px;
-  border-top: 4px solid rgb(177 129 233 / 72%);
+  border-right: 4px solid #384c44;
+  border-left: 4px solid #384c44;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top: 4px solid #384c44;
+  width: auto;
+  box-sizing: border-box;
 }
 
-.footer-container{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:50px;
-
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 50px;
 }
 
-.footer-brand{
-  max-width:300px;
+.footer-brand {
+  max-width: 300px;
 }
 
-.logo-box{
-  width:45px;
-  height:45px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  margin-bottom:10px;
+.logo-box {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
-.logo-box img{
+
+.logo-box img {
   height: 106%;
-    width: 114%;
+  width: 114%;
 }
 
-.footer-brand p{
-  color:wheat;
-  font-size:14px;
-  margin:15px 0;
+.footer-brand p {
+  color: var(--text-main);
+  font-size: 14px;
+  margin: 15px 0;
 }
 
-.socials span{
-  background:#1a1a25;
-  padding:10px;
-  border-radius:10px;
-  margin-right:10px;
-  cursor:pointer;
-}
-.socials span:hover{
-  background-color: #00ff88;
-}
-
-.footer-links{
-  display:flex;
-  gap:60px;
-  flex-wrap:wrap;
+.socials span {
+  background: #1a1a25;
+  padding: 10px;
+  border-radius: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: yellowgreen;
+  display: inline-block;
+  transition: 0.3s;
 }
 
-.footer-links h4{
-  margin-bottom:15px;
-  color:wheat;
+.socials span:hover {
+  background-color: #b700ff;
+}
+
+.footer-links {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.footer-links h4 {
+  margin-bottom: 15px;
+  color: var(--text-main);
   border-bottom: solid 1px;
 }
 
-.footer-links a{
-  display:block;
-  color:wheat;
-  margin-bottom:10px;
-  cursor:pointer;
-  transition:0.3s;
+.footer-links a {
+  display: block;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.footer-links a:hover{
-  color:#00ff88;
+.footer-links a:hover {
+  color: #007f44;
 }
 
-.footer-bottom{
-  margin-top:60px;
-  border-top:1px solid rgba(255,255,255,0.05);
-  padding-top:20px;
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  color:#666;
-  font-size:14px;
+.footer-bottom {
+  margin-top: 60px;
+  border-top: 1px solid var(--text-main);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* شاشات لاب توب (1024px - 1200px) */
+@media (max-width: 1200px) {
+  .footer {
+    margin: 0px 60px;
+    padding: 50px 50px 70px;
+  }
+
+  .footer-container {
+    gap: 40px;
+  }
+
+  .footer-links {
+    gap: 40px;
+  }
+}
+
+/* شاشات تابلت (768px - 1024px) */
+@media (max-width: 1024px) {
+  .footer {
+    margin: 0px 40px;
+    padding: 45px 40px 65px;
+  }
+
+  .footer-container {
+    gap: 35px;
+  }
+
+  .footer-brand {
+    max-width: 250px;
+  }
+
+  .footer-links {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 900px) {
+  .footer {
+    margin: 0px 30px;
+    padding: 40px 35px 60px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer-brand {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .socials {
+    text-align: center;
+  }
+}
+
+/* شاشات موبايل (480px - 768px) */
+@media (max-width: 768px) {
+  .footer {
+    margin: 0px 20px;
+    padding: 35px 25px 50px;
+    border-right: 2px solid #384c44;
+    border-left: 2px solid #384c44;
+    border-top: 2px solid #384c44;
+  }
+
+  .footer-container {
+    gap: 30px;
+  }
+
+  .footer-links {
+    gap: 25px;
+    justify-content: center;
+  }
+
+  .footer-links h4 {
+    font-size: 1rem;
+  }
+
+  .footer-links a {
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    margin-top: 40px;
+  }
+
+  .socials span {
+    padding: 8px;
+    margin-right: 8px;
+  }
+}
+
+/* شاشات موبايل صغيرة (320px - 480px) */
+@media (max-width: 480px) {
+  .footer {
+    margin: 0px 15px;
+    padding: 30px 20px 40px;
+    border-right: 1px solid #384c44;
+    border-left: 1px solid #384c44;
+    border-top: 1px solid #384c44;
+  }
+
+  .footer-brand p {
+    font-size: 12px;
+  }
+
+  .footer-links {
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-links h4 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .footer-links a {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .footer-bottom {
+    font-size: 11px;
+    margin-top: 30px;
+  }
+
+  .socials span {
+    padding: 6px 10px;
+    margin-right: 6px;
+    font-size: 12px;
+  }
+
+  .logo-box {
+    width: 35px;
+    height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* شاشات صغيرة جداً (تحت 320px) */
+@media (max-width: 320px) {
+  .footer {
+    margin: 0px 10px;
+    padding: 25px 15px 35px;
+  }
+
+  .footer-brand p {
+    font-size: 11px;
+  }
+
+  .footer-links h4 {
+    font-size: 0.85rem;
+  }
+
+  .footer-links a {
+    font-size: 0.75rem;
+  }
+
+  .footer-bottom {
+    font-size: 10px;
+  }
+}
+
+/* اتجاه أفقي على الموبايل */
+@media (max-width: 768px) and (orientation: landscape) {
+  .footer {
+    margin: 0px 30px;
+    padding: 35px 40px 50px;
+  }
+
+  .footer-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .footer-links {
+    flex: 2;
+  }
+}
+
+/* شاشات كبيرة جداً (1400px+) */
+@media (min-width: 1400px) {
+  .footer {
+    margin: 0px auto;
+    max-width: calc(1400px - 238px);
+  }
+
+  .footer-container {
+    max-width: 1200px;
+  }
 }

@@ -2,8 +2,8 @@
 
 :host {
   /* استخدام المتغيرات العالمية */
-  --lime: #c8f135;
-  --lime-dark: #a0c920;
+  --lime: #35f135;
+  --lime-dark: #28c920;
   --pink: #ff3cac;
   --cyan: #00f5d4;
   --purple: #bf5af2;
@@ -48,7 +48,7 @@
   gap: 8px;
   padding: 6px 14px;
   background: rgb(35 14 245 / 22%);
-  border: 1px solid rgba(200, 241, 53, 0.2);
+  border: 1px solid rgba(241, 53, 225, 0.2);
   border-radius: 40px;
   font-size: 0.7rem;
   font-weight: 600;
@@ -315,7 +315,7 @@
 
 .course-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(200, 241, 53, 0.3);
+  border-color: rgba(216, 53, 241, 0.3);
   box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
 }
 
@@ -360,7 +360,7 @@ body:not(.dark-mode) .card-thumb {
 .thumb-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(200, 241, 53, 0.1), transparent);
+  background: linear-gradient(135deg, rgba(53, 241, 69, 0.1), transparent);
 }
 
 .thumb-emoji {
@@ -616,7 +616,7 @@ body.dark-mode .progress-bar {
 
 .btn-enroll:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 241, 53, 0.3);
+  box-shadow: 0 6px 20px rgba(241, 53, 210, 0.326);
   gap: 10px;
 }
 

@@ -14,10 +14,12 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { CoursesComponent } from './components/courses/courses.component';
 import { LessonsComponent } from './components/courses/lessons/lessons.component';
 import { MasterSkillsComponent } from './components/courses/master-skills/master-skills.component';
+import { UsercommunityComponent } from './components/usercommunity/usercommunity.component';
+import { AboutusComponent } from './components/aboutus/aboutus.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, // الصفحة الرئيسية
-  { path: 'home', redirectTo: '', pathMatch: 'full' }, // إعادة توجيه home إلى الصفحة الرئيسية
+  { path: '', component: HomeComponent },
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'HowItWorks', component: HowItWorksComponent },
 
   // مسارات عامة
@@ -26,33 +28,19 @@ const routes: Routes = [
   { path: 'courses', component: CoursesComponent },
   { path: 'Lessons', component: LessonsComponent },
   { path: 'master-skills', component: MasterSkillsComponent },
+  { path: 'usercommunity', component: UsercommunityComponent ,canActivate: [authGuard]},
+  { path: 'about', component: AboutusComponent },
 
 
-  // مسارات محمية (تتطلب تسجيل دخول)
-  {
-    path: 'profile/:username',  // 👈 هنا أضفنا :username
-    component: ProfileComponent,
-    canActivate: [authGuard]
-  },
-  {
 
-      path: 'editprofile/:username',
-      component: EditprofileComponent,
-      canActivate: [authGuard]
 
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard]
-  },
+  {path: 'profile/:username',  component: ProfileComponent,canActivate: [authGuard]},
+  {path: 'editprofile/:username',component: EditprofileComponent,canActivate: [authGuard]},
+  {path: 'dashboard',component: DashboardComponent,canActivate: [authGuard]},
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-code', component: VerifyCodeComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
 
-
-
-  // مسار للصفحات غير الموجودة (اختياري)
   { path: '**', redirectTo: '' }
 
 ];

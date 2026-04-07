@@ -13,18 +13,16 @@
     <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
       <i class="bi bi-house-fill"></i> Home
     </li>
-    <li routerLink="/HowItWorks" routerLinkActive="active">
-      <i class="bi bi-buildings"></i> How it Works
-    </li>
     <li  routerLink="/courses"><i class="bi bi-layers-fill"></i> Explore Skills</li>
-    <li><i class="bi bi-people-fill"></i> Community</li>
-    <li><i class="bi bi-cash-stack"></i> Pricing</li>
-
+    <li routerLink="/usercommunity"><i class="bi bi-people-fill"></i> Community</li>
+    <li routerLink="/about" routerLinkActive="active">
+      <i class="bi bi-info-circle"></i> About Us
+    </li>
 
   </ul>
 
   <div class="actions">
-    <!-- روابط تسجيل الدخول للمستخدمين غير المسجلين -->
+
     <ng-container *ngIf="!isLoggedIn">
       <button class="login" routerLink="/login">
         <i class="bi bi-person"></i> <span>Log In</span>
@@ -34,7 +32,6 @@
       </button>
     </ng-container>
 
-    <!-- قائمة البروفايل للمستخدمين المسجلين -->
     <div *ngIf="isLoggedIn" class="profile-container">
       <div class="profile-trigger" (click)="toggleProfile()">
         <!-- ✅ الاسم على الشمال -->
@@ -73,20 +70,18 @@
 
 <!-- القائمة الجانبية للجوال -->
 <div class="mobile-menu" [class.open]="isMenuOpen">
-  <a routerLink="/" (click)="isMenuOpen=false">
+  <a routerLink="/" (click)="isMenuOpen=false" routerLinkActive="active">
     <i class="bi bi-house-fill"></i> Home
   </a>
-  <a routerLink="/HowItWorks" (click)="isMenuOpen=false">
-    <i class="bi bi-buildings"></i> How it Works
-  </a>
-  <a (click)="isMenuOpen=false" routerLink="/courses">
+
+  <a (click)="isMenuOpen=false" routerLinkActive="active" routerLink="/courses">
     <i class="bi bi-layers-half" ></i> Explore Skills
   </a>
-  <a (click)="isMenuOpen=false">
+  <a (click)="isMenuOpen=false"  routerLink="/usercommunity" routerLinkActive="active">
     <i class="bi bi-people-fill"></i> Community
   </a>
-  <a (click)="isMenuOpen=false">
-    <i class="bi bi-cash-stack"></i> Pricing
+  <a (click)="isMenuOpen=false" routerLink="/about" routerLinkActive="active">
+    <i class="bi bi-info-circle"></i> About Us
   </a>
 
   <ng-container *ngIf="!isLoggedIn">

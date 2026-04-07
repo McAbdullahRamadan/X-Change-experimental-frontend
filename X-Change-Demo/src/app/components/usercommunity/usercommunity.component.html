@@ -1,0 +1,373 @@
+<!-- Hero Section -->
+<section class="community-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+
+<!-- Main Layout -->
+<div class="community-layout">
+
+  <!-- ════════════════════════════════════════════
+       LEFT SIDEBAR
+       ════════════════════════════════════════════ -->
+  <aside class="sidebar-left">
+
+    <!-- Trending Topics -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon lime">📊</div>
+        Trending Topics
+      </div>
+
+      <div
+        class="topic"
+        *ngFor="let topic of topics"
+        (click)="selectTopic(topic)">
+        <div>
+          <div class="topic-name"><span>#</span>{{ topic.name }}</div>
+          <div class="topic-bar">
+            <div class="topic-bar-fill" [style.width]="topic.barWidth"></div>
+          </div>
+        </div>
+        <span class="topic-pill">{{ topic.count }}</span>
+      </div>
+    </div>
+
+    <!-- Top Contributors -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon lime">🏆</div>
+        Top Contributors
+      </div>
+
+      <div class="contrib" *ngFor="let c of contributors">
+        <div class="contrib-av" [style.background]="c.gradient">{{ c.initials }}</div>
+        <div class="contrib-info">
+          <div class="contrib-name">{{ c.name }}</div>
+          <div class="contrib-pts">{{ c.points }} pts</div>
+        </div>
+        <span class="rank" [ngClass]="c.rankClass">{{ c.rank }}</span>
+      </div>
+    </div>
+
+    <!-- Online Now -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon cyan">🟢</div>
+        Online Now
+      </div>
+
+      <div class="online-row">
+        <span class="online-dot"></span>
+        <span class="online-count">
+          <strong>{{ onlineCount }}</strong> members online
+        </span>
+      </div>
+
+      <div class="avatar-stack">
+        <div
+          class="av-sm"
+          *ngFor="let u of onlineUsers"
+          [style.background]="u.bg"
+          [style.color]="u.color">
+          {{ u.initials }}
+        </div>
+        <div class="av-sm av-more">+{{ onlineCount - onlineUsers.length }}</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ════════════════════════════════════════════
+       MAIN FEED
+       ════════════════════════════════════════════ -->
+  <main class="main-feed">
+
+    <!-- ── POST COMPOSER ──────────────────────── -->
+    <div class="composer-card">
+
+      <!-- Header -->
+      <div class="composer-header">
+        <div class="composer-av">You</div>
+        <div class="composer-meta">
+          <span class="composer-name">Your Name</span>
+          <select
+            class="audience-select"
+            [(ngModel)]="audienceOption"
+            name="audienceOption">
+            <option *ngFor="let opt of audienceOptions" [value]="opt">{{ opt }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Textarea -->
+      <textarea
+        #composerTextarea
+        class="composer-textarea"
+        placeholder="Share something with the community... You can also paste an image here 📋"
+        rows="4"
+        [(ngModel)]="postText"
+        name="postText"
+        (paste)="onComposerPaste($event)">
+      </textarea>
+
+      <!-- Attachments Preview -->
+      <div class="attachments-preview" *ngIf="attachments.length > 0">
+
+        <ng-container *ngFor="let att of attachments; let i = index">
+
+          <!-- Image thumbnail -->
+          <div class="attachment-thumb" *ngIf="att.type === 'image'">
+            <img [src]="att.preview" [alt]="att.name">
+            <button class="attachment-remove" (click)="removeAttachment(i)" title="Remove">✕</button>
+            <div class="attachment-label">{{ att.name }}</div>
+          </div>
+
+          <!-- File chip -->
+          <div class="attachment-file" *ngIf="att.type === 'file'">
+            <div class="file-ext">{{ att.ext }}</div>
+            <div class="file-meta">
+              <div class="file-name">{{ att.name }}</div>
+              <div class="file-size">{{ att.size }}</div>
+            </div>
+            <button class="attachment-remove" (click)="removeAttachment(i)" title="Remove">✕</button>
+          </div>
+
+        </ng-container>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="composer-toolbar">
+
+        <div class="composer-actions">
+
+          <!-- Upload Image -->
+          <label class="action-btn" title="Upload Image">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              class="file-input"
+              (change)="onImageUpload($event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Photo</span>
+          </label>
+
+          <!-- Upload File -->
+          <label class="action-btn" title="Attach File">
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.txt"
+              multiple
+              class="file-input"
+              (change)="onFileUpload($event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.41 17.41a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+            </svg>
+            <span>File</span>
+          </label>
+
+          <!-- Add Link -->
+          <button
+            type="button"
+            class="action-btn"
+            title="Add Link"
+            (click)="toggleLinkInput()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            <span>Link</span>
+          </button>
+
+          <!-- Add Tag -->
+          <button type="button" class="action-btn" title="Add Tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+            <span>Tag</span>
+          </button>
+
+        </div>
+
+        <!-- Submit -->
+        <div class="composer-submit-group">
+          <span class="char-counter" [style.color]="charOverLimit ? '#ff6b35' : ''">
+            {{ charCount }} / {{ MAX_CHARS }}
+          </span>
+          <button
+            type="button"
+            class="post-btn"
+            [disabled]="charOverLimit"
+            (click)="submitPost()">
+            Post
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Link Input Row -->
+      <div class="link-input-row" *ngIf="showLinkInput">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+        <input
+          type="url"
+          class="link-input"
+          placeholder="https://example.com"
+          [(ngModel)]="linkUrl"
+          name="linkUrl">
+        <button type="button" class="link-add-btn"    (click)="addLink()">Add</button>
+        <button type="button" class="link-cancel-btn" (click)="cancelLink()">✕</button>
+      </div>
+
+    </div>
+    <!-- END COMPOSER -->
+
+    <!-- ── FEED TABS ───────────────────────────── -->
+    <div class="feed-tabs">
+      <button
+        class="tab"
+        *ngFor="let tab of tabs"
+        [class.active]="activeTab === tab"
+        (click)="setTab(tab)">
+        {{ tab }}
+      </button>
+    </div>
+
+    <!-- ── POST CARDS ──────────────────────────── -->
+    <div
+      class="post-card"
+      *ngFor="let post of posts">
+
+      <div class="post-header">
+        <div class="post-author">
+          <div class="post-av" [style.background]="post.avatarGradient">
+            {{ post.authorInitials }}
+          </div>
+          <div class="post-author-info">
+            <div class="post-author-name">{{ post.authorName }}</div>
+            <div class="post-time">{{ post.timeAgo }}</div>
+          </div>
+        </div>
+
+        <span
+          *ngIf="post.badge"
+          class="post-badge"
+          [ngClass]="post.badge.type">
+          {{ post.badge.label }}
+        </span>
+      </div>
+
+      <h3 class="post-title">{{ post.title }}</h3>
+      <p  class="post-excerpt">{{ post.excerpt }}</p>
+
+      <div class="post-tags">
+        <span class="post-tag" *ngFor="let tag of post.tags">{{ tag }}</span>
+      </div>
+
+      <div class="post-stats">
+
+        <div class="post-stat" (click)="likePost(post)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          {{ post.likes }}
+        </div>
+
+        <div class="post-stat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          {{ post.comments }}
+        </div>
+
+        <div class="post-stat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          {{ post.views }}
+        </div>
+
+        <div class="post-stat share-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Share
+        </div>
+
+      </div>
+    </div>
+
+    <button class="load-more-btn" (click)="loadMorePosts()">
+      Load more discussions ↓
+    </button>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════
+       RIGHT SIDEBAR
+       ════════════════════════════════════════════ -->
+  <aside class="sidebar-right">
+
+    <!-- Upcoming Events -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon lime">📅</div>
+        Upcoming Events
+      </div>
+
+      <div class="event-item" *ngFor="let ev of events">
+        <div class="event-date">
+          <div class="event-day">{{ ev.day }}</div>
+          <div class="event-mon">{{ ev.month }}</div>
+        </div>
+        <div class="event-body">
+          <div class="event-title">{{ ev.title }}</div>
+          <div class="event-meta">{{ ev.meta }}</div>
+          <span class="event-register" (click)="registerEvent(ev)">Register →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Community Guidelines -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon pink">💬</div>
+        Community Guidelines
+      </div>
+
+      <div class="guide-item" *ngFor="let g of guidelines">
+        <div class="guide-check">✓</div>
+        {{ g }}
+      </div>
+    </div>
+
+    <!-- Progress Card -->
+    <div class="card progress-card">
+      <div class="progress-title">🎯 Your Progress</div>
+      <div class="progress-sub">
+        Complete your profile to unlock full community access
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
+      </div>
+      <div class="progress-pct">{{ progressPercent }}% complete</div>
+    </div>
+
+  </aside>
+
+</div>

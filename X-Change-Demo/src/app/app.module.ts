@@ -30,6 +30,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { CoursesComponent } from './components/courses/courses.component';
 import { LessonsComponent } from './components/courses/lessons/lessons.component';
 import { MasterSkillsComponent } from './components/courses/master-skills/master-skills.component';
+import { UsercommunityComponent } from './components/usercommunity/usercommunity.component';
+import { AboutusComponent } from './components/aboutus/aboutus.component';
 
 
 
@@ -57,7 +59,9 @@ import { MasterSkillsComponent } from './components/courses/master-skills/master
     ResetPasswordComponent,
     CoursesComponent,
     LessonsComponent,
-    MasterSkillsComponent
+    MasterSkillsComponent,
+    UsercommunityComponent,
+    AboutusComponent
 
 
   ],

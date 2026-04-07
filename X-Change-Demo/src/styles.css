@@ -23,7 +23,7 @@
   --light-glow-green:rgba(0,204,102,0.12);
   --light-glow-purple:rgba(106,92,255,0.12);
    /* Light Mode */
-   --footer-bg:#f5f7fb;
+   --footer-bg:#d8d8d8;
    --footer-border:#e5e7ef;
    --footer-text:#222;
    --footer-muted:#666;
@@ -42,6 +42,7 @@
    --dropdown-hover:#f3f5fa;
    --dropdown-shadow:0 10px 30px rgba(0,0,0,0.08);
    --Search-courses:rgb(255, 255, 255);
+   --community-cards:rgb(165 165 165 / 24%);
 
 }
 
@@ -65,7 +66,7 @@ body.dark-mode{
   --text-main: #ffffff;
   --text-muted: #ffffff;
   --border-color: rgba(17, 206, 67, 0.318);
-  --footer-bg:#0b0b12;
+  --footer-bg:#0b0a0aed;
   --footer-border:rgba(255,255,255,0.05);
   --footer-text:#ffffff;
   --footer-muted:#888;
@@ -85,6 +86,7 @@ body.dark-mode{
   --dropdown-hover:rgba(0,255,136,0.08);
   --dropdown-shadow:0 0 25px rgba(0,255,136,0.4);
   --Search-courses:rgb(0, 0, 0);
+  --community-cards:rgb(25 24 24 / 37%);
 }
 
 /* =========================
