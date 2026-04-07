@@ -70,17 +70,17 @@
 
 <!-- القائمة الجانبية للجوال -->
 <div class="mobile-menu" [class.open]="isMenuOpen">
-  <a routerLink="/" (click)="isMenuOpen=false" routerLinkActive="active">
+  <a routerLink="/" (click)="isMenuOpen=false" >
     <i class="bi bi-house-fill"></i> Home
   </a>
 
-  <a (click)="isMenuOpen=false" routerLinkActive="active" routerLink="/courses">
+  <a (click)="isMenuOpen=false"  routerLink="/courses">
     <i class="bi bi-layers-half" ></i> Explore Skills
   </a>
-  <a (click)="isMenuOpen=false"  routerLink="/usercommunity" routerLinkActive="active">
+  <a (click)="isMenuOpen=false"  routerLink="/usercommunity" >
     <i class="bi bi-people-fill"></i> Community
   </a>
-  <a (click)="isMenuOpen=false" routerLink="/about" routerLinkActive="active">
+  <a (click)="isMenuOpen=false" routerLink="/about" >
     <i class="bi bi-info-circle"></i> About Us
   </a>
 

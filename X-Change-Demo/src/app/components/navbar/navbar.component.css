@@ -18,7 +18,7 @@
   z-index: 1000;
   transition: all 0.3s ease;
   box-shadow: var(--dropdown-shadow);
-  overflow: hidden;
+  /* overflow: hidden; */
   box-sizing: border-box;
 }
 
@@ -270,7 +270,7 @@ body.dark-mode .theme-toggle-btn:hover {
   padding: 8px 0;
   box-shadow: var(--dropdown-shadow);
   animation: fadeIn 0.3s ease;
-  z-index: 1001;
+  z-index: 9999;
   overflow: visible;
   min-width: 200px;
 }
