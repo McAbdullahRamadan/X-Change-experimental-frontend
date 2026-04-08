@@ -12,12 +12,17 @@ import { UserService } from '../../services/user.service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
+
   isMenuOpen = false;
   showProfileMenu = false;
   isDark = false;
   isLoggedIn = false;
 
-  // ✅ خصائص جديدة للصورة والاسم
+  // متغيرات للتحكم في إخفاء الـ Navbar
+  lastScrollTop = 0;
+  navbarVisible = true;
+
+  // خصائص جديدة للصورة والاسم
   profileImageUrl: string = 'default user.png';
   firstName: string = '';
   lastName: string = '';
@@ -26,7 +31,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private photoService: PhotoService,
-    private userService: UserService, // ✅ أضف ده
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -35,8 +40,8 @@ export class NavbarComponent implements OnInit {
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
       if (status) {
-        this.loadUserProfileImage(); // ✅ حمل الصورة
-        this.loadUserData(); // ✅ حمل بيانات المستخدم
+        this.loadUserProfileImage();
+        this.loadUserData();
       } else {
         this.showProfileMenu = false;
         this.profileImageUrl = 'default user.png';
@@ -67,7 +72,29 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  // ✅ دالة جديدة لتحميل بيانات المستخدم (الاسم الحقيقي)
+  // الاستماع لحدث التمرير
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    // إذا كان التمرير للأسفل وأكثر من 50px
+    if (currentScroll > this.lastScrollTop && currentScroll > 50) {
+      this.navbarVisible = false; // إخفاء الـ navbar
+    }
+    // إذا كان التمرير للأعلى
+    else if (currentScroll < this.lastScrollTop) {
+      this.navbarVisible = true; // إظهار الـ navbar
+    }
+
+    // إذا كان في أعلى الصفحة
+    if (currentScroll <= 10) {
+      this.navbarVisible = true;
+    }
+
+    this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  }
+
+  // دالة جديدة لتحميل بيانات المستخدم (الاسم الحقيقي)
   loadUserData(): void {
     const userId = this.authService.getUserIdFromToken();
 
@@ -85,14 +112,13 @@ export class NavbarComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error loading user data:', err);
-          // استخدام username من التوكت كـ fallback
           this.userName = this.authService.getUsernameFromToken() || '';
         }
       });
     }
   }
 
-  // ✅ دالة لتحميل الصورة الشخصية
+  // دالة لتحميل الصورة الشخصية
   loadUserProfileImage(): void {
     const userId = this.authService.getUserIdFromToken();
 
@@ -114,7 +140,7 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  // ✅ دالة مساعدة لعرض الاسم الكامل
+  // دالة مساعدة لعرض الاسم الكامل
   get displayName(): string {
     if (this.firstName && this.lastName) {
       return `${this.firstName} ${this.lastName}`;

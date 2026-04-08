@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar" [class.navbar-hidden]="!navbarVisible">
   <div class="logo">
     <img src="logo.png" alt="Logo" routerLink="/">
 
@@ -13,16 +13,18 @@
     <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
       <i class="bi bi-house-fill"></i> Home
     </li>
-    <li  routerLink="/courses"><i class="bi bi-layers-fill"></i> Explore Skills</li>
-    <li routerLink="/usercommunity"><i class="bi bi-people-fill"></i> Community</li>
+    <li routerLinkActive="active" routerLink="/courses">
+      <i class="bi bi-layers-fill"></i> Explore Skills
+    </li>
+    <li routerLinkActive="active" routerLink="/usercommunity">
+      <i class="bi bi-people-fill"></i> Community
+    </li>
     <li routerLink="/about" routerLinkActive="active">
       <i class="bi bi-info-circle"></i> About Us
     </li>
-
   </ul>
 
   <div class="actions">
-
     <ng-container *ngIf="!isLoggedIn">
       <button class="login" routerLink="/login">
         <i class="bi bi-person"></i> <span>Log In</span>
@@ -34,11 +36,8 @@
 
     <div *ngIf="isLoggedIn" class="profile-container">
       <div class="profile-trigger" (click)="toggleProfile()">
-        <!-- ✅ الاسم على الشمال -->
         <span class="display-name">{{ displayName }}</span>
-        <!-- ✅ الصورة الشخصية -->
         <img [src]="profileImageUrl" class="profile-img" (error)="profileImageUrl='default user.png'">
-        <!-- ✅ السهم -->
         <span class="arrow" [class.rotate]="showProfileMenu">▼</span>
       </div>
 
@@ -70,17 +69,16 @@
 
 <!-- القائمة الجانبية للجوال -->
 <div class="mobile-menu" [class.open]="isMenuOpen">
-  <a routerLink="/" (click)="isMenuOpen=false" >
+  <a routerLink="/" (click)="isMenuOpen=false">
     <i class="bi bi-house-fill"></i> Home
   </a>
-
-  <a (click)="isMenuOpen=false"  routerLink="/courses">
-    <i class="bi bi-layers-half" ></i> Explore Skills
+  <a (click)="isMenuOpen=false" routerLink="/courses">
+    <i class="bi bi-layers-half"></i> Explore Skills
   </a>
-  <a (click)="isMenuOpen=false"  routerLink="/usercommunity" >
+  <a (click)="isMenuOpen=false" routerLink="/usercommunity">
     <i class="bi bi-people-fill"></i> Community
   </a>
-  <a (click)="isMenuOpen=false" routerLink="/about" >
+  <a (click)="isMenuOpen=false" routerLink="/about">
     <i class="bi bi-info-circle"></i> About Us
   </a>
 
