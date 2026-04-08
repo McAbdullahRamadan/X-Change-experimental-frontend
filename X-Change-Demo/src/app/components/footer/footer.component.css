@@ -215,8 +215,7 @@
   }
 
   .footer-links {
-    gap: 20px;
-    flex-direction: column;
+    gap: 53px;
     align-items: center;
   }
 

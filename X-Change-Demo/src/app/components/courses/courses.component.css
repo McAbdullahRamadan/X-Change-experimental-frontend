@@ -681,8 +681,8 @@ body.dark-mode .progress-bar {
 /* ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .courses-grid {
-    grid-template-columns: 1fr;
-    padding: 1rem 1.5rem 3rem;
+    grid-template-columns: 2fr;
+    padding: 0rem 3.5rem 1rem;
   }
 
   .course-card.featured {

@@ -10,7 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { StepsComponent } from './components/steps/steps.component';
 import { TestimonialsComponent } from './components/testimonials/testimonials.component';
 import { StatsComponent } from './sections/stats/stats.component';
-import { CommunityComponent } from './components/community/community.component';
+
 import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -47,7 +47,7 @@ import { AboutusComponent } from './components/aboutus/aboutus.component';
     StepsComponent,
     TestimonialsComponent,
     StatsComponent,
-    CommunityComponent,
+
     FooterComponent,
     LoginComponent,
     RegisterComponent,

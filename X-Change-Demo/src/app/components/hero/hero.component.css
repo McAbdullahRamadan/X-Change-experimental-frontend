@@ -237,8 +237,8 @@ i {
 /* موبايل كبير (480px - 576px) */
 @media (max-width: 576px) {
   .hero {
-    padding-top: 100px;
-    min-height: 70vh;
+    padding-top: 83px;
+    min-height: 1vh;
   }
 
   h1 {
@@ -285,8 +285,8 @@ i {
 /* موبايل صغير (320px - 480px) */
 @media (max-width: 480px) {
   .hero {
-    padding-top: 90px;
-    min-height: 65vh;
+    padding-top: 83px;
+    min-height: 1vh;
   }
 
   h1 {
@@ -322,7 +322,7 @@ i {
 @media (max-width: 320px) {
   .hero {
     padding-top: 80px;
-    min-height: 60vh;
+    min-height: 1vh;
   }
 
   h1 {

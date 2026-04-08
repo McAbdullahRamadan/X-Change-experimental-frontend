@@ -1,503 +1,488 @@
-/* ====== BASE STYLES (مشترك بين التسجيل والدخول) ====== */
-.auth-section,
-.auth-section-log {
-  min-height: 100vh;
-  background: linear-gradient(132deg, #abf7fd 0%, #511653 97%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+/* ================================================
+   RECLAIM LOGIN — Gen Z Neon Dark Theme
+   ================================================ */
+   @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
-.auth-card {
-  max-width: 1000px;
-  width: 100%;
-  background: rgba(20, 15, 40, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 23px;
-  padding: 40px 45px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(127, 92, 255, 0.1) inset;
-  color: white;
-  transition: all 0.3s ease;
-}
+   /* ---- TOKENS ---- */
+   :root {
+     --cyan:      #ff00ea;
+     --magenta:   #FF1F8E;
+     --lime:      #BAFF29;
+     --purple:    #8B00FF;
+     --violet:    #1aff00;
+     --orange:    #FF6B00;
+     --bg:        #050508;
+     --bg2:       #0D0D1A;
+     --card:      #0F0F1E;
+     --border:    rgba(0, 245, 255, 0.12);
+     --border-h:  rgba(0, 245, 255, 0.45);
+     --border-e:  rgba(255, 31, 142, 0.6);
+     --text:      #E8E8FF;
+     --muted:     #6A6A9A;
+     --muted2:    #9090C0;
+     --error:     #ff1f1f;
+   }
 
-.auth-card h2 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  margin-bottom: 5px;
-  background: linear-gradient(135deg, #fff 0%, #c0b7ff 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
+   /* ---- RESET ---- */
+   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.subtitle {
-  color: rgba(200, 200, 255, 0.6);
-  margin-bottom: 25px;
-  font-size: 1rem;
-}
+   /* ---- BODY ---- */
+   body {
+     font-family: 'Rubik', sans-serif;
+     background: var(--bg);
+     color: var(--text);
+     min-height: 100vh;
+     overflow-x: hidden;
+   }
 
-.back-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ccc;
-  padding: 10px 20px;
-  border-radius: 50px;
-  margin-bottom: 30px;
-  cursor: pointer;
-  transition: 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-}
+   /* ---- SECTION ---- */
+   .auth-section-log {
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     padding: 24px 20px;
+     position: relative;
+     overflow: hidden;
+   }
 
-.back-btn:hover {
-  background: rgba(127, 92, 255, 0.2);
-  border-color: #7f5cff;
-  color: white;
-  transform: translateX(-5px);
-}
+   /* Grid lines background */
+   .auth-section-log::before {
+     content: '';
+     position: fixed;
+     inset: 0;
+     background-image:
+       linear-gradient(rgba(0, 245, 255, 0.028) 1px, transparent 1px),
+       linear-gradient(90deg, rgba(0, 245, 255, 0.028) 1px, transparent 1px);
+     background-size: 55px 55px;
+     pointer-events: none;
+     z-index: 0;
+   }
 
-/* ====== Form Layout (مشترك) ====== */
-form {
-  margin-top: 20px;
-}
+   /* Noise texture */
+   .auth-section-log::after {
+     content: '';
+     position: fixed;
+     inset: 0;
+     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+     pointer-events: none;
+     z-index: 0;
+     opacity: 0.5;
+   }
 
-.row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
+   /* ---- AMBIENT ORBS ---- */
+   .orb {
+     position: fixed;
+     border-radius: 50%;
+     filter: blur(90px);
+     pointer-events: none;
+     z-index: 0;
+     animation: orbPulse 7s ease-in-out infinite;
+   }
+   .orb-1 {
+     width: 520px; height: 520px;
+     background: var(--cyan);
+     top: -180px; right: -120px;
+     opacity: 0.09;
+     animation-delay: 0s;
+   }
+   .orb-2 {
+     width: 380px; height: 380px;
+     background: var(--magenta);
+     bottom: -120px; left: -80px;
+     opacity: 0.08;
+     animation-delay: 2.5s;
+   }
+   .orb-3 {
+     width: 260px; height: 260px;
+     background: var(--purple);
+     top: 50%; left: 50%;
+     transform: translate(-50%, -50%);
+     opacity: 0.07;
+     animation-delay: 5s;
+   }
+   @keyframes orbPulse {
+     0%, 100% { transform: scale(1); opacity: inherit; }
+     50%       { transform: scale(1.15); }
+   }
+   .orb-3 { animation-name: orbPulse3; }
+   @keyframes orbPulse3 {
+     0%, 100% { transform: translate(-50%, -50%) scale(1); }
+     50%       { transform: translate(-50%, -50%) scale(1.15); }
+   }
 
-/* كل حقل في الفورم */
-.input-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
+   /* ---- CARD ---- */
+   .auth-card {
+     position: relative;
+     z-index: 2;
+     width: 100%;
+     max-width: 700px;
+     background: rgb(34 30 32 / 5%);
+     backdrop-filter: blur(22px);
+     -webkit-backdrop-filter: blur(22px);
+     border: 1px solid var(--border);
+     border-radius: 26px;
+     padding: 44px 42px 38px;
+     box-shadow:
+       0 0 0 1px rgba(0, 255, 136, 0.06) inset,
+       0 30px 80px rgba(0, 0, 0, 0.6),
+       0 0 60px rgba(255, 0, 200, 0.04);
+     animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+   }
+   @keyframes cardIn {
+     from { opacity: 0; transform: translateY(30px) scale(0.97); }
+     to   { opacity: 1; transform: translateY(0)    scale(1); }
+   }
 
-.input-group label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  color: #b9b3df;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
+   /* Top accent line */
+   .auth-card::before {
+     content: '';
+     position: absolute;
+     top: 0; left: 50%;
+     transform: translateX(-50%);
+     width: 60%;
+     height: 1px;
+     background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+     border-radius: 0 0 100px 100px;
+   }
 
-/* ========== التعديل هنا ========== */
-.input-group input,
-.input-group select {
-  width: 100%;
-  padding: 17px 12px;  /* غيرناها من 6px لـ 12px عشان input ميخرجش برة */
-  border-radius: 12px;
-  border: 1.5px solid rgba(255, 255, 255, 0.05);
-  background: rgb(4 4 5 / 70%);
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 800;
-  outline: none;
-  transition: all 0.25s ease;
-  box-sizing: border-box; /* مهم جداً عشان العرض يحسب مع الـ padding */
-}
-/* =============================== */
+   /* ---- BRAND CHIP ---- */
+   .brand-chip {
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     background: rgba(0, 245, 255, 0.07);
+     border: 1px solid rgba(0, 245, 255, 0.18);
+     border-radius: 100px;
+     padding: 5px 14px 5px 8px;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.72rem;
+     font-weight: 700;
+     color: var(--cyan);
+     letter-spacing: 0.06em;
+     text-transform: uppercase;
+     margin-bottom: 20px;
+     animation: fadeUp 0.5s 0.1s both;
+   }
+   .brand-chip-dot {
+     width: 22px; height: 22px;
+     background: linear-gradient(135deg, var(--magenta), var(--purple));
+     border-radius: 8px;
+     display: grid;
+     place-items: center;
+     font-size: 0.75rem;
+   }
 
-/* Style للـ Date input */
-.input-group input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  opacity: 0.5;
-  cursor: pointer;
-}
-.input-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-
-.input-group select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b9b3df' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 16px;
-}
-
-.input-group select option {
-  background: #1a1730;
-  color: white;
-}
-
-.input-group input:focus,
-.input-group select:focus {
-  border-color: #877bb3;
-  box-shadow: 0 0 0 3px rgba(127, 92, 255, 0.2);
-  background: rgb(15 13 25 / 90%);
-}
-
-/* ====== زر إظهار كلمة السر (خاص بالـ Login) ====== */
-.spanpass {
-  position: absolute;
-  right: 16px;  /* زودناها شوية عشان تبعد عن النص */
-  top: 59%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #aaa;
-  transition: 0.2s ease;
-  z-index: 2;
-}
-
-.spanpass:hover {
-  color: #7f5cff;
-  transform: translateY(-50%) scale(1.1);
-}
-
-/* ====== Primary Button ====== */
-.primary-btn {
-  background: linear-gradient(135deg, #7f5cff 0%, #5f3dc3 100%);
-  border: none;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 16px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  letter-spacing: 0.5px;
-  margin-top: 15px;
-}
-
-.primary-btn.full {
-  width: 100%;
-}
-
-.primary-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px -5px #5f3dc3b3;
-  background: linear-gradient(135deg, #9071ff 0%, #6f4ed6 100%);
-}
-
-/* ====== Switch بين الصفحات ====== */
-.switch {
-  text-align: center;
-  margin: 25px 0 10px;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9rem;
-}
-
-.switch a {
-  color: #b5a7ff;
-  text-decoration: none;
-  font-weight: 600;
-  margin-left: 5px;
-  transition: 0.2s;
-}
-
-.switch a:hover {
-  color: #7f5cff;
-  text-decoration: underline;
-}
-
-/* ====== Divider ====== */
-.divider-line {
-  display: flex;
-  align-items: center;
-  margin: 25px 0;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.85rem;
-}
-
-.divider-line::before,
-.divider-line::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.divider-line span {
-  margin: 0 15px;
-}
-
-/* ====== Social Buttons ====== */
-.social-login {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 40px;
-  border: 1.5px solid rgba(255, 255, 255, 0.05);
-  background: rgba(10, 8, 25, 0.6);
-  color: #ddd;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.social-btn i {
-  font-size: 1.3rem;
-}
-
-.social-btn:hover {
-  transform: translateY(-2px);
-  background: rgba(20, 15, 40, 0.8);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-}
-
-.google:hover {
-  border-color: #db4437;
-  color: white;
-}
-.google:hover i {
-  color: #db4437;
-}
-
-.linkedin:hover {
-  border-color: #0077b5;
-  color: white;
-}
-.linkedin:hover i {
-  color: #0077b5;
-}
-
-.github:hover {
-  border-color: #999;
-  color: white;
-}
-.github:hover i {
-  color: #fff;
-}
-
-/* ====== RESPONSIVE DESIGN ====== */
-
-/* أجهزة تابلت (اقل من 900px) */
-@media (max-width: 900px) {
-  .auth-card {
-    padding: 35px 30px;
-  }
-  .auth-card h2 {
+   /* ---- HEADING ---- */
+   .auth-card h2 {
     font-size: 2rem;
-  }
-  .row {
-    gap: 15px;
-  }
-}
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+   }
 
-/* أجهزة صغيرة وموبايل (اقل من 700px) */
-@media (max-width: 700px) {
-  .auth-section,
-  .auth-section-log {
-    padding: 15px;
-    align-items: flex-start;
-  }
+   /* ---- SUBTITLE ---- */
+   .subtitle {
+     color: var(--muted);
+     font-size: 0.92rem;
+     margin-bottom: 28px;
+     line-height: 1.5;
+     animation: fadeUp 0.5s 0.2s both;
+   }
 
-  .auth-card {
-    padding: 30px 20px;
-    border-radius: 30px;
-    margin: 10px 0;
-  }
+   /* ---- BACK BUTTON ---- */
+   .back-btn {
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     background: rgba(255, 255, 255, 0.04);
+     border: 1px solid var(--border);
+     color: var(--muted2);
+     padding: 9px 18px;
+     border-radius: 100px;
+     margin-bottom: 28px;
+     cursor: pointer;
+     transition: all 0.2s ease;
+     font-family: 'Rubik', sans-serif;
+     font-size: 0.84rem;
+     font-weight: 500;
+     text-decoration: none;
+     animation: fadeUp 0.5s 0.25s both;
+   }
+   .back-btn:hover {
+     background: rgba(0, 245, 255, 0.08);
+     border-color: rgba(0, 245, 255, 0.35);
+     color: var(--cyan);
+     transform: translateX(-4px);
+   }
+   .back-btn i { font-size: 0.95rem; }
 
-  .auth-card h2 {
-    font-size: 1.8rem;
-  }
+   /* ---- FORM ---- */
+   form { animation: fadeUp 0.5s 0.3s both; }
 
-  .row {
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
+   .input-group {
+     display: flex;
+     flex-direction: column;
+     margin-bottom: 18px;
+     position: relative;
+   }
 
-  .input-group input,
-  .input-group select {
-    padding: 15px 14px;
-  }
+   /* Label */
+   .input-group label {
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.68rem;
+     font-weight: 700;
+     letter-spacing: 0.12em;
+     color: var(--muted);
+     text-transform: uppercase;
+     margin-bottom: 8px;
+   }
 
-  .social-btn {
-    padding: 16px;
-    font-size: 1rem;
-  }
+   /* Input base */
+   .input-group input,
+   .input-group select {
+     width: 100%;
+     padding: 15px 16px;
+     border-radius: 14px;
+     border: 1.5px solid rgba(255, 255, 255, 0.06);
+     background: rgba(5, 5, 12, 0.7);
+     color: var(--text);
+     font-family: 'Rubik', sans-serif;
+     font-size: 0.95rem;
+     font-weight: 500;
+     outline: none;
+     transition: all 0.22s ease;
+     box-sizing: border-box;
+   }
 
-  .back-btn {
-    margin-bottom: 20px;
-    padding: 12px 18px;
-  }
+   .input-group input::placeholder { color: var(--muted); font-weight: 400; }
 
-  .spanpass {
-    right: 14px;
-    font-size: 1.3rem;
-  }
-}
+   .input-group input:focus,
+   .input-group select:focus {
+     border-color: var(--border-h);
+     background: rgba(0, 15, 20, 0.85);
+     box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.1), 0 0 20px rgba(0, 245, 255, 0.06);
+   }
 
-/* أجهزة صغيرة جداً (اقل من 400px) */
-@media (max-width: 400px) {
-  .auth-card {
-    padding: 25px 15px;
-  }
-  .auth-card h2 {
-    font-size: 1.6rem;
-  }
-  .subtitle {
-    font-size: 0.9rem;
-  }
-  .primary-btn {
-    padding: 15px;
-  }
-}
-/* ====== Password Wrapper للعين في الـ Register ====== */
-.password-wrapper {
-  position: relative;
-  width: 100%;
-}
+   /* Hover state */
+   .input-group input:hover:not(:focus),
+   .input-group select:hover:not(:focus) {
+     border-color: rgba(0, 245, 255, 0.2);
+   }
 
-.password-wrapper input {
-  width: 100%;
-  padding: 17px 40px 17px 12px !important;  /* نعمل مساحة للعين على الشمال */
-}
+   /* Error state */
+   .input-group input.is-invalid {
+     border-color: var(--border-e) !important;
+     box-shadow: 0 0 0 3px rgba(255, 31, 142, 0.1) !important;
+   }
+   .input-group input.is-invalid:focus {
+     box-shadow: 0 0 0 3px rgba(255, 31, 142, 0.15), 0 0 20px rgba(255, 31, 142, 0.08) !important;
+   }
 
-.password-wrapper .spanpass {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #aaa;
-  transition: 0.2s ease;
-  z-index: 2;
-}
+   /* ---- PASSWORD WRAPPER ---- */
+   .password-wrapper {
+     position: relative;
+     width: 100%;
+   }
+   .password-wrapper input {
+     padding-left: 44px !important;
+   }
+   .spanpass {
+     position: absolute;
+     left: 14px;
+     top: 50%;
+     transform: translateY(-50%);
+     cursor: pointer;
+     font-size: 1.05rem;
+     color: var(--muted);
+     transition: all 0.2s ease;
+     z-index: 2;
+     line-height: 1;
+   }
+   .spanpass:hover {
+     color: var(--cyan);
+     transform: translateY(-50%) scale(1.15);
+   }
 
-.password-wrapper .spanpass:hover {
-  color: #7f5cff;
-  transform: translateY(-50%) scale(1.1);
-}
+   /* ---- ERROR MESSAGE ---- */
+   .error-message {
+     color: red;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.7rem;
+     font-weight: 600;
+     margin-top: 6px;
+     margin-right: 4px;
+     display: flex;
+     align-items: center;
+     gap: 5px;
+     animation: errIn 0.25s ease;
+   }
+   .error-message::before {
+     content: '!';
+     display: inline-flex;
+     width: 14px; height: 14px;
+     background: var(--error);
+     color: #fff;
+     border-radius: 50%;
+     font-size: 0.6rem;
+     font-weight: 900;
+     align-items: center;
+     justify-content: center;
+     flex-shrink: 0;
+   }
+   @keyframes errIn {
+     from { opacity: 0; transform: translateY(-5px); }
+     to   { opacity: 1; transform: translateY(0); }
+   }
 
-/* تعديل على الموبايل */
-@media (max-width: 700px) {
-  .password-wrapper .spanpass {
-    right: 14px;
-    font-size: 1.3rem;
-  }
-}
-/* Error Message */
-/* ====== Error Messages ====== */
-.error-message {
-  color: #ff4d4d;
-  font-size: 0.75rem;
-  margin-top: 5px;
-  margin-left: 5px;
-  font-weight: 500;
-  animation: fadeIn 0.3s ease;
-}
+   /* ---- FORGOT PASSWORD ---- */
+   .forgot-password-link {
+     text-align: left;
+     margin-top: 8px;
+   }
+   .forgot-password-link a {
+     color: var(--muted2);
+     text-decoration: none;
+     font-size: 0.82rem;
+     font-weight: 500;
+     transition: color 0.2s;
+   }
+   .forgot-password-link a:hover { color: var(--cyan); text-decoration: underline; }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+   /* ---- PRIMARY BUTTON ---- */
+   .primary-btn {
 
-/* تلوين الـ input باللون الأحمر لو فيه خطأ */
-.input-group input.ng-invalid.ng-touched,
-.input-group select.ng-invalid.ng-touched {
-  border-color: #ff4d4d !important;
-  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.1);
-}
+     border: none;
+     color: #fff;
+     font-family: 'Rubik', sans-serif;
+     font-weight: 700;
+     font-size: 1rem;
+     padding: 15px 28px;
+     border-radius: 100px;
+     cursor: pointer;
+     transition: all 0.22s ease;
+     letter-spacing: 0.02em;
+     position: relative;
+     overflow: hidden;
+     margin-top: 8px;
+   }
+   .primary-btn.full { width: 100%; }
 
-/* الـ password-wrapper مع الخطأ */
-.password-wrapper input.ng-invalid.ng-touched {
-  border-color: #ff4d4d !important;
-}
+   /* Shimmer sweep */
+   .primary-btn::after {
+     content: '';
+     position: absolute;
+     inset: 0;
 
-/* ====== Password Wrapper للعين ====== */
-.password-wrapper {
-  position: relative;
-  width: 100%;
-}
+     transform: translateX(-100%);
+     transition: transform 0.55s;
+   }
+   .primary-btn:hover::after { transform: translateX(100%); }
 
-.password-wrapper input {
-  width: 100%;
-  padding: 17px 40px 17px 12px !important;
-}
+   .primary-btn:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 0 36px rgba(251, 0, 255, 0.422), 0 8px 24px rgba(0, 0, 0, 0.3);
+   }
+   .primary-btn:active { transform: translateY(0) scale(0.98); }
 
-.password-wrapper .spanpass {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #aaa;
-  transition: 0.2s ease;
-  z-index: 2;
-}
+   /* ---- SWITCH LINK ---- */
+   .switch {
+     text-align: center;
+     margin: 22px 0 6px;
+     color: var(--muted);
+     font-size: 0.88rem;
+   }
+   .switch a {
+     color: var(--cyan);
+     text-decoration: none;
+     font-weight: 600;
+     margin-right: 4px;
+     transition: 0.2s;
+   }
+   .switch a:hover { color: #fff; text-decoration: underline; }
 
-.password-wrapper .spanpass:hover {
-  color: #7f5cff;
-  transform: translateY(-50%) scale(1.1);
-}
+   /* ---- DIVIDER ---- */
+   .divider-line {
+     display: flex;
+     align-items: center;
+     margin: 22px 0;
+     color: var(--muted);
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.7rem;
+     letter-spacing: 0.1em;
+   }
+   .divider-line::before,
+   .divider-line::after {
+     content: '';
+     flex: 1;
+     height: 1px;
+     background: linear-gradient(90deg, transparent, rgba(0,245,255,0.12), transparent);
+   }
+   .divider-line span { margin: 0 14px; }
 
-/* Responsive للعين */
-@media (max-width: 700px) {
-  .password-wrapper .spanpass {
-    right: 14px;
-    font-size: 1.3rem;
-  }
-}
+   /* ---- SOCIAL BUTTONS ---- */
+   .social-login { display: flex; flex-direction: column; gap: 10px; }
 
-/* تعطيل الزر لو الفورم مش صحيح */
-/* .primary-btn.full:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-} */
-.is-invalid {
-  border-color: #dc3545 !important;
-  border-width: 2px !important;
-}
+   .social-btn {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 11px;
+     padding: 13px 20px;
+     border-radius: 100px;
+     border: 1px solid rgba(255, 255, 255, 0.06);
+     background: rgba(8, 8, 20, 0.6);
+     color: var(--muted2);
+     cursor: pointer;
+     transition: all 0.22s ease;
+     font-family: 'Rubik', sans-serif;
+     font-weight: 500;
+     font-size: 0.9rem;
+     position: relative;
+     overflow: hidden;
+   }
+   .social-btn i { font-size: 1.1rem; }
 
-.error-message {
-  color: #dc3545;
-  font-size: 13px;
-  margin-top: 5px;
-  font-weight: 500;
-  text-align: right;
-}
+   .social-btn::before {
+     content: '';
+     position: absolute;
+     inset: 0;
+     opacity: 0;
+     transition: opacity 0.2s;
+     border-radius: inherit;
+   }
+   .social-btn:hover::before { opacity: 1; }
+   .social-btn:hover { transform: translateY(-2px); color: #fff; border-color: transparent; }
 
-input.is-invalid:focus {
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
-}
-/* ====== Forgot Password Link ====== */
-.forgot-password-link {
-  text-align: center;
-  margin-top: 8px;
-}
+   .google::before   { background: linear-gradient(135deg, rgba(219,68,55,0.18), rgba(219,68,55,0.05)); }
+   .google:hover     { border-color: rgba(219,68,55,0.4) !important; box-shadow: 0 0 20px rgba(219,68,55,0.15); }
+   .google:hover i   { color: #ea4335; }
 
-.forgot-password-link a {
-  color: #b5a7ff;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: 0.2s ease;
-}
+   .linkedin::before { background: linear-gradient(135deg, rgba(0,119,181,0.2), rgba(0,119,181,0.05)); }
+   .linkedin:hover   { border-color: rgba(0,119,181,0.4) !important; box-shadow: 0 0 20px rgba(0,119,181,0.15); }
+   .linkedin:hover i { color: #0a66c2; }
 
-.forgot-password-link a:hover {
-  color: #7f5cff;
-  text-decoration: underline;
-}
+   .github::before   { background: linear-gradient(135deg, rgba(180,180,180,0.12), rgba(180,180,180,0.03)); }
+   .github:hover     { border-color: rgba(200,200,200,0.3) !important; box-shadow: 0 0 20px rgba(200,200,200,0.08); }
+   .github:hover i   { color: #fff; }
+
+   /* ---- ANIMATED ENTRY ---- */
+   @keyframes fadeUp {
+     from { opacity: 0; transform: translateY(16px); }
+     to   { opacity: 1; transform: translateY(0); }
+   }
+
+   /* ---- RESPONSIVE ---- */
+   @media (max-width: 540px) {
+     .auth-card { padding: 32px 24px 30px; border-radius: 22px; }
+     .auth-card h2 { font-size: 1.7rem; }
+     .input-group input, .input-group select { padding: 14px 15px; }
+     .primary-btn { padding: 14px; }
+     .social-btn { padding: 13px 16px; font-size: 0.87rem; }
+   }
+
+   @media (max-width: 380px) {
+     .auth-card { padding: 26px 18px 24px; }
+     .auth-card h2 { font-size: 1.5rem; }
+   }
