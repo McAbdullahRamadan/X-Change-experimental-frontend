@@ -159,7 +159,7 @@ export class UsercommunityComponent implements OnInit {
      FEED TABS
      ══════════════════════════════════════════════════════════ */
 
-  tabs = ['Latest', 'Popular', 'Following', 'Unanswered'];
+  tabs = ['Latest', 'Popular', 'Following'];
   activeTab = 'Latest';
 
   setTab(tab: string): void {
@@ -174,8 +174,8 @@ export class UsercommunityComponent implements OnInit {
   posts: Post[] = [
     {
       id: 1,
-      authorInitials : 'SA',
-      authorName     : 'Sarah Ahmed',
+      authorInitials : 'AR',
+      authorName     : 'Abdullah',
       avatarGradient : 'linear-gradient(135deg,#3d5afe,#00f5d4)',
       timeAgo        : '2 hours ago',
       badge          : { label: '🔥 Trending', type: 'trending' },
@@ -188,8 +188,8 @@ export class UsercommunityComponent implements OnInit {
     },
     {
       id: 2,
-      authorInitials : 'KN',
-      authorName     : 'Khalid Nasser',
+      authorInitials : 'R',
+      authorName     : 'Roqaya',
       avatarGradient : 'linear-gradient(135deg,#ff6b35,#bf5af2)',
       timeAgo        : '5 hours ago',
       badge          : { label: '✦ New', type: 'new-badge' },
@@ -202,8 +202,8 @@ export class UsercommunityComponent implements OnInit {
     },
     {
       id: 3,
-      authorInitials : 'NQ',
-      authorName     : 'Nora Quinn',
+      authorInitials : 'L',
+      authorName     : 'Loaa',
       avatarGradient : 'linear-gradient(135deg,#22c55e,#00f5d4)',
       timeAgo        : '1 day ago',
       badge          : { label: '📌 Pinned', type: 'pinned-badge' },
@@ -247,9 +247,9 @@ export class UsercommunityComponent implements OnInit {
      ══════════════════════════════════════════════════════════ */
 
   contributors = [
-    { initials: 'SA', name: 'Sarah Ahmed',  points: '1,200', gradient: 'linear-gradient(135deg,#ff3cac,#ff6b35)', rank: '🥇 #1', rankClass: 'gold'   },
-    { initials: 'KN', name: 'Khalid Nasser',points: '892',   gradient: 'linear-gradient(135deg,#00f5d4,#3d5afe)', rank: '🥈 #2', rankClass: 'silver' },
-    { initials: 'NQ', name: 'Nora Quinn',   points: '654',   gradient: 'linear-gradient(135deg,#bf5af2,#ff3cac)', rank: '🥉 #3', rankClass: 'bronze' },
+    { initials: 'SA', name: 'Loaa  Eid',  points: '1,200', gradient: 'linear-gradient(135deg,#ff3cac,#ff6b35)', rank: '🥇 #1', rankClass: 'gold'   },
+    { initials: 'KN', name: 'Abdullah Ramadan ',points: '892',   gradient: 'linear-gradient(135deg,#00f5d4,#3d5afe)', rank: '🥈 #2', rankClass: 'silver' },
+    { initials: 'NQ', name: 'Roqaya Ammar',   points: '654',   gradient: 'linear-gradient(135deg,#bf5af2,#ff3cac)', rank: '🥉 #3', rankClass: 'bronze' },
   ];
 
   /* ══════════════════════════════════════════════════════════
