@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'courses', component: CoursesComponent },
   { path: 'Lessons', component: LessonsComponent },
   { path: 'master-skills', component: MasterSkillsComponent },
-  { path: 'usercommunity', component: UsercommunityComponent ,canActivate: [authGuard]},
+  { path: 'usercommunity', component: UsercommunityComponent },
   { path: 'about', component: AboutusComponent },
 
 
