@@ -174,7 +174,7 @@ export class UsercommunityComponent implements OnInit {
   posts: Post[] = [
     {
       id: 1,
-      authorInitials : 'AR',
+      authorInitials : 'A',
       authorName     : 'Abdullah',
       avatarGradient : 'linear-gradient(135deg,#3d5afe,#00f5d4)',
       timeAgo        : '2 hours ago',
@@ -247,9 +247,9 @@ export class UsercommunityComponent implements OnInit {
      ══════════════════════════════════════════════════════════ */
 
   contributors = [
-    { initials: 'SA', name: 'Loaa  Eid',  points: '1,200', gradient: 'linear-gradient(135deg,#ff3cac,#ff6b35)', rank: '🥇 #1', rankClass: 'gold'   },
-    { initials: 'KN', name: 'Abdullah Ramadan ',points: '892',   gradient: 'linear-gradient(135deg,#00f5d4,#3d5afe)', rank: '🥈 #2', rankClass: 'silver' },
-    { initials: 'NQ', name: 'Roqaya Ammar',   points: '654',   gradient: 'linear-gradient(135deg,#bf5af2,#ff3cac)', rank: '🥉 #3', rankClass: 'bronze' },
+    { initials: 'LE', name: 'Loaa  Eid',  points: '1,200', gradient: 'linear-gradient(135deg,#ff3cac,#ff6b35)', rank: '🥇 #1', rankClass: 'gold'   },
+    { initials: 'AR', name: 'Abdullah Ramadan ',points: '892',   gradient: 'linear-gradient(135deg,#00f5d4,#3d5afe)', rank: '🥈 #2', rankClass: 'silver' },
+    { initials: 'RA', name: 'Roqaya Ammar',   points: '654',   gradient: 'linear-gradient(135deg,#bf5af2,#ff3cac)', rank: '🥉 #3', rankClass: 'bronze' },
   ];
 
   /* ══════════════════════════════════════════════════════════
