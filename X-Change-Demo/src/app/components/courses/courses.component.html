@@ -1,428 +1,179 @@
-<!-- Hero Section -->
-<section class="courses-hero">
-  <div class="hero-badge">
-    <span class="badge-dot"></span>
-    EXPLORE · LEARN · GROW
-  </div>
-  <h1 class="hero-title">
-    Master skills that<br>
-    <span class="gradient-text">shape your future</span>
-  </h1>
-  <p class="hero-desc">
-    Join 15,000+ learners in the ultimate skill exchange community.<br>
-    Learn from experts, share your knowledge, and level up your career.
-  </p>
-
-  <div class="hero-stats-container">
-    <div class="hero-stat">
-      <div class="stat-value">1.5k+</div>
-      <div class="stat-label">Expert Instructors</div>
+<!-- courses.component.html -->
+<div class="courses-container">
+  <!-- Hero Section -->
+  <section class="courses-hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      EXPLORE · LEARN · GROW
     </div>
-    <div class="hero-stat">
-      <div class="stat-value">5k+</div>
-      <div class="stat-label">Active Learners</div>
-    </div>
-    <div class="hero-stat">
-      <div class="stat-value">98%</div>
-      <div class="stat-label">Success Rate</div>
-    </div>
-  </div>
-</section>
+    <h1 class="hero-title">
+      Master skills that<br>
+      <span class="gradient-text">shape your future</span>
+    </h1>
+    <p class="hero-desc">
+      Join 15,000+ learners in the ultimate skill exchange community.<br>
+      Learn from experts, share your knowledge, and level up your career.
+    </p>
 
-<!-- Search & Filters -->
-<div class="search-filters">
-  <div class="search-bar">
-    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="11" cy="11" r="8"/>
-      <path d="m21 21-4.35-4.35"/>
-    </svg>
-    <input type="text" placeholder="Search for courses, skills, or instructors..." class="search-input">
-  </div>
-
-  <div class="filter-buttons">
-    <button class="filter-btn active">All</button>
-    <button class="filter-btn">Trending</button>
-    <button class="filter-btn">Skill Swap</button>
-    <button class="filter-btn">Free</button>
-    <button class="filter-btn">Certified</button>
-  </div>
-</div>
-
-<!-- Categories Carousel -->
-<div class="categories-section">
-  <div class="category-item active">
-    <span class="category-icon">🔥</span>
-    <span>All</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">💻</span>
-    <span>Development</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">🎨</span>
-    <span>Design</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">📊</span>
-    <span>Marketing</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">📸</span>
-    <span>Photography</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">🎵</span>
-    <span>Music</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">💰</span>
-    <span>Finance</span>
-  </div>
-  <div class="category-item">
-    <span class="category-icon">💪</span>
-    <span>Health</span>
-  </div>
-</div>
-
-<!-- Results Header -->
-<div class="results-header">
-  <div class="results-count">
-    <span class="count-number"></span> courses available
-  </div>
-  <div class="sort-dropdown">
-    <label>Sort by:</label>
-    <select>
-      <option>Most Popular</option>
-      <option>Newest First</option>
-      <option>Highest Rated</option>
-      <option>Most Hours</option>
-    </select>
-  </div>
-</div>
-
-<!-- Courses Grid -->
-<div class="courses-grid">
-
-  <!-- Course Card 1 - Featured -->
-  <div class="course-card featured">
-
-    <div class="card-thumb">
-      <div class="thumb-overlay"></div>
-      <span class="thumb-emoji">🎨</span>
-      <div class="card-tags">
-        <span class="tag tag-swap">⇄ Swap Available</span>
-        <span class="tag tag-level intermediate">Intermediate</span>
+    <div class="hero-stats-container">
+      <div class="hero-stat">
+        <div class="stat-value">1.5k+</div>
+        <div class="stat-label">Expert Instructors</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-value">5k+</div>
+        <div class="stat-label">Active Learners</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-value">98%</div>
+        <div class="stat-label">Success Rate</div>
       </div>
     </div>
-    <div class="card-content">
-      <div class="card-category">UI / UX Design</div>
-      <h3 class="card-title">Master Figma from Zero — Modern UI Design & Professional Prototyping</h3>
-      <div class="card-instructor">
-        <div class="instructor-avatar" style="background: linear-gradient(135deg,#ff3cac,#bf5af2)">SA</div>
-        <div class="instructor-info">
-          <span class="instructor-name">Sarah Ahmed</span>
-          <span class="instructor-title">UI/UX Designer - Shopify</span>
-        </div>
-        <span class="verified-badge">✓ Verified</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item">⏱ 24 hours</div>
-        <div class="meta-item">📋 48 lessons</div>
-        <div class="meta-item">🎓 Certificate</div>
-      </div>
-      <div class="card-rating">
-        <div class="stars">★★★★★</div>
-        <span class="rating-value">4.9</span>
-        <span class="rating-count">(286 reviews)</span>
-      </div>
-      <div class="card-progress">
-        <div class="progress-label">
-          <span>Seats filled</span>
-          <span class="progress-value">87%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 87%"></div>
+  </section>
+
+  <!-- Search & Filters -->
+  <div class="search-filters">
+    <div class="search-bar">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" placeholder="Search for courses, skills, or instructors..." class="search-input" [(ngModel)]="searchTerm" (input)="filterCourses()">
+    </div>
+
+    <div class="filter-buttons">
+      <button class="filter-btn" [class.active]="selectedFilter === 'all'" (click)="setFilter('all')">All</button>
+      <button class="filter-btn" [class.active]="selectedFilter === 'trending'" (click)="setFilter('trending')">Trending</button>
+      <button class="filter-btn" [class.active]="selectedFilter === 'swap'" (click)="setFilter('swap')">Skill Swap</button>
+      <button class="filter-btn" [class.active]="selectedFilter === 'free'" (click)="setFilter('free')">Free</button>
+      <button class="filter-btn" [class.active]="selectedFilter === 'certified'" (click)="setFilter('certified')">Certified</button>
+    </div>
+  </div>
+
+  <!-- Categories Carousel -->
+  <div class="categories-section">
+    <div class="category-item" [class.active]="selectedCategory === 'all'" (click)="selectCategory('all')">
+      <span class="category-icon">🔥</span>
+      <span>All</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'development'" (click)="selectCategory('development')">
+      <span class="category-icon">💻</span>
+      <span>Development</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'design'" (click)="selectCategory('design')">
+      <span class="category-icon">🎨</span>
+      <span>Design</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'marketing'" (click)="selectCategory('marketing')">
+      <span class="category-icon">📊</span>
+      <span>Marketing</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'photography'" (click)="selectCategory('photography')">
+      <span class="category-icon">📸</span>
+      <span>Photography</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'music'" (click)="selectCategory('music')">
+      <span class="category-icon">🎵</span>
+      <span>Music</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'finance'" (click)="selectCategory('finance')">
+      <span class="category-icon">💰</span>
+      <span>Finance</span>
+    </div>
+    <div class="category-item" [class.active]="selectedCategory === 'health'" (click)="selectCategory('health')">
+      <span class="category-icon">💪</span>
+      <span>Health</span>
+    </div>
+  </div>
+
+  <!-- Results Header -->
+  <div class="results-header">
+    <div class="results-count">
+      <span class="count-number">{{ filteredCourses.length }}</span> courses available
+    </div>
+    <div class="sort-dropdown">
+      <label>Sort by:</label>
+      <select [(ngModel)]="sortBy" (change)="sortCourses()">
+        <option value="popular">Most Popular</option>
+        <option value="newest">Newest First</option>
+        <option value="rating">Highest Rated</option>
+        <option value="hours">Most Hours</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Courses Grid -->
+  <div class="courses-grid">
+    <!-- Course Card -->
+    <div class="course-card" [class.featured]="course.featured" *ngFor="let course of getDisplayedCourses(); let idx = index">
+      <div class="card-thumb">
+        <div class="thumb-overlay"></div>
+        <span class="thumb-emoji">{{ course.emoji }}</span>
+        <div class="card-tags">
+          <span class="tag tag-swap" *ngIf="course.swapAvailable">⇄ Swap Available</span>
+          <span class="tag tag-hot" *ngIf="course.trending">🔥 Trending</span>
+          <span class="tag tag-level" [class.beginner]="course.level === 'beginner'" [class.intermediate]="course.level === 'intermediate'" [class.advanced]="course.level === 'advanced'">
+            {{ course.level === 'beginner' ? 'Beginner' : course.level === 'intermediate' ? 'Intermediate' : 'Advanced' }}
+          </span>
         </div>
       </div>
-      <div class="card-footer">
-        <div class="enrolled">
-          <div class="enrolled-avatars">
-            <span class="avatar-small" style="background: #ff3cac">M</span>
-            <span class="avatar-small" style="background: #c8f135">A</span>
-            <span class="avatar-small" style="background: #00f5d4">R</span>
+      <div class="card-content">
+        <div class="card-category">{{ course.category }}</div>
+        <h3 class="card-title">{{ course.title }}</h3>
+        <div class="card-instructor">
+          <div class="instructor-avatar" [style.background]="course.instructorGradient">
+            {{ course.instructorInitials }}
           </div>
-          <span>+1,230 joined</span>
-        </div>
-        <button class="btn-enroll" routerLink="/Lessons">Enroll Now →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Course Card 2 -->
-  <div class="course-card">
-    <div class="card-thumb">
-      <div class="thumb-overlay"></div>
-      <span class="thumb-emoji">💻</span>
-      <div class="card-tags">
-        <span class="tag tag-level beginner">Beginner</span>
-      </div>
-    </div>
-    <div class="card-content">
-      <div class="card-category">Coding & Tech</div>
-      <h3 class="card-title">Python for Beginners: Learn Programming Step by Step</h3>
-      <div class="card-instructor">
-        <div class="instructor-avatar" style="background: linear-gradient(135deg,#00f5d4,#059669)">KN</div>
-        <div class="instructor-info">
-          <span class="instructor-name">Khalid Nasser</span>
-          <span class="instructor-title">Software Engineer</span>
-        </div>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item">⏱ 18 hours</div>
-        <div class="meta-item">📋 36 lessons</div>
-      </div>
-      <div class="card-rating">
-        <div class="stars">★★★★½</div>
-        <span class="rating-value">4.8</span>
-        <span class="rating-count">(154 reviews)</span>
-      </div>
-      <div class="card-progress">
-        <div class="progress-label">
-          <span>Seats filled</span>
-          <span class="progress-value">62%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 62%"></div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="enrolled">
-          <div class="enrolled-avatars">
-            <span class="avatar-small" style="background: #00f5d4">Y</span>
-            <span class="avatar-small" style="background: #ff3cac">L</span>
+          <div class="instructor-info">
+            <span class="instructor-name">{{ course.instructorName }}</span>
+            <span class="instructor-title">{{ course.instructorTitle }}</span>
           </div>
-          <span>+897 joined</span>
+          <span class="verified-badge" *ngIf="course.verified">✓ Verified</span>
         </div>
-        <button class="btn-enroll">Enroll Now →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Course Card 3 - Swap -->
-  <div class="course-card">
-    <div class="card-thumb">
-      <div class="thumb-overlay"></div>
-      <span class="thumb-emoji">📸</span>
-      <div class="card-tags">
-        <span class="tag tag-swap">⇄ Swap Available</span>
-        <span class="tag tag-level advanced">Advanced</span>
-      </div>
-    </div>
-    <div class="card-content">
-      <div class="card-category">Photography</div>
-      <h3 class="card-title">Pro Photography: Lighting, Composition & Lightroom Editing</h3>
-      <div class="card-instructor">
-        <div class="instructor-avatar" style="background: linear-gradient(135deg,#bf5af2,#7c3aed)">NQ</div>
-        <div class="instructor-info">
-          <span class="instructor-name">Nora Quinn</span>
-          <span class="instructor-title">Professional Photographer</span>
+        <div class="card-meta">
+          <div class="meta-item">⏱ {{ course.duration }} hours</div>
+          <div class="meta-item">📋 {{ course.lessons }} lessons</div>
+          <div class="meta-item" *ngIf="course.certificate">🎓 Certificate</div>
         </div>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item">⏱ 30 hours</div>
-        <div class="meta-item">📋 52 lessons</div>
-        <div class="meta-item">📷 RAW Files</div>
-      </div>
-      <div class="card-rating">
-        <div class="stars">★★★★½</div>
-        <span class="rating-value">4.7</span>
-        <span class="rating-count">(98 reviews)</span>
-      </div>
-      <div class="card-progress">
-        <div class="progress-label">
-          <span>Seats filled</span>
-          <span class="progress-value">41%</span>
+        <div class="card-rating">
+          <div class="stars">{{ getStarRating(course.rating) }}</div>
+          <span class="rating-value">{{ course.rating }}</span>
+          <span class="rating-count">({{ course.reviews }} reviews)</span>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 41%"></div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="enrolled">
-          <div class="enrolled-avatars">
-            <span class="avatar-small" style="background: #bf5af2">F</span>
-            <span class="avatar-small" style="background: #3d5afe">E</span>
+        <div class="card-progress">
+          <div class="progress-label">
+            <span>Seats filled</span>
+            <span class="progress-value">{{ course.seatsFilled }}%</span>
           </div>
-          <span>+452 joined</span>
-        </div>
-        <button class="btn-swap">⇄ Request Swap</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Course Card 4 -->
-  <div class="course-card">
-    <div class="card-thumb">
-      <div class="thumb-overlay"></div>
-      <span class="thumb-emoji">📈</span>
-      <div class="card-tags">
-        <span class="tag tag-hot">🔥 Trending</span>
-        <span class="tag tag-level intermediate">Intermediate</span>
-      </div>
-    </div>
-    <div class="card-content">
-      <div class="card-category">Digital Marketing</div>
-      <h3 class="card-title">Social Media Marketing: Rapid Growth Strategies That Actually Work</h3>
-      <div class="card-instructor">
-        <div class="instructor-avatar" style="background: linear-gradient(135deg,#3b82f6,#1d4ed8)">OS</div>
-        <div class="instructor-info">
-          <span class="instructor-name">Omar Stark</span>
-          <span class="instructor-title">Digital Marketing Director</span>
-        </div>
-        <span class="verified-badge">✓ Verified</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item">⏱ 12 hours</div>
-        <div class="meta-item">📋 24 lessons</div>
-      </div>
-      <div class="card-rating">
-        <div class="stars">★★★★★</div>
-        <span class="rating-value">4.9</span>
-        <span class="rating-count">(212 reviews)</span>
-      </div>
-      <div class="card-progress">
-        <div class="progress-label">
-          <span>Seats filled</span>
-          <span class="progress-value">78%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 78%"></div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="enrolled">
-          <div class="enrolled-avatars">
-            <span class="avatar-small" style="background: #ff3cac">H</span>
-            <span class="avatar-small" style="background: #00f5d4">G</span>
-            <span class="avatar-small" style="background: #c8f135">S</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="course.seatsFilled"></div>
           </div>
-          <span>+1,145 joined</span>
         </div>
-        <button class="btn-enroll">Enroll Now →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Course Card 5 -->
-  <div class="course-card">
-    <div class="card-thumb">
-      <div class="thumb-overlay"></div>
-      <span class="thumb-emoji">🎵</span>
-      <div class="card-tags">
-        <span class="tag tag-swap">⇄ Swap Available</span>
-        <span class="tag tag-level beginner">Beginner</span>
-      </div>
-    </div>
-    <div class="card-content">
-      <div class="card-category">Music & Arts</div>
-      <h3 class="card-title">Guitar Basics: From Your First Chord to Your First Full Song</h3>
-      <div class="card-instructor">
-        <div class="instructor-avatar" style="background: linear-gradient(135deg,#ff3cac,#e11d48)">LM</div>
-        <div class="instructor-info">
-          <span class="instructor-name">Lily Monroe</span>
-          <span class="instructor-title">Music Teacher</span>
-        </div>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item">⏱ 8 hours</div>
-        <div class="meta-item">📋 20 lessons</div>
-      </div>
-      <div class="card-rating">
-        <div class="stars">★★★★½</div>
-        <span class="rating-value">4.6</span>
-        <span class="rating-count">(73 reviews)</span>
-      </div>
-      <div class="card-progress">
-        <div class="progress-label">
-          <span>Seats filled</span>
-          <span class="progress-value">33%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 33%"></div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="enrolled">
-          <div class="enrolled-avatars">
-            <span class="avatar-small" style="background: #ff6b35">S</span>
+        <div class="card-footer">
+          <div class="enrolled">
+            <div class="enrolled-avatars">
+              <span class="avatar-small" *ngFor="let avatar of course.enrolledAvatars; let avatarIdx = index" [style.background]="avatar.color">{{ avatar.initial }}</span>
+            </div>
+            <span>+{{ course.joinedCount }} joined</span>
           </div>
-          <span>+312 joined</span>
+          <button class="btn-enroll" *ngIf="!course.swapAvailable" (click)="enrollCourse(course)">
+            Enroll Now →
+          </button>
+          <button class="btn-swap" *ngIf="course.swapAvailable" (click)="requestSwap(course)">
+            ⇄ Request Swap
+          </button>
         </div>
-        <button class="btn-swap">⇄ Request Swap</button>
       </div>
     </div>
   </div>
 
-  <!-- Course Card 6 -->
-  <div class="course-card">
-    <div class="card-thumb">
-      <div class="thumb-overlay"></div>
-      <span class="thumb-emoji">🗣️</span>
-      <div class="card-tags">
-        <span class="tag tag-level intermediate">Intermediate</span>
-      </div>
-    </div>
-    <div class="card-content">
-      <div class="card-category">Languages</div>
-      <h3 class="card-title">Spanish for Daily Conversations: Speak Confidently in 60 Days</h3>
-      <div class="card-instructor">
-        <div class="instructor-avatar" style="background: linear-gradient(135deg,#16a34a,#15803d)">RH</div>
-        <div class="instructor-info">
-          <span class="instructor-name">Rosa Hernandez</span>
-          <span class="instructor-title">Language Coach</span>
-        </div>
-        <span class="verified-badge">✓ Verified</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item">⏱ 15 hours</div>
-        <div class="meta-item">📋 40 lessons</div>
-      </div>
-      <div class="card-rating">
-        <div class="stars">★★★★★</div>
-        <span class="rating-value">4.9</span>
-        <span class="rating-count">(341 reviews)</span>
-      </div>
-      <div class="card-progress">
-        <div class="progress-label">
-          <span>Seats filled</span>
-          <span class="progress-value">91%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 91%"></div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="enrolled">
-          <div class="enrolled-avatars">
-            <span class="avatar-small" style="background: #16a34a">B</span>
-            <span class="avatar-small" style="background: #c8f135">M</span>
-            <span class="avatar-small" style="background: #ff3cac">T</span>
-          </div>
-          <span>+1,872 joined</span>
-        </div>
-        <button class="btn-enroll">Enroll Now →</button>
-      </div>
-    </div>
+  <!-- Load More -->
+  <div class="load-more" *ngIf="displayedCourses < filteredCourses.length">
+    <button class="btn-load-more" (click)="loadMore()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      Load {{ remainingCoursesCount }} more courses
+    </button>
   </div>
-
-</div>
-
-<!-- Load More -->
-<div class="load-more">
-  <button class="btn-load-more">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-    Load 12 more courses
-  </button>
 </div>

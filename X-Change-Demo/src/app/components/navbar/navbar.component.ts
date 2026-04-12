@@ -28,6 +28,32 @@ export class NavbarComponent implements OnInit {
   lastName: string = '';
   userName: string = '';
 
+  // ========== XP PROPERTIES (بيانات ثابتة للتصميم) ==========
+  userTotalXp: number = 0;
+  userLevel: number = 1;
+  xpPerLevel: number = 1000;
+
+  // خصائص محسوبة
+  get xpInCurrentLevel(): number {
+    return this.userTotalXp % this.xpPerLevel;
+  }
+
+  get xpNeededForNextLevel(): number {
+    return this.xpPerLevel;
+  }
+
+  get xpProgressPercent(): number {
+    return (this.xpInCurrentLevel / this.xpNeededForNextLevel) * 100;
+  }
+
+  get xpToNextLevel(): number {
+    return this.xpNeededForNextLevel - this.xpInCurrentLevel;
+  }
+
+  get nextLevel(): number {
+    return this.userLevel + 1;
+  }
+
   constructor(
     public authService: AuthService,
     private photoService: PhotoService,

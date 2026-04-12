@@ -9,6 +9,8 @@
   --text-main: #111111;
   --text-muted: #383838;
   --border-color: #000000;
+  --nav-back: #ffffffec;
+
 
   --primary-gradient: linear-gradient(90deg,#00cc66,#6a5cff);
   --home-bg: radial-gradient(circle at 5% 60%, rgba(0, 204, 102, 0.27), transparent 35%),
@@ -64,6 +66,7 @@ body.dark-mode{
   --light-glow-purple:rgba(108,99,255,0.15);
   --bg-card: rgb(0, 0, 0);
   --text-main: #ffffff;
+  --nav-back: #000000ec;
   --text-muted: #ffffff;
   --border-color: rgba(17, 206, 67, 0.318);
   --footer-bg:#0b0a0aed;
