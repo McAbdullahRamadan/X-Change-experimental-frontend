@@ -25,7 +25,8 @@ export class AppComponent {
            this.currentRoute.includes('/forgot-password')||
            this.currentRoute.includes('/verify-code')||
            this.currentRoute.includes('/reset-password')||
-           this.currentRoute.includes('/Lessons');
+           this.currentRoute.includes('/Lessons')||
+           this.currentRoute.includes('/dashboard');
 
   }
   title = 'X-Change';

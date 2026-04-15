@@ -32,6 +32,12 @@
         <i class="bi bi-file-text-fill"></i> <span>Register</span>
       </button>
     </ng-container>
+    <div *ngIf="isLoggedIn" class="notification-icon-wrapper">
+      <div class="notification-bell">
+        <i class="bi bi-bell-fill"></i>
+        <span class="notification-badge">0</span>
+      </div>
+    </div>
 
     <div *ngIf="isLoggedIn" class="profile-container">
       <div class="profile-trigger" (click)="toggleProfile()">
@@ -84,6 +90,9 @@
              [routerLink]="['/profile', authService.getUsernameFromToken()]"
              (click)="showProfileMenu=false">
           <i class="bi bi-person-circle"></i> My Profile
+        </div>
+        <div class="dropdown-item" routerLink="/dashboard" (click)="showProfileMenu=false">
+          <i class="bi bi-grid"></i> Dashboard
         </div>
         <div class="dropdown-item" (click)="showProfileMenu=false">
           <i class="bi bi-gear"></i> Account Settings
