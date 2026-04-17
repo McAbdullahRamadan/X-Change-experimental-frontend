@@ -55,13 +55,13 @@ export class LoginComponent  {
     }
 
     if (field.hasError('required')) {
-      return fieldName === 'email' ? 'البريد الإلكتروني مطلوب' : 'كلمة السر مطلوبة';
+      return fieldName === 'email' ? 'Email required' : 'Password required';
     }
     if (field.hasError('email') || field.hasError('pattern')) {
-      return 'البريد الإلكتروني غير صحيح';
+      return 'Invalid email address';
     }
     if (field.hasError('minlength')) {
-      return 'كلمة السر على الأقل 6 أحرف';
+      return 'The password must be at least 8 characters long.';
     }
     return '';
   }
@@ -74,7 +74,7 @@ export class LoginComponent  {
         key => this.loginForm.get(key)?.invalid
       );
 
-      this.toastr.warning(`يوجد ${invalidFields.length} حقول غير صحيحة`, 'تحذير', {
+      this.toastr.warning(`Found ${invalidFields.length} Invalid fields  `, 'worining', {
         positionClass: 'toast-top-right',
         timeOut: 3000
       });
@@ -98,14 +98,14 @@ export class LoginComponent  {
         console.log('Full response:', response);
 
         if (response?.isSuccess === true) {
-          this.toastr.success('تم تسجيل الدخول بنجاح! 🎉', 'مرحباً بك', {
+          this.toastr.success( 'Welcome','Logged in Successfully! 🎉', {
             positionClass: 'toast-top-right',
             timeOut: 5000,
             progressBar: true
           });
 
           if (response?.data?.name) {
-            this.toastr.info(`مرحباً ${response.data.name}`, 'أهلاً بك', {
+            this.toastr.info(`Welcome ${response.data.name}`, 'Welcome back', {
               positionClass: 'toast-top-right'
             });
           }
@@ -114,22 +114,22 @@ export class LoginComponent  {
             this.router.navigate(['']);
           }, 2000);
         } else {
-          const errorMessage = response?.errors?.[0] || 'فشل تسجيل الدخول';
+          const errorMessage = response?.errors?.[0] || 'Login failed';
 
           if (errorMessage.includes('email') || errorMessage.includes('Email')) {
             this.loginForm.get('email')?.setErrors({ serverError: errorMessage });
             this.loginForm.get('email')?.markAsTouched();
-            this.toastr.error('البريد الإلكتروني غير صحيح أو غير موجود', 'خطأ', {
+            this.toastr.error('error','The email address is invalid or does not exist.',  {
               positionClass: 'toast-top-right'
             });
           } else if (errorMessage.includes('password') || errorMessage.includes('Password')) {
             this.loginForm.get('password')?.setErrors({ serverError: errorMessage });
             this.loginForm.get('password')?.markAsTouched();
-            this.toastr.error('كلمة السر غير صحيحة', 'خطأ', {
+            this.toastr.error('Incorrect password', 'error', {
               positionClass: 'toast-top-right'
             });
           } else {
-            this.toastr.error(errorMessage, 'فشل تسجيل الدخول', {
+            this.toastr.error(errorMessage, 'Login failed', {
               positionClass: 'toast-top-right'
             });
           }
@@ -137,7 +137,7 @@ export class LoginComponent  {
       },
       error: (err) => {
         console.log('HTTP Error:', err);
-        this.toastr.error('حدث خطأ في الاتصال بالخادم', 'خطأ', {
+        this.toastr.error('An error occurred in connecting to the server.', 'error', {
           positionClass: 'toast-top-right'
         });
       }

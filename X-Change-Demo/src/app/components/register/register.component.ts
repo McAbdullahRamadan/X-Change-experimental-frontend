@@ -97,39 +97,39 @@ export class RegisterComponent  {
     }
 
     if (field.hasError('required')) {
-      return 'هذا الحقل مطلوب';
+      return 'This field is required';
     }
 
     if (field.hasError('email')) {
-      return 'الإيميل غير صحيح';
+      return 'The email is invalid';
     }
 
     if (field.hasError('emailMismatch')) {
-      return 'الإيميل غير متطابق';
+      return 'Email does not match';
     }
 
     if (field.hasError('pattern')) {
       switch(fieldName) {
         case 'userName':
-          return 'يُسمح فقط بحروف وأرقام و _';
+          return 'Only letters, numbers, and _ are allowed';
         case 'firstName':
         case 'lastName':
-          return 'يُسمح فقط بحروف (عربي أو إنجليزي)';
+          return 'Only Arabic or English letters are allowed';
         case 'password':
-          return 'يجب أن تحتوي على حرف كبير وصغير وارقام';
+          return 'It must contain a capital letter, a lowercase letter, and numbers';
         case 'phoneNumber':
-          return 'رقم موبايل صحيح (11 رقم)';
+          return 'Valid mobile number (11 digits)';
         default:
-          return 'صيغة غير صحيحة';
+          return 'Incorrect formula';
       }
     }
 
     if (field.hasError('minlength')) {
-      return 'كلمة السر على الأقل 6 تتكون من علي الاقل حرف كبير وعلي الاقل حرف صغير وارقام';
+      return 'The password must be at least 6 words long and consist of at least one uppercase letter, at least one lowercase letter, and numbers.';
     }
 
     if (field.hasError('minAge')) {
-      return 'يجب أن تكون سنك على الأقل 16 سنة';
+      return 'You must be at least 16 years old';
     }
 
     return '';
@@ -143,7 +143,7 @@ export class RegisterComponent  {
         key => this.registerForm.get(key)?.invalid
       );
 
-      this.toastr.warning(`يوجد ${invalidFields.length} حقول غير صحيحة`, 'تحذير', {
+      this.toastr.warning(`There is ${invalidFields.length} Invalid fields`, 'warning', {
         positionClass: 'toast-top-right',
         timeOut: 3000
       });
@@ -166,7 +166,7 @@ export class RegisterComponent  {
       this.registerForm.get('confirmEmail')?.setErrors({ emailMismatch: true });
       this.registerForm.get('confirmEmail')?.markAsTouched();
 
-      this.toastr.error('الإيميل غير متطابق', 'خطأ', {
+      this.toastr.error('Email does not match', 'Erorr', {
         positionClass: 'toast-top-right',
         timeOut: 4000
       });
@@ -177,8 +177,8 @@ export class RegisterComponent  {
       next: (response: any) => {
         if (response?.isSuccess === true) {
           this.toastr.success(
-            response?.data || 'تم التسجيل بنجاح',
-            '🎉 مرحباً بك',
+            response?.data || 'Registration successful',
+            '🎉Welcome',
             {
               positionClass: 'toast-top-right',
               timeOut: 5000,
@@ -190,7 +190,7 @@ export class RegisterComponent  {
             this.router.navigate(['/login']);
           }, 2000);
         } else {
-          const errorMessage = response?.errors?.[0] || 'فشلت عملية التسجيل';
+          const errorMessage = response?.errors?.[0] || 'Registration failed';
 
           if (errorMessage.includes('email') || errorMessage.includes('Email')) {
             this.registerForm.get('email')?.setErrors({ serverError: errorMessage });
@@ -209,7 +209,7 @@ export class RegisterComponent  {
         }
       },
       error: (err) => {
-        this.toastr.error('حدث خطأ في الاتصال بالخادم', 'خطأ', {
+        this.toastr.error('An error occurred in connecting to the server', 'Erorr', {
 
         });
       }
