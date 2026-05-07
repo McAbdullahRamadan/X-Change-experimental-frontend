@@ -1,0 +1,266 @@
+<div class="verification-container">
+
+  <!-- Header -->
+  <div class="verification-header">
+    <div>
+      <h2><i class="bi bi-person-check-fill"></i> Educator Verification</h2>
+      <p class="subtitle">Review and verify educator applications from users</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card pending">
+      <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="stat-info">
+        <h3>{{ pendingCount }}</h3>
+        <p>Pending</p>
+      </div>
+    </div>
+    <div class="stat-card approved">
+      <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
+      <div class="stat-info">
+        <h3>{{ approvedCount }}</h3>
+        <p>Approved</p>
+      </div>
+    </div>
+    <div class="stat-card rejected">
+      <div class="stat-icon"><i class="bi bi-x-circle"></i></div>
+      <div class="stat-info">
+        <h3>{{ rejectedCount }}</h3>
+        <p>Rejected</p>
+      </div>
+    </div>
+    <div class="stat-card total">
+      <div class="stat-icon"><i class="bi bi-people"></i></div>
+      <div class="stat-info">
+        <h3>{{ totalItems }}</h3>
+        <p>Total</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Bar -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input
+        type="text"
+        [(ngModel)]="filters.search"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search by name, email..."
+      />
+      <i class="bi bi-x-lg clear-btn" *ngIf="filters.search" (click)="filters.search=''; onSearchChange('')"></i>
+    </div>
+
+    <select [(ngModel)]="filters.status" (change)="applyFilters()" class="filter-select">
+      <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
+    </select>
+
+    <button class="btn-outline" (click)="resetFilters()">
+      <i class="bi bi-arrow-repeat"></i> Reset
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading verification requests...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-outline" (click)="loadVerifications()">Try Again</button>
+  </div>
+
+  <!-- Verification Table -->
+  <div *ngIf="!isLoading && !errorMessage" class="table-wrapper">
+    <table class="verification-table">
+      <thead>
+        <tr>
+          <th (click)="sortBy('userFullName')" class="sortable">
+            Applicant <i class="bi" [class.bi-arrow-up]="filters.sortBy === 'userFullName' && filters.sortOrder === 'asc'" [class.bi-arrow-down]="filters.sortBy === 'userFullName' && filters.sortOrder === 'desc'"></i>
+          </th>
+          <th (click)="sortBy('userEmail')" class="sortable">Email</th>
+          <th>Documents</th>
+          <th (click)="sortBy('submittedAt')" class="sortable">Submitted</th>
+          <th>Status</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let verification of verifications">
+          <td class="user-cell">
+            <div class="user-avatar" [style.background]="getAvatarColor(verification.userFullName)">
+              {{ getUserInitials(verification.userFullName) }}
+            </div>
+            <div class="user-info">
+              <div class="user-name">{{ verification.userFullName }}</div>
+              <div class="user-id">ID: {{ verification.userId.substring(0, 8) }}...</div>
+            </div>
+           </td>
+          <td class="email-cell">{{ verification.userEmail }}</td>
+          <td class="docs-cell">
+            <a [href]="verification.nationalIdDocUrl" target="_blank" class="doc-link" title="National ID">
+              <i class="bi bi-card-id"></i> ID
+            </a>
+            <a [href]="verification.universityDocUrl" target="_blank" class="doc-link" title="University Degree">
+              <i class="bi bi-mortarboard"></i> Degree
+            </a>
+          </td>
+          <td>{{ verification.submittedAt | date:'yyyy-MM-dd' }}</td>
+          <td>
+            <span class="status-badge" [class]="getStatusClass(verification.status)">
+              <i [class]="getStatusIcon(verification.status)"></i>
+              {{ getStatusText(verification.status) }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="action-btn view" (click)="viewDetails(verification)" title="View Details">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button *ngIf="verification.status === 'pending'" class="action-btn approve" (click)="approveVerification(verification)" title="Approve">
+              <i class="bi bi-check-lg"></i>
+            </button>
+            <button *ngIf="verification.status === 'pending'" class="action-btn reject" (click)="openRejectModal(verification)" title="Reject">
+              <i class="bi bi-x-lg"></i>
+            </button>
+            <button *ngIf="verification.status !== 'approved'" class="action-btn delete" (click)="deleteVerification(verification)" title="Delete">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="verifications.length === 0">
+          <td colspan="6" class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>No verification requests found</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && totalPages > 0" class="pagination-container">
+    <div class="pagination-info">
+      Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, totalItems) }} of {{ totalItems }} entries
+    </div>
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="page-btn">
+        <i class="bi bi-chevron-left"></i> Prev
+      </button>
+      <div class="page-numbers">
+        <button *ngFor="let page of getPageNumbers()" (click)="goToPage(page)" class="page-number" [class.active]="page === currentPage">
+          {{ page }}
+        </button>
+      </div>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="page-btn">
+        Next <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Details Modal -->
+<div class="modal" [class.show]="showDetailsModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <h3>Verification Details</h3>
+      <button class="close-btn" (click)="closeDetailsModal()">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="selectedVerification">
+      <div class="details-section">
+        <h4><i class="bi bi-person-circle"></i> Applicant Information</h4>
+        <div class="details-grid">
+          <div class="detail-item">
+            <label>Full Name:</label>
+            <span>{{ selectedVerification.userFullName }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Email:</label>
+            <span>{{ selectedVerification.userEmail }}</span>
+          </div>
+          <div class="detail-item">
+            <label>User ID:</label>
+            <span>{{ selectedVerification.userId }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Submitted:</label>
+            <span>{{ selectedVerification.submittedAt | date:'yyyy-MM-dd HH:mm' }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Status:</label>
+            <span class="status-badge" [class]="getStatusClass(selectedVerification.status)">
+              <i [class]="getStatusIcon(selectedVerification.status)"></i>
+              {{ getStatusText(selectedVerification.status) }}
+            </span>
+          </div>
+          <div class="detail-item" *ngIf="selectedVerification.reviewedAt">
+            <label>Reviewed:</label>
+            <span>{{ selectedVerification.reviewedAt | date:'yyyy-MM-dd HH:mm' }}</span>
+          </div>
+          <div class="detail-item" *ngIf="selectedVerification.rejectionReason">
+            <label>Rejection Reason:</label>
+            <span class="rejection-text">{{ selectedVerification.rejectionReason }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h4><i class="bi bi-file-text"></i> Documents</h4>
+        <div class="documents-grid">
+          <div class="document-card">
+            <i class="bi bi-card-id"></i>
+            <h5>National ID</h5>
+            <a [href]="selectedVerification.nationalIdDocUrl" target="_blank" class="btn-outline-sm">View Document</a>
+          </div>
+          <div class="document-card">
+            <i class="bi bi-mortarboard"></i>
+            <h5>University Degree</h5>
+            <a [href]="selectedVerification.universityDocUrl" target="_blank" class="btn-outline-sm">View Document</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" (click)="closeDetailsModal()">Close</button>
+      <button *ngIf="selectedVerification?.status === 'pending'" class="btn-success" (click)="approveVerification(selectedVerification!)">
+        <i class="bi bi-check-lg"></i> Approve
+      </button>
+      <button *ngIf="selectedVerification?.status === 'pending'" class="btn-danger" (click)="openRejectModal(selectedVerification!); closeDetailsModal()">
+        <i class="bi bi-x-lg"></i> Reject
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal" [class.show]="showRejectModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Reject Verification Request</h3>
+      <button class="close-btn" (click)="closeRejectModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to reject <strong>{{ selectedVerification?.userFullName }}</strong>'s verification request?</p>
+      <form [formGroup]="rejectForm">
+        <div class="form-group">
+          <label>Rejection Reason <span class="required">*</span></label>
+          <textarea formControlName="rejectionReason" rows="4" placeholder="Please provide a reason for rejection..."></textarea>
+          <small class="error" *ngIf="rejectForm.get('rejectionReason')?.touched && rejectForm.get('rejectionReason')?.invalid">
+            Rejection reason is required (minimum 10 characters)
+          </small>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" (click)="closeRejectModal()">Cancel</button>
+      <button class="btn-danger" (click)="confirmReject()" [disabled]="rejectForm.invalid">
+        Confirm Rejection
+      </button>
+    </div>
+  </div>
+</div>

@@ -29,5 +29,16 @@ export class AppComponent {
            this.currentRoute.includes('/dashboard');
 
   }
+  shouldShowFooter(): boolean {
+    const hideFooterOn = ['/Feed', '/dashboard'];
+
+    return !this.currentRoute.includes('/login') &&
+           !this.currentRoute.includes('/register') &&
+           !this.currentRoute.includes('/forgot-password') &&
+           !this.currentRoute.includes('/verify-code') &&
+           !this.currentRoute.includes('/reset-password') &&
+           !hideFooterOn.some(route => this.currentRoute.includes(route));
+  }
+
   title = 'X-Change';
 }

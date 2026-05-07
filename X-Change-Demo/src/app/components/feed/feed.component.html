@@ -1,0 +1,125 @@
+<div class="tiktok-feed page-enter">
+
+  <!-- TOP BAR (For You / Following tabs) -->
+  <div class="feed-topbar">
+    <div class="feed-tabs">
+      <button class="feed-tab" [class.active]="activeTab === 'following'" (click)="setTab('following')">Following</button>
+      <button class="feed-tab" [class.active]="activeTab === 'forYou'" (click)="setTab('forYou')">For You</button>
+    </div>
+    <div class="feed-search-btn">🔍</div>
+  </div>
+ <!-- FLOATING SIDE PANEL - COMING SOON -->
+ <div class="floating-panel">
+  <div class="coming-soon-card">
+    <div class="cs-header">
+      <span class="cs-emoji">🚀</span>
+      <h3>Coming Soon</h3>
+    </div>
+    <div class="cs-features">
+      <div class="cs-feature">🎮 Gaming Mode</div>
+      <div class="cs-feature">🎙️ Live Streaming</div>
+      <div class="cs-feature">🏆 Weekly Tournaments</div>
+      <div class="cs-feature">🎁 Daily Quests</div>
+    </div>
+    <div class="cs-footer">
+      <span>✨ Stay tuned ✨</span>
+    </div>
+  </div>
+</div>
+  <!-- SLIDE INDICATORS -->
+  <div class="slide-dots">
+    <div class="slide-dot"
+      *ngFor="let v of vibes; let i = index"
+      [class.active]="i === activeIndex"
+      (click)="goToSlide(i)">
+    </div>
+  </div>
+
+  <!-- SLIDES CONTAINER -->
+  <div class="slides-wrapper" [style.transform]="'translateY(-' + (activeIndex * 95) + 'vh)'">
+    <div class="vibe-slide" *ngFor="let vibe of vibes; let i = index" #vibeSlide>
+
+      <!-- BACKGROUND -->
+      <div class="slide-bg" [ngClass]="vibe.bgClass">
+        <div class="slide-emoji-bg">{{ vibe.visualEmoji }}</div>
+        <div class="slide-noise"></div>
+        <!-- Gradient overlays -->
+        <div class="grad-top"></div>
+        <div class="grad-bottom"></div>
+      </div>
+
+      <!-- PLAY INDICATOR -->
+      <div class="slide-center-play">
+        <div class="play-ring">▶</div>
+      </div>
+
+      <!-- RIGHT ACTIONS -->
+      <div class="slide-actions">
+
+        <!-- Avatar + Follow -->
+        <div class="action-avatar-wrap">
+          <div class="action-avatar" [ngClass]="vibe.avatarClass">{{ vibe.emoji }}</div>
+          <button class="follow-plus" [class.following]="vibe.following" (click)="toggleFollow(vibe)">
+            {{ vibe.following ? '✓' : '+' }}
+          </button>
+        </div>
+
+        <!-- Like -->
+        <button class="action-item" [class.liked]="vibe.liked" (click)="toggleLike(vibe)">
+          <span class="action-icon" [class.heart-pop]="vibe.liked">{{ vibe.liked ? '❤️' : '🤍' }}</span>
+          <span class="action-count">{{ formatNum(vibe.likes) }}</span>
+        </button>
+
+        <!-- Comment -->
+        <button class="action-item">
+          <span class="action-icon">💬</span>
+          <span class="action-count">{{ formatNum(vibe.comments) }}</span>
+        </button>
+
+        <!-- Share -->
+        <button class="action-item">
+          <span class="action-icon">↗️</span>
+          <span class="action-count">{{ formatNum(vibe.shares) }}</span>
+        </button>
+
+        <!-- Save -->
+        <button class="action-item" (click)="toggleSave(vibe)">
+          <span class="action-icon">{{ vibe.saved ? '🔖' : '📌' }}</span>
+          <span class="action-count">{{ vibe.saved ? 'Saved' : 'Save' }}</span>
+        </button>
+
+        <!-- XP Boost -->
+        <button class="action-item boost-btn">
+          <span class="action-icon">⚡</span>
+          <span class="action-count">Boost</span>
+        </button>
+
+      </div>
+
+      <!-- BOTTOM INFO -->
+      <div class="slide-info">
+        <div class="slide-user-row">
+          <div class="slide-username">{{ vibe.username }}</div>
+          <div class="slide-tag">{{ vibe.tag }}</div>
+        </div>
+        <div class="slide-caption">{{ vibe.caption }}</div>
+        <div class="slide-hashtags">
+          <span *ngFor="let tag of vibe.hashtags" class="slide-hash">{{ tag }}</span>
+        </div>
+        <div class="slide-music">
+          <span class="music-icon">🎵</span>
+          <span class="music-text">Original Sound · {{ vibe.username }}</span>
+          <span class="music-vinyl">⬤</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCROLL HINT (shown only on first slide) -->
+  <div class="scroll-hint" *ngIf="activeIndex === 0">
+    <span>Scroll for more</span>
+    <div class="scroll-arrow">↓</div>
+  </div>
+
+</div>

@@ -1,0 +1,261 @@
+/* ========== ANIMATIONS ========== */
+
+/* Base Animation Styles */
+.animate-on-scroll {
+  opacity: 0;
+  visibility: visible;
+  will-change: transform, opacity;
+}
+
+.animate-on-scroll.animated {
+  opacity: 1;
+}
+
+/* Fade Up Animation */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade Down Animation */
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade Left Animation */
+@keyframes fadeLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade Right Animation */
+@keyframes fadeRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Zoom In Animation */
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scale Animation */
+@keyframes scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========== Skeleton Loader ========== */
+
+.lazy-section {
+  min-height: 200px;
+  position: relative;
+  width: 100%;
+}
+
+.skeleton-loader {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Hero Skeleton */
+.skeleton-hero {
+  height: 600px;
+  margin: 20px;
+  border-radius: 32px;
+}
+
+/* Stats Skeleton */
+.skeleton-stats {
+  padding: 40px;
+  min-height: 200px;
+}
+
+.stats-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.stat-skeleton-item {
+  height: 120px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+}
+
+/* Skills Skeleton */
+.skeleton-skills {
+  height: 500px;
+  margin: 20px;
+  border-radius: 32px;
+}
+
+/* Testimonials Skeleton */
+.skeleton-testimonials {
+  padding: 40px;
+  min-height: 300px;
+}
+
+.testimonials-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.testimonial-skeleton-item {
+  height: 200px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+}
+
+/* Staggered Children Animation (للعناصر الفرعية) */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* Dark Mode */
+body.dark-mode .skeleton-loader {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+body.dark-mode .stat-skeleton-item,
+body.dark-mode .testimonial-skeleton-item {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Light Mode */
+body:not(.dark-mode) .skeleton-loader {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+body:not(.dark-mode) .stat-skeleton-item,
+body:not(.dark-mode) .testimonial-skeleton-item {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 1024px) {
+  .stats-skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials-skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .skeleton-hero {
+    height: 400px;
+    margin: 12px;
+  }
+
+  .skeleton-skills {
+    height: 350px;
+  }
+
+  .stats-skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .testimonials-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-skeleton-item {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skeleton-hero {
+    height: 350px;
+  }
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}

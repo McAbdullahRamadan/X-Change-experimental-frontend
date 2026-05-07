@@ -1,4 +1,4 @@
 export const environment = {
    production: false,
-  apiUrl: 'https://xchangeapi.runasp.net/api'
+  apiUrl: 'https://localhost:7221/api'
 };

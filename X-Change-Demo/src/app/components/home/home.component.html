@@ -1,5 +1,69 @@
-<app-hero></app-hero>
-<app-stats></app-stats>
-<app-master-skills></app-master-skills>
-<app-testimonials></app-testimonials>
+<!-- Hero Component -->
+<div data-component="hero" class="lazy-section">
+  <ng-container *ngIf="isHeroVisible">
+    <div class="animate-on-scroll" data-animation="zoomIn" data-duration="0.8">
+      <app-hero></app-hero>
+    </div>
+  </ng-container>
+  <div *ngIf="!isHeroVisible" class="skeleton-loader skeleton-hero">
+    <div class="shimmer"></div>
+  </div>
+</div>
 
+<!-- Stats Component -->
+<div data-component="stats" class="lazy-section">
+  <ng-container *ngIf="isStatsVisible">
+    <div class="animate-on-scroll" data-animation="fadeUp" data-duration="0.6" data-delay="0.1">
+      <app-stats></app-stats>
+    </div>
+  </ng-container>
+  <div *ngIf="!isStatsVisible" class="skeleton-loader skeleton-stats">
+    <div class="shimmer"></div>
+    <div class="stats-skeleton-grid">
+      <div class="stat-skeleton-item"></div>
+      <div class="stat-skeleton-item"></div>
+      <div class="stat-skeleton-item"></div>
+      <div class="stat-skeleton-item"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Master Skills Component -->
+<div data-component="masterSkills" class="lazy-section">
+  <ng-container *ngIf="isMasterSkillsVisible">
+    <div class="animate-on-scroll" data-animation="fadeLeft" data-duration="0.7" data-delay="0.2">
+      <app-master-skills></app-master-skills>
+    </div>
+  </ng-container>
+  <div *ngIf="!isMasterSkillsVisible" class="skeleton-loader skeleton-skills">
+    <div class="shimmer"></div>
+  </div>
+</div>
+<!-- Join Component -->
+
+<div data-component="join" class="lazy-section">
+  <ng-container *ngIf="isHeroVisible">
+    <div class="animate-on-scroll" data-animation="zoomIn" data-duration="0.8">
+      <app-join></app-join>
+    </div>
+  </ng-container>
+  <div *ngIf="!isHeroVisible" class="skeleton-loader skeleton-join">
+    <div class="shimmer"></div>
+  </div>
+</div>
+<!-- Testimonials Component -->
+<div data-component="testimonials" class="lazy-section">
+  <ng-container *ngIf="isTestimonialsVisible">
+    <div class="animate-on-scroll" data-animation="fadeRight" data-duration="0.7" data-delay="0.15">
+      <app-testimonials></app-testimonials>
+    </div>
+  </ng-container>
+  <div *ngIf="!isTestimonialsVisible" class="skeleton-loader skeleton-testimonials">
+    <div class="shimmer"></div>
+    <div class="testimonials-skeleton-grid">
+      <div class="testimonial-skeleton-item"></div>
+      <div class="testimonial-skeleton-item"></div>
+      <div class="testimonial-skeleton-item"></div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,9 @@
     <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
       <i class="bi bi-house-fill"></i> Home
     </li>
+    <li routerLink="/Feed" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="bi bi-activity"></i>Feed
+    </li>
     <li routerLinkActive="active" routerLink="/courses">
       <i class="bi bi-layers-fill"></i> Explore Skills
     </li>
@@ -118,6 +121,9 @@
 <div class="mobile-menu" [class.open]="isMenuOpen">
   <a routerLink="/" (click)="isMenuOpen=false">
     <i class="bi bi-house-fill"></i> Home
+  </a>
+  <a routerLink="/Feed" (click)="isMenuOpen=false">
+    <i class="bi bi-activity"></i>Feed
   </a>
   <a (click)="isMenuOpen=false" routerLink="/courses">
     <i class="bi bi-layers-half"></i> Explore Skills

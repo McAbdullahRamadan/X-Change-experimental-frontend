@@ -1,45 +1,63 @@
 <div class="dashboard" [class.dark]="isDark">
 
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
 
     <!-- Logo Card -->
-    <div class="logo-card">
+    <div class="logo-card" (click)="navigateTo('home')">
       <div class="logo-icon">
-        <i class="bi bi-box-fill"></i>
+        <img class="imglogo" src="Logodashbord.png" alt="Logo">
       </div>
-      <h3>X-Change</h3>
-
+      <h3 *ngIf="!isSidebarCollapsed">X-Change</h3>
     </div>
 
-      <hr id="Hr">
+    <hr id="Hr" *ngIf="!isSidebarCollapsed">
 
-
-
+    <!-- Menu -->
     <nav class="menu">
-      <a class="active">
+      <a (click)="navigateTo('home')" [class.active]="activePage === 'home'">
         <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
+        <span *ngIf="!isSidebarCollapsed">Dashboard</span>
       </a>
 
-      <a>
-        <i class="bi bi-pie-chart"></i>
-        <span>Charts</span>
+      <a (click)="navigateTo('user-management')" [class.active]="activePage === 'user-management'">
+        <i class="bi bi-person-fill-gear"></i>
+        <span *ngIf="!isSidebarCollapsed">User Management</span>
       </a>
 
-      <a>
-        <i class="bi bi-box-seam"></i>
-        <span>Apps</span>
+      <a (click)="navigateTo('educator-verification')" [class.active]="activePage === 'educator-verification'">
+        <i class="bi bi-person-check"></i>
+        <span *ngIf="!isSidebarCollapsed">Educator Verification</span>
       </a>
 
-      <a>
-        <i class="bi bi-layers"></i>
-        <span>Elements</span>
+      <a (click)="navigateTo('moderation')" [class.active]="activePage === 'moderation'">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span *ngIf="!isSidebarCollapsed">Moderation</span>
       </a>
 
-      <a>
-        <i class="bi bi-ui-checks-grid"></i>
-        <span>Advanced UI</span>
+      <a (click)="navigateTo('course-management')" [class.active]="activePage === 'course-management'">
+        <i class="bi bi-file-play"></i>
+        <span *ngIf="!isSidebarCollapsed">Course & Content Management</span>
+      </a>
+
+      <a (click)="navigateTo('labor-exchange')" [class.active]="activePage === 'labor-exchange'">
+        <i class="bi bi-arrow-left-right"></i>
+        <span *ngIf="!isSidebarCollapsed">Labor Exchange Oversight</span>
+      </a>
+
+      <a (click)="navigateTo('corporate-partners')" [class.active]="activePage === 'corporate-partners'">
+        <i class="bi bi-building-gear"></i>
+        <span *ngIf="!isSidebarCollapsed">Corporate Partner Management</span>
+      </a>
+
+      <a (click)="navigateTo('gamification')" [class.active]="activePage === 'gamification'">
+        <i class="bi bi-controller"></i>
+        <span *ngIf="!isSidebarCollapsed">Gamification Configuration</span>
+      </a>
+
+      <a (click)="navigateTo('audit-logs')" [class.active]="activePage === 'audit-logs'">
+        <i class="bi bi-file-text-fill"></i>
+        <span *ngIf="!isSidebarCollapsed">Audit Logs</span>
       </a>
     </nav>
 
@@ -50,9 +68,9 @@
 
     <!-- Topbar -->
     <header class="topbar">
-
+      <i class="bi bi-justify-left menu-toggle-icon" (click)="toggleSidebar()"></i>
       <div class="left-section">
-        <i class="bi bi-list menu-icon"></i>
+        <i class="bi bi-list menu-icon" (click)="toggleSidebarMobile()"></i>
 
         <div class="search-box">
           <input type="text" placeholder="Search for anything..." />
@@ -61,74 +79,31 @@
       </div>
 
       <div class="right-section">
-        <img src="https://flagcdn.com/w20/eg.png" class="flag" />
+
 
         <i class="bi"
-        [class.bi-moon]="!isDark"
-        [class.bi-sun]="isDark"
-        (click)="toggleDarkMode()">
-     </i>
-        <i class="bi bi-envelope"></i>
+          [class.bi-moon]="!isDark"
+          [class.bi-sun]="isDark"
+          (click)="toggleDarkMode()">
+        </i>
+
         <i class="bi bi-bell"></i>
-        <i class="bi bi-arrows-fullscreen"></i>
+        <i class="bi bi-arrows-fullscreen" (click)="toggleFullscreen()"></i>
 
         <div class="profile">
-          <img src="https://i.pravatar.cc/40" />
+          <img src="default user.png" alt="Profile" (click)="goToProfile()" />
         </div>
       </div>
 
     </header>
 
-    <!-- Welcome -->
-    <div class="welcome">
-      <h2>Hi, welcome back!</h2>
-      <p>Sales monitoring dashboard template.</p>
+    <!-- ✅ Dynamic Content using Router Outlet -->
+    <div class="content-area">
+      <router-outlet></router-outlet>
     </div>
 
-    <!-- Cards -->
-    <section class="cards">
-
-      <div class="card blue">
-        <h6>TODAY ORDERS</h6>
-        <h3>$0</h3>
-        <small>Compared to last week</small>
-      </div>
-
-      <div class="card pink">
-        <h6>TODAY EARNINGS</h6>
-        <h3>$0</h3>
-        <small>Compared to last week</small>
-      </div>
-
-      <div class="card green">
-        <h6>TOTAL EARNINGS</h6>
-        <h3>$0</h3>
-        <small>Compared to last week</small>
-      </div>
-
-      <div class="card orange">
-        <h6>PRODUCT SOLD</h6>
-        <h3>$0</h3>
-        <small>Compared to last week</small>
-      </div>
-
-    </section>
-
-    <!-- Bottom Section -->
-    <section class="bottom-section">
-
-      <div class="chart-box">
-        <h4>ORDER STATUS</h4>
-        <div class="fake-chart"></div>
-      </div>
-
-      <div class="map-box">
-        <h4>SALES REVENUE</h4>
-        <div class="fake-map"></div>
-      </div>
-
-    </section>
-
   </div>
-
 </div>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" [class.show]="isMobileSidebarOpen" (click)="closeMobileSidebar()"></div>

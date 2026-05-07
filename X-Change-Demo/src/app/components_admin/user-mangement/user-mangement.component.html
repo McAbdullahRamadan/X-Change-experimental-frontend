@@ -1,0 +1,283 @@
+<div class="user-management-container">
+
+  <!-- Header -->
+  <div class="user-management-header">
+    <div>
+      <h2><i class="bi bi-people-fill"></i> User Management</h2>
+      <p class="subtitle">Manage all platform users, their roles, and permissions</p>
+    </div>
+    <button class="btn-primary" (click)="openAddUserModal()">
+      <i class="bi bi-plus-circle"></i> Add New User
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-people"></i></div>
+      <div class="stat-info">
+        <h3>{{ totalUsersCount }}</h3>
+        <p>Total Users</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
+      <div class="stat-info">
+        <h3>{{ activeUsersCount }}</h3>
+        <p>Active Users</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-star"></i></div>
+      <div class="stat-info">
+        <h3>{{ educatorsCount }}</h3>
+        <p>Educators</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-building"></i></div>
+      <div class="stat-info">
+        <h3>{{ corporateCount }}</h3>
+        <p>Corporate</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Bar -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input
+        type="text"
+        [(ngModel)]="filters.search"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search by name, email, or phone..."
+      />
+      <i class="bi bi-x-lg clear-btn" *ngIf="filters.search" (click)="filters.search=''; onSearchChange('')"></i>
+    </div>
+
+    <select [(ngModel)]="filters.status" (change)="applyFilters()" class="filter-select">
+      <option value="">All Status</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+
+    <select [(ngModel)]="filters.country" (change)="applyFilters()" class="filter-select">
+      <option value="">All Countries</option>
+      <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+    </select>
+
+    <button class="btn-outline" (click)="resetFilters()">
+      <i class="bi bi-arrow-repeat"></i> Reset
+    </button>
+
+    <button class="btn-outline" (click)="exportUsers()">
+      <i class="bi bi-download"></i> Export
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-outline" (click)="loadUsers()">Try Again</button>
+  </div>
+
+  <!-- Users Table -->
+  <div *ngIf="!isLoading && !errorMessage" class="table-wrapper">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th style="width: 40px;"><input type="checkbox" (change)="toggleSelectAll($event)" [checked]="isAllSelected"></th>
+          <th (click)="sortBy('firstname')" class="sortable">
+            FullName <i class="bi" [class.bi-arrow-up]="filters.sortBy === 'firstname' && filters.sortOrder === 'asc'" [class.bi-arrow-down]="filters.sortBy === 'firstname' && filters.sortOrder === 'desc'"></i>
+          </th>
+          <th (click)="sortBy('email')" class="sortable">Email</th>
+          <th>Phone</th>
+          <th (click)="sortBy('country')" class="sortable">Country</th>
+          <th (click)="sortBy('createdAt')" class="sortable">Created At</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td style="width: 40px;"><input type="checkbox" [(ngModel)]="selectedUsers[user.id]"></td>
+          <td class="user-name-cell">
+            <div class="user-name">{{ user.firstname }} {{ user.lastname }}</div>
+          </td>
+          <td class="email-cell" title="{{ user.email }}">{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td><span class="country-badge">{{ user.country || '—' }}</span></td>
+          <td>{{ user.createdAt | date:'yyyy-MM-dd' }}</td>
+          <!-- Role Column -->
+          <td class="role-cell">
+            <span class="role-badge"
+                  [class.admin]="getUserRole(user) === 'admin'"
+                  [class.educator]="getUserRole(user) === 'educator'"
+                  [class.corporate]="getUserRole(user) === 'corporate'">
+              <i [class]="getRoleIcon(getUserRole(user))"></i> {{ getUserRole(user) }}
+            </span>
+          </td>
+          <!-- Status Column - Dot Style -->
+          <td class="status-cell">
+            <div class="status-dot"
+                 [class.active]="user.isActive"
+                 [class.inactive]="!user.isActive">
+            </div>
+            <span class="status-text" [class.active]="user.isActive" [class.inactive]="!user.isActive">
+              {{ user.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="action-btn view" (click)="viewUser(user)" title="View">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="action-btn edit" (click)="editUser(user)" title="Edit">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="action-btn delete" (click)="deleteUser(user)" title="Delete">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td colspan="9" class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>No users found</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && totalPages > 0" class="pagination-container">
+    <div class="pagination-info">
+      Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, totalItems) }} of {{ totalItems }} entries
+    </div>
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="page-btn">
+        <i class="bi bi-chevron-left"></i> Prev
+      </button>
+      <div class="page-numbers">
+        <button *ngFor="let page of getPageNumbers()" (click)="goToPage(page)" class="page-number" [class.active]="page === currentPage">
+          {{ page }}
+        </button>
+      </div>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="page-btn">
+        Next <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- User Modal (Add/Edit/View) -->
+<div class="modal" [class.show]="showUserModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ modalMode === 'view' ? 'User Details' : modalMode === 'edit' ? 'Edit User' : 'Add New User' }}</h3>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name <span class="required">*</span></label>
+            <input type="text" formControlName="firstname" placeholder="Enter first name">
+            <small class="error" *ngIf="userForm.get('firstname')?.touched && userForm.get('firstname')?.invalid">First name is required</small>
+          </div>
+          <div class="form-group">
+            <label>Last Name <span class="required">*</span></label>
+            <input type="text" formControlName="lastname" placeholder="Enter last name">
+            <small class="error" *ngIf="userForm.get('lastname')?.touched && userForm.get('lastname')?.invalid">Last name is required</small>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" formControlName="email" placeholder="Enter email">
+            <small class="error" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">Valid email is required</small>
+          </div>
+          <div class="form-group">
+            <label>Phone Number <span class="required">*</span></label>
+            <input type="tel" formControlName="phoneNumber" placeholder="Enter phone number">
+            <small class="error" *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid">Phone number is required</small>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Country <span class="required">*</span></label>
+            <select formControlName="country">
+              <option value="">Select Country</option>
+              <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+            </select>
+            <small class="error" *ngIf="userForm.get('country')?.touched && userForm.get('country')?.invalid">Country is required</small>
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" formControlName="city" placeholder="Enter city">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>University</label>
+            <input type="text" formControlName="university" placeholder="Enter university">
+          </div>
+          <div class="form-group">
+            <label>Major</label>
+            <input type="text" formControlName="major" placeholder="Enter major">
+          </div>
+        </div>
+        <!-- Role Field -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Role <span class="required">*</span></label>
+            <select formControlName="role">
+              <option value="user">User</option>
+              <option value="educator">Educator</option>
+              <option value="corporate">Corporate</option>
+              <option value="admin">Admin</option>
+            </select>
+            <small class="error" *ngIf="userForm.get('role')?.touched && userForm.get('role')?.invalid">Role is required</small>
+          </div>
+          <div class="form-group">
+            <!-- Empty spacer for alignment -->
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="userForm.invalid">
+            {{ modalMode === 'edit' ? 'Update User' : 'Create User' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" [class.show]="showDeleteModal" (click)="closeDeleteModalOnBackdrop($event)">
+  <div class="modal-content modal-sm">
+    <div class="modal-header">
+      <h3>Confirm Delete</h3>
+      <button class="close-btn" (click)="closeDeleteModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete user <strong>{{ userToDelete?.firstname }} {{ userToDelete?.lastname }}</strong>?</p>
+      <p class="warning-text">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" (click)="closeDeleteModal()">Cancel</button>
+      <button class="btn-danger" (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>

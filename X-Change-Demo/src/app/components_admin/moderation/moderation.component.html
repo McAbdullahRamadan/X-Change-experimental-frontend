@@ -1,0 +1,344 @@
+<div class="moderation-container">
+
+  <!-- Header -->
+  <div class="moderation-header">
+    <div>
+      <h2><i class="bi bi-flag-fill"></i> Moderation Center</h2>
+      <p class="subtitle">Review and manage reported content from users</p>
+    </div>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-row">
+    <div class="stat-card new" (click)="filters.status='New'; applyFilters()">
+      <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="stat-info">
+        <h3>{{ newCount }}</h3>
+        <p>New</p>
+      </div>
+    </div>
+    <div class="stat-card review" (click)="filters.status='UnderReview'; applyFilters()">
+      <div class="stat-icon"><i class="bi bi-eye"></i></div>
+      <div class="stat-info">
+        <h3>{{ underReviewCount }}</h3>
+        <p>Under Review</p>
+      </div>
+    </div>
+    <div class="stat-card resolved" (click)="filters.status='Resolved'; applyFilters()">
+      <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
+      <div class="stat-info">
+        <h3>{{ resolvedCount }}</h3>
+        <p>Resolved</p>
+      </div>
+    </div>
+    <div class="stat-card rejected" (click)="filters.status='Rejected'; applyFilters()">
+      <div class="stat-icon"><i class="bi bi-x-circle"></i></div>
+      <div class="stat-info">
+        <h3>{{ rejectedCount }}</h3>
+        <p>Rejected</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Bar -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input
+        type="text"
+        [(ngModel)]="filters.search"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search by reporter, content..."
+      />
+      <i class="bi bi-x-lg clear-btn" *ngIf="filters.search" (click)="filters.search=''; onSearchChange('')"></i>
+    </div>
+
+    <select [(ngModel)]="filters.status" (change)="applyFilters()" class="filter-select">
+      <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
+    </select>
+
+    <select [(ngModel)]="filters.targetType" (change)="applyFilters()" class="filter-select">
+      <option *ngFor="let type of targetTypes" [value]="type.value">{{ type.label }}</option>
+    </select>
+
+    <button class="btn-outline" (click)="resetFilters()">
+      <i class="bi bi-arrow-repeat"></i> Reset
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading reports...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-outline" (click)="loadFlags()">Try Again</button>
+  </div>
+
+  <!-- Flags Table -->
+  <div *ngIf="!isLoading && !errorMessage" class="table-wrapper">
+    <table class="flags-table">
+      <thead>
+        <tr>
+          <th (click)="sortBy('id')" class="sortable">ID</th>
+          <th (click)="sortBy('targetType')" class="sortable">Type</th>
+          <th>Content</th>
+          <th>Reporter</th>
+          <th (click)="sortBy('reason')" class="sortable">Reason</th>
+          <th (click)="sortBy('createdAt')" class="sortable">Submitted</th>
+          <th>Status</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let flag of flags">
+          <td class="id-cell">#{{ flag.id }}</td>
+          <td>
+            <span class="type-badge">
+              <i [class]="getTargetTypeIcon(flag.targetType)"></i>
+              {{ flag.targetTypeAr }}
+            </span>
+          </td>
+          <td class="content-cell">
+            <div class="content-preview">
+              <div class="content-title">{{ flag.targetTitle || '—' }}</div>
+              <div class="content-text">{{ (flag.targetContent || '').substring(0, 60) }}...</div>
+              <div class="content-author">by {{ flag.targetAuthorName || 'Unknown' }}</div>
+            </div>
+          </td>
+          <td class="reporter-cell">
+            <div class="reporter-info">
+              <div class="reporter-avatar" [style.background]="getAvatarColor(flag.reporterName)">
+                {{ (flag.reporterName.charAt(0) || 'U') }}
+              </div>
+              <div class="reporter-details">
+                <div class="reporter-name">{{ flag.reporterName }}</div>
+                <div class="reporter-email">{{ flag.reporterEmail }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="reason-cell">{{ flag.reason.substring(0, 60) }}{{ flag.reason.length > 60 ? '...' : '' }}</td>
+          <td>{{ flag.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+          <td>
+            <span class="status-badge" [class]="getStatusClass(flag.status)">
+              <i [class]="getStatusIcon(flag.status)"></i>
+              {{ getStatusText(flag.status) }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="action-btn view" (click)="viewDetails(flag)" title="View Details">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button *ngIf="flag.status === 'New' || flag.status === 'UnderReview'"
+                    class="action-btn resolve" (click)="openResolveModal(flag)" title="Resolve">
+              <i class="bi bi-check-lg"></i>
+            </button>
+            <button *ngIf="flag.status === 'New' || flag.status === 'UnderReview'"
+                    class="action-btn reject" (click)="openRejectModal(flag)" title="Reject">
+              <i class="bi bi-x-lg"></i>
+            </button>
+            <button class="action-btn delete" (click)="deleteFlag(flag)" title="Delete">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="flags.length === 0">
+          <td colspan="8" class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>No reports found</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && totalPages > 0" class="pagination-container">
+    <div class="pagination-info">
+      Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, totalItems) }} of {{ totalItems }} entries
+    </div>
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="page-btn">
+        <i class="bi bi-chevron-left"></i> Prev
+      </button>
+      <div class="page-numbers">
+        <button *ngFor="let page of getPageNumbers()" (click)="goToPage(page)" class="page-number" [class.active]="page === currentPage">
+          {{ page }}
+        </button>
+      </div>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="page-btn">
+        Next <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Details Modal -->
+<div class="modal" [class.show]="showDetailsModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <h3><i class="bi bi-flag-fill"></i> Report Details</h3>
+      <button class="close-btn" (click)="closeDetailsModal()">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="selectedFlag">
+
+      <!-- Report Info -->
+      <div class="details-section">
+        <h4><i class="bi bi-info-circle"></i> Report Information</h4>
+        <div class="details-grid">
+          <div class="detail-item">
+            <label>Report ID:</label>
+            <span>#{{ selectedFlag.id }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Status:</label>
+            <span class="status-badge" [class]="getStatusClass(selectedFlag.status)">
+              <i [class]="getStatusIcon(selectedFlag.status)"></i>
+              {{ getStatusText(selectedFlag.status) }}
+            </span>
+          </div>
+          <div class="detail-item">
+            <label>Submitted:</label>
+            <span>{{ selectedFlag.createdAt | date:'yyyy-MM-dd HH:mm' }}</span>
+          </div>
+          <div class="detail-item" *ngIf="selectedFlag.resolvedAt">
+            <label>Resolved:</label>
+            <span>{{ selectedFlag.resolvedAt | date:'yyyy-MM-dd HH:mm' }}</span>
+          </div>
+          <div class="detail-item" *ngIf="selectedFlag.timeToResolveHours > 0">
+            <label>Time to resolve:</label>
+            <span>{{ selectedFlag.timeToResolveHours }} hours</span>
+          </div>
+          <div class="detail-item">
+            <label>Reason:</label>
+            <span class="reason-text">{{ selectedFlag.reason }}</span>
+          </div>
+          <div class="detail-item" *ngIf="selectedFlag.notes">
+            <label>Moderator Notes:</label>
+            <span>{{ selectedFlag.notes }}</span>
+          </div>
+          <div class="detail-item" *ngIf="selectedFlag.moderatorName">
+            <label>Moderator:</label>
+            <span>{{ selectedFlag.moderatorName }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reported Content -->
+      <div class="details-section">
+        <h4><i class="bi bi-file-text"></i> Reported Content</h4>
+        <div class="content-box">
+          <div class="content-meta">
+            <span class="type-badge">
+              <i [class]="getTargetTypeIcon(selectedFlag.targetType)"></i>
+              {{ selectedFlag.targetTypeAr }}
+            </span>
+            <span class="content-id">ID: {{ selectedFlag.targetId }}</span>
+          </div>
+          <div class="content-title">{{ selectedFlag.targetTitle || 'No title' }}</div>
+          <div class="content-text-full">{{ selectedFlag.targetContent || 'No content' }}</div>
+          <div class="content-author">
+            <i class="bi bi-person"></i> Author: {{ selectedFlag.targetAuthorName || 'Unknown' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Reporter Info -->
+      <div class="details-section">
+        <h4><i class="bi bi-person"></i> Reporter</h4>
+        <div class="reporter-box">
+          <div class="reporter-avatar-lg" [style.background]="getAvatarColor(selectedFlag.reporterName)">
+            {{ (selectedFlag.reporterName.charAt(0) || 'U') }}
+          </div>
+          <div class="reporter-details">
+            <div class="reporter-name">{{ selectedFlag.reporterName }}</div>
+            <div class="reporter-email">{{ selectedFlag.reporterEmail }}</div>
+            <div class="reporter-id">User ID: {{ selectedFlag.reporterId }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" (click)="closeDetailsModal()">Close</button>
+      <button *ngIf="selectedFlag?.status === 'New' || selectedFlag?.status === 'UnderReview'"
+              class="btn-success" (click)="openResolveModal(selectedFlag!); closeDetailsModal()">
+        <i class="bi bi-check-lg"></i> Resolve
+      </button>
+      <button *ngIf="selectedFlag?.status === 'New' || selectedFlag?.status === 'UnderReview'"
+              class="btn-danger" (click)="openRejectModal(selectedFlag!); closeDetailsModal()">
+        <i class="bi bi-x-lg"></i> Reject
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Resolve Modal -->
+<div class="modal" [class.show]="showResolveModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3><i class="bi bi-check-circle"></i> Resolve Report</h3>
+      <button class="close-btn" (click)="closeResolveModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Resolving report for <strong>{{ selectedFlag?.targetTypeAr }}</strong> from <strong>{{ selectedFlag?.reporterName }}</strong></p>
+      <form [formGroup]="resolveForm">
+        <div class="form-group">
+          <label>Action to Take <span class="required">*</span></label>
+          <select formControlName="actionTaken" class="form-control">
+            <option value="">Select action...</option>
+            <option *ngFor="let action of actionOptions" [value]="action.value">
+              {{ action.label }}
+            </option>
+          </select>
+          <small class="error" *ngIf="resolveForm.get('actionTaken')?.touched && resolveForm.get('actionTaken')?.invalid">
+            Please select an action
+          </small>
+        </div>
+        <div class="form-group">
+          <label>Notes (Optional)</label>
+          <textarea formControlName="notes" rows="3" placeholder="Add any notes about this decision..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" (click)="closeResolveModal()">Cancel</button>
+      <button class="btn-success" (click)="confirmResolve()" [disabled]="resolveForm.invalid">
+        <i class="bi bi-check-lg"></i> Confirm Resolution
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal" [class.show]="showRejectModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3><i class="bi bi-x-circle"></i> Reject Report</h3>
+      <button class="close-btn" (click)="closeRejectModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Reject report for <strong>{{ selectedFlag?.targetTypeAr }}</strong> from <strong>{{ selectedFlag?.reporterName }}</strong></p>
+      <form [formGroup]="rejectForm">
+        <div class="form-group">
+          <label>Rejection Reason <span class="required">*</span></label>
+          <textarea formControlName="notes" rows="4" placeholder="Please provide a reason for rejecting this report..."></textarea>
+          <small class="error" *ngIf="rejectForm.get('notes')?.touched && rejectForm.get('notes')?.invalid">
+            Rejection reason is required
+          </small>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" (click)="closeRejectModal()">Cancel</button>
+      <button class="btn-danger" (click)="confirmReject()" [disabled]="rejectForm.invalid">
+        <i class="bi bi-x-lg"></i> Confirm Rejection
+      </button>
+    </div>
+  </div>
+</div>

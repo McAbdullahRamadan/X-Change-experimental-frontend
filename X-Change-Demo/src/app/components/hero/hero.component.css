@@ -1,25 +1,65 @@
-/* hero.component.css */
-
+/* ========== HERO SECTION ========== */
 .hero {
   text-align: center;
-  padding-top: 200px;
+  padding-top: 180px;
   inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 45px 45px;
   position: relative;
   min-height: 100vh;
-  background: var(--home-bg);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero::before {
-  content: "";
+/* ========== ANIMATION CLASSES ========== */
+.reveal-section .animate-item {
+  opacity: 0;
+  visibility: visible;
+}
+
+.reveal-section.revealed .animate-item {
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تطبيق الأنيميشن على العناصر */
+.animate-item[data-animation="fadeUp"] {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.animate-item[data-animation="fadeDown"] {
+  animation: fadeDown 0.8s ease forwards;
+}
+
+/* ========== BACKGROUND GRID ========== */
+.grid-background {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
   pointer-events: none;
 }
 
@@ -27,395 +67,332 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 30%, var(--light-glow-green), transparent 50%),
-    radial-gradient(circle at 80% 20%, var(--light-glow-purple), transparent 50%);
+  background: radial-gradient(circle at 20% 30%, rgba(30, 226, 138, 0.08), transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(127, 92, 255, 0.08), transparent 50%);
   pointer-events: none;
 }
 
-.badge {
-  display: inline-block;
-  padding: 8px 20px;
-  border-radius: 30px;
-  background: rgba(255,255,255,0.05);
-  margin-bottom: 30px;
+/* ========== PARTICLES ========== */
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: linear-gradient(135deg, #35f157, #c700ff);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle-1 { top: 15%; left: 10%; animation-duration: 8s; }
+.particle-2 { top: 70%; left: 85%; animation-duration: 10s; animation-delay: 1s; }
+.particle-3 { top: 30%; left: 90%; animation-duration: 7s; animation-delay: 2s; }
+.particle-4 { top: 80%; left: 15%; animation-duration: 9s; animation-delay: 0.5s; }
+.particle-5 { top: 45%; left: 5%; animation-duration: 11s; animation-delay: 1.5s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  50% { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
+}
+
+/* ========== BADGE ========== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 60px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(53, 241, 87, 0.2);
+  margin-bottom: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #35f157;
+  transition: all 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.badge:hover {
+  transform: translateY(-2px);
+  border-color: #35f157;
+  box-shadow: 0 0 20px rgba(53, 241, 87, 0.2);
+}
+
+.badge i {
+  font-size: 16px;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); text-shadow: 0 0 5px #35f157; }
+}
+
+/* ========== MAIN TITLE ========== */
 h1 {
   font-size: 70px;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  max-width: 900px;
+  z-index: 2;
+  position: relative;
 }
 
-p {
-  margin-top: 20px;
-  color: var(--text-main);
+.line {
+  display: block;
 }
 
-.buttons {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  cursor: pointer;
+.gradient-text {
+  background: linear-gradient(135deg, #35f157 0%, #c700ff 50%, #ff44f6 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 3s ease infinite;
+  position: relative;
+  display: inline-block;
 }
 
-.buttons:hover {
-  cursor: pointer;
-}
-
-.primary {
-  background: linear-gradient(80deg, #00ff88, #00b3ff, #7f5cff, #ff4df8);
-  background-size: 1000% 1000%;
-  border: none;
-  padding: 14px 30px;
-  border-radius: 30px;
-  color: var(--text-main);
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s ease;
-  animation: _ngcontent-ng-c1024655190_gradientMove 8s ease infinite;
-}
-
-@keyframes gradientMove {
+@keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-i {
-  background: linear-gradient(90deg, #0f8, #7f5cff, #ff4df8);
-  background-clip: border-box;
+.cursor-blink {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  background: #35f157;
+  margin-left: 5px;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.rocket-icon {
+  display: inline-block;
+  margin-left: 8px;
+  background: linear-gradient(135deg, #35f157, #c700ff, #ff44f6);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
-  -webkit-text-fill-color: transparent;
+  animation: rocketFloat 2s ease-in-out infinite;
+}
+
+@keyframes rocketFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+/* ========== SUBTITLE ========== */
+p {
+  margin-top: 20px;
+  color: var(--text-secondary);
+  font-size: 18px;
+  max-width: 550px;
+  z-index: 2;
+  position: relative;
+}
+
+p i {
+  margin-right: 8px;
+  color: #35f157;
+}
+
+/* ========== BUTTONS ========== */
+.buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+.primary {
+  background: linear-gradient(135deg, #35f157, #c700ff);
+  border: none;
+  padding: 14px 32px;
+  border-radius: 40px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.primary:hover::before {
+  left: 100%;
+}
+
+.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(53, 241, 87, 0.3);
+}
+
+.primary i {
+  background: none;
+  -webkit-text-fill-color: white;
+  transition: transform 0.3s ease;
+}
+
+.primary:hover i {
+  transform: translateX(5px);
 }
 
 .outline {
   background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 14px 30px;
-  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--text-primary);
+  padding: 14px 32px;
+  border-radius: 40px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .outline:hover {
-  box-shadow: 1px 2px 10px rgba(0, 255, 136, 0.5);
+  border-color: #35f157;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(53, 241, 87, 0.15);
+  background: rgba(53, 241, 87, 0.05);
 }
 
-/* ================= RESPONSIVE ================= */
+.outline i {
+  transition: transform 0.3s ease;
+}
 
-/* لاب توب كبير (1200px - 1400px) */
-@media (max-width: 1400px) {
-  .hero {
-    padding-top: 180px;
-    min-height: 90vh;
+.outline:hover i {
+  transform: scale(1.1);
+}
+
+/* ========== SCROLL INDICATOR ========== */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-indicator:hover {
+  opacity: 0.8;
+}
+
+.scroll-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.scroll-mouse {
+  width: 26px;
+  height: 42px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.scroll-wheel {
+  width: 3px;
+  height: 8px;
+  background: #35f157;
+  border-radius: 2px;
+  animation: scrollWheel 1.5s ease-in-out infinite;
+}
+
+@keyframes scrollWheel {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  h1 {
-    font-size: 62px;
-  }
-
-  .badge {
-    padding: 6px 18px;
-    font-size: 14px;
-  }
-
-  p {
-    font-size: 18px;
-    max-width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+  100% {
+    opacity: 0;
+    transform: translateY(15px);
   }
 }
 
-/* لاب توب متوسط (992px - 1200px) */
+/* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
-  .hero {
-    padding-top: 160px;
-    min-height: 85vh;
-  }
-
-  h1 {
-    font-size: 55px;
-  }
-
-  .badge {
-    padding: 6px 16px;
-    font-size: 13px;
-  }
-
-  p {
-    font-size: 17px;
-    max-width: 85%;
-  }
-
-  .primary, .outline {
-    padding: 12px 28px;
-    font-size: 16px;
-  }
+  h1 { font-size: 55px; }
 }
 
-/* لاب توب صغير / تابلت أفقي (768px - 992px) */
 @media (max-width: 992px) {
-  .hero {
-    padding-top: 140px;
-    min-height: 80vh;
-  }
-
-  h1 {
-    font-size: 48px;
-  }
-
-  .badge {
-    padding: 5px 14px;
-    font-size: 12px;
-    margin-bottom: 25px;
-    margin-top: 35px;
-  }
-
-  p {
-    font-size: 16px;
-    max-width: 90%;
-    margin-top: 15px;
-  }
-
-  .buttons {
-    margin-top: 35px;
-    gap: 18px;
-  }
-
-  .primary, .outline {
-    padding: 12px 25px;
-    font-size: 15px;
-  }
+  .hero { padding-top: 160px; }
+  h1 { font-size: 48px; }
+  .badge { font-size: 12px; padding: 6px 16px; }
+  p { font-size: 16px; }
 }
 
-/* تابلت عمودي (576px - 768px) */
 @media (max-width: 768px) {
-  .hero {
-    padding-top: 120px;
-    min-height: 75vh;
-  }
-
-  h1 {
-    font-size: 38px;
-  }
-
-  .badge {
-    padding: 5px 12px;
-    font-size: 11px;
-    margin-bottom: 20px;
-    margin-top: 35px;
-  }
-
-  p {
-    font-size: 15px;
-    max-width: 95%;
-    margin-top: 12px;
-  }
-
-  .buttons {
-    margin-top: 30px;
-    gap: 15px;
-  }
-
-  .primary, .outline {
-    padding: 10px 22px;
-    font-size: 14px;
-  }
-
-  .primary {
-    border-radius: 25px;
-  }
-
-  .outline {
-    border-radius: 10px;
-  }
+  .hero { padding-top: 140px; min-height: 90vh; }
+  h1 { font-size: 36px; }
+  .badge { font-size: 11px; margin-bottom: 20px; }
+  p { font-size: 14px; }
+  .primary, .outline { padding: 10px 24px; font-size: 14px; }
 }
 
-/* موبايل كبير (480px - 576px) */
 @media (max-width: 576px) {
-  .hero {
-    padding-top: 83px;
-    min-height: 1vh;
-  }
-
-  h1 {
-    font-size: 30px;
-  }
-
-  .badge {
-    padding: 4px 10px;
-    font-size: 10px;
-    margin-bottom: 18px;
-    margin-top: 35px;
-  }
-
-  p {
-    font-size: 14px;
-    max-width: 98%;
-    margin-top: 10px;
-    padding: 0 15px;
-  }
-
-  .buttons {
-    margin-top: 25px;
-    gap: 12px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .primary, .outline {
-    padding: 10px 20px;
-    font-size: 13px;
-    width: 80%;
-    max-width: 250px;
-  }
-
-  .primary {
-    border-radius: 25px;
-  }
-
-  .outline {
-    border-radius: 10px;
-  }
+  .hero { padding-top: 120px; }
+  h1 { font-size: 28px; }
+  .badge { font-size: 10px; }
+  .buttons { flex-direction: column; align-items: center; gap: 12px; }
+  .primary, .outline { width: 80%; max-width: 250px; justify-content: center; }
+  .scroll-indicator { display: none; }
 }
 
-/* موبايل صغير (320px - 480px) */
 @media (max-width: 480px) {
-  .hero {
-    padding-top: 83px;
-    min-height: 1vh;
-  }
-
-  h1 {
-    font-size: 26px;
-  }
-
-  .badge {
-    padding: 4px 8px;
-    font-size: 9px;
-    margin-bottom: 15px;
-    margin-top: 35px;
-  }
-
-  p {
-    font-size: 13px;
-    margin-top: 8px;
-  }
-
-  .buttons {
-    margin-top: 20px;
-    gap: 10px;
-  }
-
-  .primary, .outline {
-    padding: 8px 16px;
-    font-size: 12px;
-    width: 85%;
-    max-width: 220px;
-  }
+  h1 { font-size: 24px; }
+  .badge { font-size: 9px; }
+  p { font-size: 13px; }
 }
 
-/* موبايل صغير جداً (تحت 320px) */
-@media (max-width: 320px) {
-  .hero {
-    padding-top: 80px;
-    min-height: 1vh;
-  }
-
-  h1 {
-    font-size: 22px;
-  }
-
-  .badge {
-    padding: 3px 6px;
-    font-size: 8px;
-    margin-bottom: 12px;
-    margin-top: 35px;
-  }
-
-  p {
-    font-size: 12px;
-  }
-
-  .primary, .outline {
-    padding: 7px 14px;
-    font-size: 11px;
-    width: 90%;
-    max-width: 200px;
-  }
-}
-
-/* اتجاه أفقي (Landscape) على الموبايل */
-@media (max-width: 768px) and (orientation: landscape) {
-  .hero {
-    padding-top: 100px;
-    min-height: 100vh;
-  }
-
-  h1 {
-    font-size: 32px;
-  }
-
-  .buttons {
-    flex-direction: row;
-  }
-
-  .primary, .outline {
-    width: auto;
-    min-width: 150px;
-  }
-}
-
-/* شاشات كبيرة جداً (4K - 2000px+) */
 @media (min-width: 2000px) {
-  .hero {
-    padding-top: 250px;
-    min-height: 100vh;
-  }
-
-  h1 {
-    font-size: 90px;
-  }
-
-  .badge {
-    padding: 12px 28px;
-    font-size: 18px;
-    margin-bottom: 40px;
-    margin-top: 35px;
-  }
-
-  p {
-    font-size: 24px;
-    margin-top: 30px;
-  }
-
-  .primary, .outline {
-    padding: 18px 40px;
-    font-size: 20px;
-  }
-
-  .buttons {
-    margin-top: 50px;
-    gap: 30px;
-  }
-}
-
-/* تحسينات للطباعة */
-@media print {
-  .hero {
-    background: white;
-    padding-top: 50px;
-  }
-
-  .hero::before,
-  .hero::after {
-    display: none;
-  }
-
-  .primary, .outline {
-    display: none;
-  }
+  h1 { font-size: 90px; }
+  .badge { font-size: 18px; padding: 12px 28px; }
+  p { font-size: 24px; max-width: 800px; }
+  .primary, .outline { padding: 18px 42px; font-size: 20px; }
 }

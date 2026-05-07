@@ -32,6 +32,17 @@ import { LessonsComponent } from './components/courses/lessons/lessons.component
 import { MasterSkillsComponent } from './components/courses/master-skills/master-skills.component';
 import { UsercommunityComponent } from './components/usercommunity/usercommunity.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
+import { UserMangementComponent } from './components_admin/user-mangement/user-mangement.component';
+import { EducatorComponent } from './components_admin/educator/educator.component';
+import { ModerationComponent } from './components_admin/moderation/moderation.component';
+import { CoureAndContentmanagementComponent } from './components_admin/Course-and-contentmanagement/coure-and-contentmanagement.component';
+import { LaborExchangeComponent } from './components_admin/labor-exchange/labor-exchange.component';
+import { CorporateManagementComponent } from './components_admin/corporate-management/corporate-management.component';
+import { GmaificationManagementComponent } from './components_admin/gmaification-management/gmaification-management.component';
+import { AuditLogsComponent } from './components_admin/audit-logs/audit-logs.component';
+import { FeedComponent } from './components/feed/feed.component';
+import { JoinComponent } from './components/join/join.component';
+
 
 
 
@@ -61,7 +72,18 @@ import { AboutusComponent } from './components/aboutus/aboutus.component';
     LessonsComponent,
     MasterSkillsComponent,
     UsercommunityComponent,
-    AboutusComponent
+    AboutusComponent,
+    UserMangementComponent,
+    EducatorComponent,
+    ModerationComponent,
+    CoureAndContentmanagementComponent,
+    LaborExchangeComponent,
+    CorporateManagementComponent,
+    GmaificationManagementComponent,
+    AuditLogsComponent,
+    FeedComponent,
+    JoinComponent,
+
 
 
   ],

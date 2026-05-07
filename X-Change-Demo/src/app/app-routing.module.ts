@@ -16,6 +16,15 @@ import { LessonsComponent } from './components/courses/lessons/lessons.component
 import { MasterSkillsComponent } from './components/courses/master-skills/master-skills.component';
 import { UsercommunityComponent } from './components/usercommunity/usercommunity.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
+import { UserMangementComponent } from './components_admin/user-mangement/user-mangement.component';
+import { EducatorComponent } from './components_admin/educator/educator.component';
+import { ModerationComponent } from './components_admin/moderation/moderation.component';
+import { CoureAndContentmanagementComponent } from './components_admin/Course-and-contentmanagement/coure-and-contentmanagement.component';
+import { LaborExchangeComponent } from './components_admin/labor-exchange/labor-exchange.component';
+import { CorporateManagementComponent } from './components_admin/corporate-management/corporate-management.component';
+import { GmaificationManagementComponent } from './components_admin/gmaification-management/gmaification-management.component';
+import { AuditLogsComponent } from './components_admin/audit-logs/audit-logs.component';
+import { FeedComponent } from './components/feed/feed.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,13 +39,31 @@ const routes: Routes = [
   { path: 'master-skills', component: MasterSkillsComponent },
   { path: 'usercommunity', component: UsercommunityComponent },
   { path: 'about', component: AboutusComponent },
+  { path: 'Feed', component: FeedComponent },
+
 
 
 
 
   {path: 'profile/:username',  component: ProfileComponent,canActivate: [authGuard]},
   {path: 'editprofile/:username',component: EditprofileComponent,canActivate: [authGuard]},
-  {path: 'dashboard',component: DashboardComponent,canActivate: [authGuard]},
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'Dashboard', component: DashboardComponent },
+      { path: 'user-management', component: UserMangementComponent },
+      { path: 'educator-verification', component: EducatorComponent },
+      { path: 'moderation', component: ModerationComponent },
+      { path: 'course-management', component: CoureAndContentmanagementComponent },
+      { path: 'labor-exchange', component: LaborExchangeComponent },
+      { path: 'corporate-partners', component: CorporateManagementComponent },
+      { path: 'gamification', component: GmaificationManagementComponent },
+      { path: 'audit-logs', component: AuditLogsComponent }
+    ]
+  },
+
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-code', component: VerifyCodeComponent },
   { path: 'reset-password', component: ResetPasswordComponent },

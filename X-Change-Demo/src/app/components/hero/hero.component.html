@@ -1,19 +1,50 @@
-<section class="section hero">
-  <!-- <div class="grid-bg"></div> -->
-  <div class="badge">✨ The future of peer-to-peer learning</div>
+<section class="hero reveal-section">
+  <!-- Animated Background Grid -->
+  <div class="grid-background"></div>
 
-  <h1>
-    Learn skills.<br>
-    <span class="gradient-text">Teach skills.</span><br>
-    Level up together.<i class="bi bi-rocket-takeoff"></i>
+  <!-- Floating Particles -->
+  <div class="particles">
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
+    <div class="particle particle-5"></div>
+  </div>
+
+  <!-- Badge with animation -->
+  <div class="badge animate-item" data-animation="fadeDown" data-delay="0">
+    <i class="bi bi-stars"></i>
+    <span>The future of peer-to-peer learning</span>
+  </div>
+
+  <!-- Main Title with gradient animation -->
+  <h1 class="animate-item" data-animation="fadeUp" data-delay="0.1">
+    <span class="line">Learn skills.</span>
+    <span class="line gradient-text">
+      Teach skills.
+      <span class="cursor-blink">|</span>
+    </span>
+    <span class="line">Level up together.
+      <i class="bi bi-rocket-takeoff rocket-icon"></i>
+    </span>
   </h1>
 
-  <p>
+  <!-- Subtitle -->
+  <p class="animate-item" data-animation="fadeUp" data-delay="0.2">
+    <i class="bi bi-chat-quote"></i>
     Swap knowledge with people your age. No boring lectures.
   </p>
 
-  <div class="buttons">
-    <button class="primary">Start Learning Free →</button>
-    <button class="outline">Teach a Skill</button>
+  <!-- Buttons with hover effects -->
+  <div class="buttons animate-item" data-animation="fadeUp" data-delay="0.3">
+    <button class="primary" (click)="onStartLearning()">
+      <span>Start Learning Free</span>
+      <i class="bi bi-arrow-right"></i>
+    </button>
+    <button class="outline" (click)="onTeachSkill()">
+      <i class="bi bi-mic"></i>
+      <span>Teach a Skill</span>
+    </button>
   </div>
+
 </section>

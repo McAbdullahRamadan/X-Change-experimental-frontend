@@ -1,0 +1,459 @@
+<div class="course-management-container">
+
+  <!-- Header -->
+  <div class="management-header">
+    <div>
+      <h2><i class="bi bi-book-half"></i> Course & Content Management</h2>
+      <p class="subtitle">Manage your courses, sections, lessons, and track student progress</p>
+    </div>
+    <button class="btn-primary" (click)="openAddCourseModal()">
+      <i class="bi bi-plus-circle"></i> Create New Course
+    </button>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <button class="tab-btn" [class.active]="selectedTab === 'courses'" (click)="selectedTab = 'courses'">
+      <i class="bi bi-grid"></i> My Courses
+    </button>
+    <button class="tab-btn" [class.active]="selectedTab === 'sections'" [disabled]="!selectedCourse" (click)="selectedTab = 'sections'">
+      <i class="bi bi-folder"></i> Sections & Lessons
+    </button>
+    <button class="tab-btn" [class.active]="selectedTab === 'progress'" [disabled]="!selectedCourse" (click)="selectedTab = 'progress'">
+      <i class="bi bi-graph-up"></i> Progress
+    </button>
+  </div>
+
+  <!-- Courses Tab -->
+  <div *ngIf="selectedTab === 'courses'" class="tab-content">
+
+    <!-- Filters Bar -->
+    <div class="filters-bar">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="filters.search" (keyup.enter)="loadCourses()" placeholder="Search courses..." />
+      </div>
+      <select [(ngModel)]="filters.level" (change)="loadCourses()" class="filter-select">
+        <option value="">All Levels</option>
+        <option *ngFor="let level of courseLevels" [value]="level">{{ level }}</option>
+      </select>
+      <select [(ngModel)]="filters.isPublished" (change)="loadCourses()" class="filter-select">
+        <option [value]="undefined">All Status</option>
+        <option [value]="true">Published</option>
+        <option [value]="false">Draft</option>
+      </select>
+      <button class="btn-outline" (click)="loadCourses()">
+        <i class="bi bi-search"></i> Apply
+      </button>
+      <button class="btn-outline" (click)="resetFilters()">
+        <i class="bi bi-arrow-repeat"></i> Reset
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading courses...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !isLoading" class="error-state">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <p>{{ errorMessage }}</p>
+      <button class="btn-outline" (click)="loadCourses()">Try Again</button>
+    </div>
+
+    <!-- Courses Grid -->
+    <div *ngIf="!isLoading && !errorMessage" class="courses-grid">
+      <div *ngFor="let course of courses" class="course-card" [class.selected]="selectedCourse?.id === course.id" (click)="selectCourse(course)">
+        <div class="course-thumbnail">
+          <div class="thumbnail-placeholder">
+            <i class="bi bi-camera-fill"></i>
+          </div>
+          <span class="course-level" [class]="getLevelClass(course.level)">{{ course.level }}</span>
+        </div>
+        <div class="course-info">
+          <h4>{{ course.title }}</h4>
+          <p>{{ (course.description || '').slice(0, 80) }}...</p>
+          <div class="course-meta">
+            <span><i class="bi bi-clock"></i> {{ formatDuration(course.totalDuration) }}</span>
+            <span><i class="bi bi-journal-bookmark-fill"></i> {{ course.totalLessons }} lessons</span>
+            <span><i class="bi bi-people-fill"></i> {{ course.enrollmentCount }} students</span>
+          </div>
+          <div class="course-footer">
+            <span class="price">{{ course.price === 0 ? 'Free' : (course.price | currency:'EGP') }}</span>
+            <span class="status-badge" [class]="getStatusClass(course.isPublished)">
+              {{ getStatusText(course.isPublished) }}
+            </span>
+          </div>
+        </div>
+        <div class="course-actions-overlay">
+          <button class="action-btn edit" (click)="openEditCourseModal(course); $event.stopPropagation()" title="Edit Course">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button *ngIf="!course.isPublished" class="action-btn publish" (click)="publishCourse(course.id); $event.stopPropagation()" title="Publish Course">
+            <i class="bi bi-cloud-upload"></i>
+          </button>
+          <button class="action-btn delete" (click)="deleteCourse(course.id); $event.stopPropagation()" title="Delete Course">
+            <i class="bi bi-trash3"></i>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="courses.length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <p>No courses found. Create your first course!</p>
+        <button class="btn-primary" (click)="openAddCourseModal()">Create Course</button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="!isLoading && totalPages > 0" class="pagination-container">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, totalItems) }} of {{ totalItems }} courses
+      </div>
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1" class="page-btn">
+          <i class="bi bi-chevron-left"></i> Prev
+        </button>
+        <div class="page-numbers">
+          <button *ngFor="let page of getPageNumbers()" (click)="goToPage(page)" class="page-number" [class.active]="page === currentPage">
+            {{ page }}
+          </button>
+        </div>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="page-btn">
+          Next <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sections & Lessons Tab -->
+  <div *ngIf="selectedTab === 'sections' && selectedCourse" class="tab-content">
+
+    <div class="sections-header">
+      <div class="course-breadcrumb">
+        <button class="back-btn" (click)="selectedTab = 'courses'">
+          <i class="bi bi-arrow-left"></i> Back to Courses
+        </button>
+        <h3><i class="bi bi-book"></i> {{ selectedCourse.title }}</h3>
+      </div>
+      <button class="btn-success btn-sm" (click)="openAddSectionModal()">
+        <i class="bi bi-plus-circle"></i> Add Section
+      </button>
+    </div>
+
+    <!-- Selected Section Indicator -->
+    <div *ngIf="selectedSection" class="selected-section-indicator">
+      <i class="bi bi-check-circle-fill"></i>
+      <strong>Selected Section:</strong> {{ selectedSection.title }}
+    </div>
+    <div *ngIf="!selectedSection" class="no-section-indicator">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <strong>No section selected!</strong> Click on a section to select it first.
+    </div>
+
+    <div class="sections-list">
+      <div *ngFor="let section of sections; let i = index" class="section-card" [class.section-selected]="selectedSection?.id === section.id">
+        <div class="section-header" (click)="selectSection(section)">
+          <i class="bi" [class.bi-chevron-down]="expandedSections[section.id]" [class.bi-chevron-right]="!expandedSections[section.id]"></i>
+          <div class="section-info">
+            <h4>{{ section.title }}</h4>
+            <span>{{ section.lessons.length }} lessons • {{ formatDuration(section.totalDuration) }}</span>
+          </div>
+          <div class="section-actions" (click)="$event.stopPropagation()">
+            <button class="action-btn edit" (click)="openEditSectionModal(section)" title="Edit Section">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="action-btn delete" (click)="deleteSection(section.id)" title="Delete Section">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </div>
+        </div>
+        <div class="section-content" *ngIf="expandedSections[section.id]">
+          <div class="lessons-list">
+            <div *ngFor="let lesson of section.lessons" class="lesson-item">
+              <div class="lesson-info">
+                <i class="bi" [class.bi-play-circle-fill]="lesson.mediaType !== 'None'" [class.bi-file-text-fill]="lesson.mediaType === 'None'"></i>
+                <div>
+                  <h5>{{ lesson.title }}</h5>
+                  <div class="lesson-meta">
+                    <span>{{ formatDuration(lesson.duration) }}</span>
+                    <span *ngIf="lesson.mediaType === 'EmbedUrl'" class="video-badge">
+                      <i class="bi bi-youtube"></i> YouTube
+                    </span>
+                    <span *ngIf="lesson.mediaType === 'Upload'" class="video-badge upload">
+                      <i class="bi bi-cloud-check"></i> Uploaded
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="lesson-actions">
+                <button class="action-btn edit" (click)="openEditLessonModal(lesson)" title="Edit Lesson">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="action-btn delete" (click)="deleteLesson(lesson.id)" title="Delete Lesson">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Add Lesson Button with section context -->
+            <div class="add-lesson-btn" (click)="openAddLessonWithSection(section.id, $event)">
+              <i class="bi bi-plus-circle"></i> Add Lesson to "{{ section.title }}"
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="sections.length === 0" class="empty-state-small">
+        <i class="bi bi-folder2-open"></i>
+        <p>No sections yet. Add your first section to organize your course content!</p>
+        <button class="btn-success btn-sm" (click)="openAddSectionModal()">Add Section</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Tab -->
+  <div *ngIf="selectedTab === 'progress' && selectedCourse && courseProgress" class="tab-content">
+    <div class="progress-header">
+      <div class="course-breadcrumb">
+        <button class="back-btn" (click)="selectedTab = 'courses'">
+          <i class="bi bi-arrow-left"></i> Back to Courses
+        </button>
+        <h3>{{ selectedCourse.title }} - Learning Progress</h3>
+      </div>
+    </div>
+
+    <div class="overall-progress-card">
+      <div class="overall-progress">
+        <div class="progress-ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="54" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+            <circle cx="60" cy="60" r="54" fill="none" stroke="#35f157" stroke-width="8"
+                    [style.stroke-dasharray]="339.292" [style.stroke-dashoffset]="339.292 * (1 - courseProgress.progressPercent / 100)"
+                    stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="progress-percentage">{{ courseProgress.progressPercent }}%</div>
+        </div>
+        <div class="progress-stats">
+          <div class="stat-item">
+            <i class="bi bi-journal-bookmark-fill"></i>
+            <span>{{ courseProgress.completedLessons }} / {{ courseProgress.totalLessons }} lessons completed</span>
+          </div>
+          <div class="stat-item">
+            <i class="bi bi-clock"></i>
+            <span>Total time spent: {{ formatDuration(courseProgress.totalWatchTimeMinutes) }}</span>
+          </div>
+          <div class="stat-item">
+            <i class="bi bi-calendar-check"></i>
+            <span>Last activity: {{ courseProgress.lastAccessedAt | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sections-progress">
+      <div class="sections-progress-header">
+        <h4><i class="bi bi-folder"></i> Course Content</h4>
+      </div>
+      <div *ngFor="let section of courseProgress.sectionsProgress" class="section-progress-card">
+        <div class="section-progress-header">
+          <div class="section-title">
+            <i class="bi bi-folder-fill"></i>
+            <h5>{{ section.sectionTitle }}</h5>
+          </div>
+          <div class="section-progress-stats">
+            <div class="progress-bar-mini">
+              <div class="progress-fill" [style.width.%]="section.progressPercent" [style.background]="getProgressColor(section.progressPercent)"></div>
+            </div>
+            <span class="progress-text">{{ section.completedLessons }}/{{ section.totalLessons }} ({{ section.progressPercent }}%)</span>
+          </div>
+        </div>
+        <div class="lessons-progress-list">
+          <div *ngFor="let lesson of section.lessons" class="lesson-progress-item" [class.completed]="lesson.isCompleted">
+            <i class="bi" [class.bi-check-circle-fill]="lesson.isCompleted" [class.bi-circle]="!lesson.isCompleted"></i>
+            <span class="lesson-title">{{ lesson.lessonTitle }}</span>
+            <span class="lesson-duration">{{ formatDuration(lesson.durationSeconds / 60) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="courseProgress.sectionsProgress.length === 0" class="empty-state-small">
+        <i class="bi bi-folder2-open"></i>
+        <p>No sections available yet.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Course Modal -->
+<div class="modal" [class.show]="showCourseModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <h3>{{ modalMode === 'add' ? 'Create New Course' : 'Edit Course' }}</h3>
+      <button class="close-btn" (click)="closeCourseModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="courseForm" (ngSubmit)="saveCourse()">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Title <span class="required">*</span></label>
+            <input type="text" formControlName="title" placeholder="Course title">
+            <small class="error" *ngIf="courseForm.get('title')?.touched && courseForm.get('title')?.invalid">Title is required (min 5 characters)</small>
+          </div>
+          <div class="form-group">
+            <label>Category <span class="required">*</span></label>
+            <input type="text" formControlName="category" placeholder="e.g., Programming, Design">
+            <small class="error" *ngIf="courseForm.get('category')?.touched && courseForm.get('category')?.invalid">Category is required</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description <span class="required">*</span></label>
+          <textarea formControlName="description" rows="4" placeholder="Course description"></textarea>
+          <small class="error" *ngIf="courseForm.get('description')?.touched && courseForm.get('description')?.invalid">Description is required</small>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price (EGP)</label>
+            <input type="number" formControlName="price" step="0.01">
+            <small>Set 0 for free course</small>
+          </div>
+          <div class="form-group">
+            <label>Level</label>
+            <select formControlName="level">
+              <option *ngFor="let level of courseLevels" [value]="level">{{ level }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" (click)="closeCourseModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="courseForm.invalid">
+            {{ modalMode === 'edit' ? 'Update Course' : 'Create Course' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Section Modal -->
+<div class="modal" [class.show]="showSectionModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ modalMode === 'add' ? 'Add Section' : 'Edit Section' }}</h3>
+      <button class="close-btn" (click)="closeSectionModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="sectionForm" (ngSubmit)="saveSection()">
+        <div class="form-group">
+          <label>Section Title <span class="required">*</span></label>
+          <input type="text" formControlName="title" placeholder="e.g., Introduction to Programming">
+          <small class="error" *ngIf="sectionForm.get('title')?.touched && sectionForm.get('title')?.invalid">Title is required</small>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea formControlName="description" rows="3" placeholder="Optional description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Order Number</label>
+          <input type="number" formControlName="orderNumber">
+          <small>Order in which sections appear</small>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" (click)="closeSectionModal()">Cancel</button>
+          <button type="submit" class="btn-primary">{{ modalMode === 'add' ? 'Add Section' : 'Update Section' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Lesson Modal -->
+<div class="modal" [class.show]="showLessonModal" (click)="closeModalOnBackdrop($event)">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <h3>{{ modalMode === 'add' ? 'Add Lesson' : 'Edit Lesson' }}</h3>
+      <button class="close-btn" (click)="closeLessonModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="lessonForm" (ngSubmit)="saveLesson()">
+        <div class="form-group">
+          <label>Lesson Title <span class="required">*</span></label>
+          <input type="text" formControlName="title" placeholder="Lesson title">
+          <small class="error" *ngIf="lessonForm.get('title')?.touched && lessonForm.get('title')?.invalid">Title is required</small>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Duration (minutes) <span class="required">*</span></label>
+            <input type="number" formControlName="duration" min="1" max="360">
+          </div>
+          <div class="form-group">
+            <label>Order Number</label>
+            <input type="number" formControlName="orderNumber">
+          </div>
+        </div>
+
+        <!-- Video Source Tabs -->
+        <div class="form-group">
+          <label>Video Source</label>
+          <div class="video-source-tabs">
+            <button type="button" class="source-tab" [class.active]="lessonForm.get('mediaType')?.value === 'None'" (click)="lessonForm.patchValue({mediaType: 'None', videoUrl: ''})">
+              <i class="bi bi-camera-video-off"></i> No Video
+            </button>
+            <button type="button" class="source-tab" [class.active]="lessonForm.get('mediaType')?.value === 'EmbedUrl'" (click)="lessonForm.patchValue({mediaType: 'EmbedUrl'})">
+              <i class="bi bi-link-45deg"></i> YouTube/Vimeo Link
+            </button>
+            <button type="button" class="source-tab" [class.active]="lessonForm.get('mediaType')?.value === 'Upload'" (click)="lessonForm.patchValue({mediaType: 'Upload'})">
+              <i class="bi bi-cloud-upload"></i> Upload Video
+            </button>
+          </div>
+        </div>
+
+        <!-- YouTube Link (EmbedUrl) -->
+        <div *ngIf="lessonForm.get('mediaType')?.value === 'EmbedUrl'" class="form-group">
+          <label>Video URL</label>
+          <input type="text" formControlName="videoUrl" placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/...">
+          <small>Paste YouTube or Vimeo link</small>
+        </div>
+
+        <!-- Upload Video (Upload) -->
+        <div *ngIf="lessonForm.get('mediaType')?.value === 'Upload'" class="form-group">
+          <label>Upload Video File</label>
+          <div class="upload-area" (click)="videoFileInput.click()">
+            <input type="file" #videoFileInput id="videoFileInput" accept="video/*" (change)="onVideoSelected($event)" style="display: none;">
+            <div *ngIf="!videoPreviewUrl" class="upload-placeholder">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <p>Click to upload video</p>
+              <small>MP4, WebM, AVI (Max 500MB)</small>
+            </div>
+            <div *ngIf="videoPreviewUrl" class="video-preview">
+              <video [src]="videoPreviewUrl" controls preload="metadata"></video>
+              <button type="button" class="remove-video" (click)="clearSelectedVideo(); $event.stopPropagation()">
+                <i class="bi bi-x-circle-fill"></i>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="isUploading" class="upload-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+            </div>
+            <span>Uploading... {{ uploadProgress }}%</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Lesson Content</label>
+          <textarea formControlName="content" rows="6" placeholder="Lesson content (markdown supported)"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" (click)="closeLessonModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="lessonForm.invalid || isUploading">
+            {{ modalMode === 'add' ? 'Add Lesson' : 'Update Lesson' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
