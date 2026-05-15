@@ -2,7 +2,7 @@
 
 /* ─── CSS Variables ─────────────────────────────────────── */
 :root {
-  --lime:    #c8f135;
+  --lime:    #35f15b;
   --cyan:    #00f5d4;
   --pink:    #ff3cac;
   --orange:  #ff6b35;
@@ -13,13 +13,13 @@
   --bg-card2: rgb(103 98 98 / 48%);
 
   --border:       rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(200, 241, 53, 0.25);
+  --border-hover: rgba(53, 113, 241, 0.25);
 
   --text:  #f0f0f2;
   --muted: #6b7280;
   --muted2: #9ca3af;
 
-  --primary-gradient: linear-gradient(135deg, #c8f135, #00f5d4);
+  --primary-gradient: linear-gradient(135deg, #35f13e, #00f5d4);
   --radius-sm:  10px;
   --radius-md:  16px;
   --radius-lg:  20px;

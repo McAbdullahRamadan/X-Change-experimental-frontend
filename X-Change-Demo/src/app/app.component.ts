@@ -26,11 +26,12 @@ export class AppComponent {
            this.currentRoute.includes('/verify-code')||
            this.currentRoute.includes('/reset-password')||
            this.currentRoute.includes('/Lessons')||
+           this.currentRoute.includes('/EduQuest')||
            this.currentRoute.includes('/dashboard');
 
   }
   shouldShowFooter(): boolean {
-    const hideFooterOn = ['/Feed', '/dashboard'];
+    const hideFooterOn = ['/Feed', '/dashboard','/EduQuest'];
 
     return !this.currentRoute.includes('/login') &&
            !this.currentRoute.includes('/register') &&

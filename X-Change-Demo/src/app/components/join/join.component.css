@@ -4,7 +4,7 @@
   background: var(--home-bg);
   position: relative;
   overflow: hidden;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 /* ============================================ */
@@ -49,7 +49,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200, 241, 53, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(94, 241, 53, 0.3), transparent);
 }
 
 /* Hero Content */
@@ -67,12 +67,12 @@
   gap: 8px;
   padding: 8px 18px;
   background: rgba(106, 92, 255, 0.15);
-  border: 1px solid rgba(200, 241, 53, 0.2);
+  border: 1px solid rgba(62, 53, 241, 0.2);
   border-radius: 40px;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 2px;
-  color: #c8f135;
+  color: #35f13b;
   margin-bottom: 1.5rem;
   backdrop-filter: blur(10px);
 }
@@ -80,7 +80,7 @@
 .badge-dot {
   width: 6px;
   height: 6px;
-  background: #c8f135;
+  background: #35f135;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -95,7 +95,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #c8f135, #00f5d4, #6a5cff);
+  background: linear-gradient(135deg, #38f135, #00f5d4, #6a5cff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -119,7 +119,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #c8f135, #6a5cff);
+  background: linear-gradient(135deg, #35f157, #6a5cff);
   border: none;
   padding: 14px 32px;
   border-radius: 50px;
@@ -154,19 +154,19 @@
 
 .btn-secondary {
   background: transparent;
-  border: 2px solid rgba(200, 241, 53, 0.5);
+  border: 2px solid rgba(69, 241, 53, 0.5);
   padding: 12px 32px;
   border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
-  color: #c8f135;
+  color: #61f135;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  border-color: #c8f135;
-  background: rgba(200, 241, 53, 0.1);
+  border-color: #35f142;
+  background: rgba(53, 241, 75, 0.1);
   transform: translateY(-3px);
 }
 
@@ -200,21 +200,21 @@
   background: rgba(255, 255, 255, 0.03);
   border-radius: 24px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(200, 241, 53, 0.1);
+  border: 1px solid rgba(53, 103, 241, 0.1);
   min-width: 180px;
   transition: all 0.3s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(200, 241, 53, 0.3);
+  border-color: rgba(53, 241, 66, 0.3);
   background: rgba(255, 255, 255, 0.05);
 }
 
 .stat-number {
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #c8f135, #6a5cff);
+  background: linear-gradient(135deg, #35f14b, #6a5cff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

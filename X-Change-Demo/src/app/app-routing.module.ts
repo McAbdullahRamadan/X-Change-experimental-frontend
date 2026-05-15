@@ -25,6 +25,7 @@ import { CorporateManagementComponent } from './components_admin/corporate-manag
 import { GmaificationManagementComponent } from './components_admin/gmaification-management/gmaification-management.component';
 import { AuditLogsComponent } from './components_admin/audit-logs/audit-logs.component';
 import { FeedComponent } from './components/feed/feed.component';
+import { GameXChangeComponent } from './components/game-xchange/game-xchange.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -40,6 +41,8 @@ const routes: Routes = [
   { path: 'usercommunity', component: UsercommunityComponent },
   { path: 'about', component: AboutusComponent },
   { path: 'Feed', component: FeedComponent },
+  { path: 'EduQuest', component: GameXChangeComponent },
+
 
 
 

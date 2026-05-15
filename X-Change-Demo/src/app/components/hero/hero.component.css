@@ -20,6 +20,7 @@
 
 .reveal-section.revealed .animate-item {
   animation-fill-mode: forwards;
+
 }
 
 @keyframes fadeUp {
@@ -373,6 +374,9 @@ p i {
   .badge { font-size: 11px; margin-bottom: 20px; }
   p { font-size: 14px; }
   .primary, .outline { padding: 10px 24px; font-size: 14px; }
+  .animate-item{
+    width: 100%;
+  }
 }
 
 @media (max-width: 576px) {

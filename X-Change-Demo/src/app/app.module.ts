@@ -42,6 +42,7 @@ import { GmaificationManagementComponent } from './components_admin/gmaification
 import { AuditLogsComponent } from './components_admin/audit-logs/audit-logs.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { JoinComponent } from './components/join/join.component';
+import { GameXChangeComponent } from './components/game-xchange/game-xchange.component';
 
 
 
@@ -83,6 +84,7 @@ import { JoinComponent } from './components/join/join.component';
     AuditLogsComponent,
     FeedComponent,
     JoinComponent,
+    GameXChangeComponent,
 
 
 

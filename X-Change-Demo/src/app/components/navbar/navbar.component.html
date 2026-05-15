@@ -18,6 +18,9 @@
     <li routerLinkActive="active" routerLink="/courses">
       <i class="bi bi-layers-fill"></i> Explore Skills
     </li>
+    <li routerLinkActive="active" routerLink="/EduQuest">
+      <i class="bi bi-controller"></i> EduQuest
+    </li>
     <li routerLinkActive="active" routerLink="/usercommunity">
       <i class="bi bi-people-fill"></i> Community
     </li>
@@ -94,9 +97,9 @@
              (click)="showProfileMenu=false">
           <i class="bi bi-person-circle"></i> My Profile
         </div>
-        <div class="dropdown-item" routerLink="/dashboard" (click)="showProfileMenu=false">
+        <!-- <div class="dropdown-item" routerLink="/dashboard" (click)="showProfileMenu=false">
           <i class="bi bi-grid"></i> Dashboard
-        </div>
+        </div> -->
         <div class="dropdown-item" (click)="showProfileMenu=false">
           <i class="bi bi-gear"></i> Account Settings
         </div>
@@ -133,6 +136,9 @@
   </a>
   <a (click)="isMenuOpen=false" routerLink="/about">
     <i class="bi bi-info-circle"></i> About Us
+  </a>
+  <a (click)="isMenuOpen=false" routerLink="/EduQuest">
+    <i class="bi bi-controller"></i> EduQuest
   </a>
 
   <!-- Mobile XP Display -->
