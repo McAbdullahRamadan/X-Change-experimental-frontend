@@ -12,7 +12,9 @@ export class StatsComponent implements AfterViewInit, OnDestroy {
 
   private video: HTMLVideoElement | null = null;
   private controlBtn: HTMLElement | null = null;
+  private soundBtn: HTMLElement | null = null;
   private isPlaying = true;
+  private isMuted = true;  // يبدأ مكتوم عشان autoplay يشتغل
 
   constructor(private el: ElementRef) {}
 
@@ -46,22 +48,33 @@ export class StatsComponent implements AfterViewInit, OnDestroy {
         // الفيديو اشتغل بنجاح
         this.isPlaying = true;
         this.updateButtonIcons(true);
+        this.updateSoundIcons(true); // muted = true
       }).catch((error) => {
         // لو حصل مشكلة في التشغيل التلقائي
         console.log('Auto-play was prevented:', error);
         this.isPlaying = false;
         this.updateButtonIcons(false);
+        this.updateSoundIcons(true);
       });
     }
 
-    // الحصول على زر التحكم
+    // الحصول على أزرار التحكم
     this.controlBtn = document.getElementById('videoControlBtn');
+    this.soundBtn = document.getElementById('soundControlBtn');
 
-    // إضافة حدث النقر على الزر
+    // إضافة حدث النقر على زر التشغيل/الإيقاف
     if (this.controlBtn) {
       this.controlBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.toggleVideo();
+      });
+    }
+
+    // إضافة حدث النقر على زر الصوت
+    if (this.soundBtn) {
+      this.soundBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleSound();
       });
     }
 
@@ -97,6 +110,22 @@ export class StatsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  private toggleSound(): void {
+    if (!this.video) return;
+
+    this.isMuted = !this.isMuted;
+    this.video.muted = this.isMuted;
+    this.updateSoundIcons(this.isMuted);
+
+    // رسالة تأكيد للمستخدم (اختياري)
+    if (!this.isMuted) {
+      console.log('Sound enabled');
+      // ممكن تعمل toast notification هنا
+    } else {
+      console.log('Sound muted');
+    }
+  }
+
   private updateButtonIcons(playing: boolean): void {
     const playIcon = document.querySelector('.play-icon');
     const pauseIcon = document.querySelector('.pause-icon');
@@ -108,6 +137,21 @@ export class StatsComponent implements AfterViewInit, OnDestroy {
       } else {
         (playIcon as HTMLElement).style.display = 'flex';
         (pauseIcon as HTMLElement).style.display = 'none';
+      }
+    }
+  }
+
+  private updateSoundIcons(muted: boolean): void {
+    const muteIcon = document.querySelector('.mute-icon');
+    const unmuteIcon = document.querySelector('.unmute-icon');
+
+    if (muteIcon && unmuteIcon) {
+      if (muted) {
+        (muteIcon as HTMLElement).style.display = 'flex';
+        (unmuteIcon as HTMLElement).style.display = 'none';
+      } else {
+        (muteIcon as HTMLElement).style.display = 'none';
+        (unmuteIcon as HTMLElement).style.display = 'flex';
       }
     }
   }
