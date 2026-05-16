@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, ElementRef, HostListener,
+  AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener,
   NgZone, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import * as THREE from 'three';
@@ -28,6 +28,9 @@ interface LearningBuilding {
   icon: string;
   lessons: Lesson[];
 }
+interface ScreenOrientationWithLock extends ScreenOrientation {
+  lock(orientation: string): Promise<void>;
+}
 
 interface Npc {
   mesh: THREE.Group;
@@ -49,6 +52,7 @@ interface PlayerBones {
   lFArm: THREE.Object3D; rFArm: THREE.Object3D;
   body: THREE.Object3D; head: THREE.Object3D;
 }
+
 @Component({
   selector: 'app-game-xchange',
   standalone: false,
@@ -63,7 +67,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* ── UI state ── */
   showSplash = true;
-  showNameForm = false;   // name input step
+  showNameForm = false;
   isPaused = false;
   showCtrl = false;
   notif: string | null = null;
@@ -72,6 +76,14 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   // Player name
   playerName = '';
   nameError = '';
+  isMobile = false;
+  mobileJoystickActive = false;
+  mobileJoystickVector = { x: 0, y: 0 };
+  mobileRunActive = false;
+  private joystickBase: HTMLElement | null = null;
+  private joystickThumb: HTMLElement | null = null;
+  private joystickCenter = { x: 0, y: 0 };
+  private joystickRadius = 0;
 
   // Learning system
   showLesson = false;
@@ -81,7 +93,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   lessonCompleted = false;
   quizAnswered = -1;
   quizCorrect = false;
-  completedLessons = new Set<string>();   // 'bldgId-lessonId'
+  completedLessons = new Set<string>();
 
   // Near building detection
   nearBldg: LearningBuilding | null = null;
@@ -91,9 +103,13 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   spd = 0; money = 15000; hp = 100;
   cx = 0; cz = 0; locName = 'City Center Plaza';
-  sens = 0.10;   // degrees / pixel — comfortable default
+  sens = 0.10;
   fpsVal = 60;
   quality = 'Auto';
+  showMobileControls = false;
+private performanceMode = false;
+private frameSkip = 1;
+private frameCounter = 0;
 
   /* ── Three.js ── */
   private scene!: THREE.Scene;
@@ -103,8 +119,8 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private player!: THREE.Group;
   private pBones!: PlayerBones;
-  private boxes: Box2D[] = [];      // building + car colliders
-  private treebox: Box2D[] = [];      // tree colliders
+  private boxes: Box2D[] = [];
+  private treebox: Box2D[] = [];
   private npcs: Npc[] = [];
 
   private sun!: THREE.DirectionalLight;
@@ -121,18 +137,18 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* ── Input ── */
   private keys = new Set<string>();
-  private yaw = 0;   // horizontal orbit (radians)
-  private pitch = 0;   // vertical orbit (radians, clamped)
+  private yaw = 0;
+  private pitch = 0;
   private locked = false;
 
   /* ── Camera spring ── */
   private cx_ = 0; private cy_ = 4; private cz_ = 8;
-  private readonly CAM_D = 6.5;   // follow distance (further = better view)
-  private readonly CAM_H = 2.6;   // height above player
-  private readonly CAM_SP = 0.09;  // spring smoothness
+  private readonly CAM_D = 6.5;
+  private readonly CAM_H = 2.6;
+  private readonly CAM_SP = 0.09;
 
   /* ── Movement ── */
-  private wc = 0;   // walk cycle
+  private wc = 0;
   private jumping = false; private jumpV = 0;
   private camMode = 0;
 
@@ -350,7 +366,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   ];
 
-  constructor(private ngZone: NgZone) { }
+  constructor(private ngZone: NgZone,private cdr: ChangeDetectorRef) { }
 
   /* ═══════════════════════════════════════
      LIFECYCLE
@@ -364,6 +380,12 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.mmCtx = this.mmRef.nativeElement.getContext('2d')!;
+
+    // استخدم setTimeout لتجنب الخطأ
+    setTimeout(() => {
+      this.detectMobile();
+    }, 0);
+
     this.ngZone.runOutsideAngular(() => {
       this.initRdr();
       this.build();
@@ -379,6 +401,217 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     document.removeEventListener('pointerlockchange', this.plc);
     this.rdr?.dispose();
     this.mc.forEach(m => m.dispose());
+  }
+
+  /* ═══════════════════════════════════════
+     MOBILE DETECTION & OPTIMIZATION
+  ═══════════════════════════════════════ */
+  private detectMobile(): void {
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (this.isMobile) {
+      this.showMobileControls = true;
+      this.optimizeForMobile();
+      setTimeout(() => {
+        this.initMobileControls();
+        this.cdr.detectChanges(); // فرض تحديث التغييرات
+      }, 100);
+      this.requestLandscapeOrientation();
+
+      this.ngZone.runOutsideAngular(() => {
+        this.enableMobilePerformanceMode();
+      });
+    }
+  }  private enableMobilePerformanceMode(): void {
+    this.performanceMode = true;
+
+    // تقليل جودة العرض
+    if (this.rdr) {
+      this.rdr.setPixelRatio(Math.min(devicePixelRatio, 1.0));
+      this.rdr.shadowMap.enabled = false;
+    }
+
+    // تقليل عدد الإطارات في الثانية للموبايل
+    this.frameSkip = 2;
+
+    // إضافة class للـ body لتحسين CSS
+    document.body.classList.add('mobile-performance');
+    document.body.classList.add('performance-low');
+
+    // تقليل عدد الأشجار والعناصر (اختياري)
+    this.reduceSceneComplexity();
+  }
+
+  private reduceSceneComplexity(): void {
+    // تقليل نطاق الرؤية
+    if (this.scene) {
+      const fog = this.scene.fog as THREE.Fog;
+      if (fog) {
+        fog.near = 40;
+        fog.far = 80;
+      }
+    }
+
+    // إخفاء النجوم لتحسين الأداء
+    if (this.stars) {
+      this.stars.visible = false;
+    }
+
+    // تقليل شدة الإضاءة
+    if (this.lampLights) {
+      this.lampLights.forEach(light => {
+        light.intensity = Math.min(light.intensity, 1.5);
+      });
+    }
+  }
+
+  private optimizeForMobile(): void {
+    this.quality = 'Low';
+    this.sens = 0.15;
+
+    if (this.rdr) {
+      this.rdr.setPixelRatio(Math.min(devicePixelRatio, 1.2));
+    }
+
+    document.body.classList.add('performance-low');
+  }
+
+  private requestLandscapeOrientation(): void {
+    const orientation = (screen.orientation as ScreenOrientationWithLock | null);
+
+    if (orientation && orientation.lock) {
+      orientation.lock('landscape').catch(() => {
+        console.log('Orientation lock not supported');
+      });
+    }
+
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        if (window.innerHeight > window.innerWidth) {
+          this.toast('📱 Rotate to landscape for better experience');
+        }
+      }, 100);
+    });
+  }
+
+  private initMobileControls(): void {
+    this.initJoystick();
+    this.initMobileButtons();
+  }
+
+  private initJoystick(): void {
+    this.joystickBase = document.getElementById('joystickBase');
+    this.joystickThumb = document.getElementById('joystickThumb');
+
+    if (!this.joystickBase) return;
+
+    const rect = this.joystickBase.getBoundingClientRect();
+    this.joystickCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    this.joystickRadius = rect.width / 2;
+
+    const handleMove = (clientX: number, clientY: number) => {
+      const dx = clientX - this.joystickCenter.x;
+      const dy = clientY - this.joystickCenter.y;
+      const distance = Math.min(Math.sqrt(dx * dx + dy * dy), this.joystickRadius);
+      const angle = Math.atan2(dy, dx);
+
+      const thumbX = Math.cos(angle) * distance;
+      const thumbY = Math.sin(angle) * distance;
+
+      if (this.joystickThumb) {
+        this.joystickThumb.style.transform = `translate(${thumbX}px, ${thumbY}px)`;
+      }
+
+      this.mobileJoystickVector = {
+        x: dx / this.joystickRadius,
+        y: dy / this.joystickRadius
+      };
+
+      this.mobileJoystickActive = distance > 10;
+    };
+
+    const handleStart = (e: TouchEvent) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = this.joystickBase!.getBoundingClientRect();
+      this.joystickCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+      handleMove(touch.clientX, touch.clientY);
+    };
+
+    const handleEnd = () => {
+      this.mobileJoystickActive = false;
+      this.mobileJoystickVector = { x: 0, y: 0 };
+      if (this.joystickThumb) {
+        this.joystickThumb.style.transform = 'translate(0px, 0px)';
+      }
+    };
+
+    this.joystickBase.addEventListener('touchstart', handleStart);
+    this.joystickBase.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    });
+    this.joystickBase.addEventListener('touchend', handleEnd);
+  }
+
+  private initMobileButtons(): void {
+    const jumpBtn = document.getElementById('mobileJumpBtn');
+    const interactBtn = document.getElementById('mobileInteractBtn');
+    const runBtn = document.getElementById('mobileRunBtn');
+    const cameraBtn = document.getElementById('mobileCameraBtn');
+    const timeBtn = document.getElementById('mobileTimeBtn');
+    const pauseBtn = document.getElementById('mobilePauseBtn');
+
+    if (jumpBtn) {
+      jumpBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.doJump();
+      });
+    }
+
+    if (interactBtn) {
+      interactBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.interact();
+      });
+    }
+
+    if (runBtn) {
+      runBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.mobileRunActive = true;
+        (runBtn as HTMLElement).style.background = 'rgba(0, 255, 136, 0.3)';
+      });
+      runBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        this.mobileRunActive = false;
+        (runBtn as HTMLElement).style.background = '';
+      });
+    }
+
+    if (cameraBtn) {
+      cameraBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.camMode ^= 1;
+        this.toast(this.camMode ? '👁 First Person' : '📷 Third Person');
+      });
+    }
+
+    if (timeBtn) {
+      timeBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.timeOfDay = this.isDaytime ? 22 : 10;
+        this.toast(this.isDaytime ? '🌙 Night mode' : '☀ Day mode');
+      });
+    }
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.isPaused = true;
+      });
+    }
   }
 
   /* ═══════════════════════════════════════
@@ -435,10 +668,9 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rdr = new THREE.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance', stencil: false });
     this.rdr.setSize(innerWidth, innerHeight);
     this.rdr.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-    this.rdr.shadowMap.enabled = false;   // OFF — avoids GL sampler mismatch with Lambert
+    this.rdr.shadowMap.enabled = false;
     this.rdr.toneMapping = THREE.LinearToneMapping;
 
-    // Detect quality from hardware
     const cores = navigator.hardwareConcurrency ?? 4;
     const mem = (navigator as any).deviceMemory ?? 4;
     const mob = /Mobi|Android/i.test(navigator.userAgent);
@@ -587,7 +819,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     roof.position.set(b.x, b.h + 0.25, b.z);
     this.scene.add(roof);
 
-    // Windows - instanced, no emissive (avoids GL issue)
     const spX = 1.4, spY = 1.6;
     const cols = Math.max(1, Math.floor((b.w - 1.2) / spX));
     const rows = Math.max(1, Math.floor((b.h - 1.5) / spY));
@@ -781,13 +1012,11 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* ═══════════════════════════════════════
-     HUMAN BUILDER — single continuous body
-     All parts connect to root at Y=0
+     HUMAN BUILDER
   ═══════════════════════════════════════ */
   private mkHuman(sk: number, sh: number, pa: number, sho: number, ha: number, isP: boolean) {
     const root = new THREE.Group();
 
-    /* Materials */
     const S = new THREE.MeshLambertMaterial({ color: sk });
     const SH = new THREE.MeshLambertMaterial({ color: sh });
     const PA = new THREE.MeshLambertMaterial({ color: pa });
@@ -800,7 +1029,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     const NO = new THREE.MeshLambertMaterial({ color: Math.max(0, sk - 0x181010) });
     const BR = new THREE.MeshLambertMaterial({ color: Math.max(0, ha + 0x100000) });
 
-    /* ── FEET (Y~0.05, above ground) ── */
     const mkFoot = (side: number) => {
       const g = new THREE.Group();
       g.position.set(side * 0.13, 0.05, 0);
@@ -822,7 +1050,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     const rFoot = mkFoot(1);
     root.add(rFoot);
 
-    /* ── LOWER LEGS (shins) ── */
     const lLeg = new THREE.Group();
     lLeg.position.set(-0.13, 0.08, 0);
     root.add(lLeg);
@@ -835,21 +1062,19 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       g.add(shin);
     });
 
-    /* ── THIGHS (Y 0.75→1.45) — connected to pelvis ── */
     const mkThigh = (side: number) => {
       const g = new THREE.Group();
       g.position.set(side * 0.13, 0.75, 0);
       const th = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.09, 0.52, 8), PA);
       th.position.y = 0.26;
       g.add(th);
-      // knee cap
       const kn = new THREE.Mesh(new THREE.SphereGeometry(0.098, 7, 6), PA);
       kn.position.y = 0;
       kn.scale.set(1, 0.7, 1);
       g.add(kn);
       return g;
     };
-    // Thighs start at shin top (0.55) not 0.75
+
     const lThigh = mkThigh(-1);
     lThigh.position.set(-0.13, 0.52, 0);
     root.add(lThigh);
@@ -857,12 +1082,10 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     rThigh.position.set(0.13, 0.52, 0);
     root.add(rThigh);
 
-    /* ── PELVIS connector (fills gap between thighs, Y 1.3→1.6) ── */
     const pelvis = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.30, 0.27), PA);
     pelvis.position.y = 1.06;
     root.add(pelvis);
 
-    /* ── BELT ── */
     const belt = new THREE.Mesh(new THREE.BoxGeometry(0.47, 0.07, 0.28), DK);
     belt.position.y = 1.22;
     root.add(belt);
@@ -870,7 +1093,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     buckle.position.set(0, 1.22, 0.145);
     root.add(buckle);
 
-    /* ── TORSO (Y 1.62→2.22) ── */
     const body = new THREE.Group();
     body.position.y = 1.26;
     root.add(body);
@@ -878,31 +1100,26 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     torso.position.y = 0.31;
     body.add(torso);
 
-    // Hoodie pocket
     const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.12, 0.03), new THREE.MeshLambertMaterial({ color: Math.max(0, sh + 0x0a0a0a) }));
     pocket.position.set(0, 0.12, 0.145);
     torso.add(pocket);
 
-    // Shoulder width mesh (fills armpit gap)
     const shFill = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.46, 8), SH);
     shFill.rotation.z = Math.PI / 2;
     shFill.position.set(0, 0.56, 0);
     body.add(shFill);
 
-    /* ── UPPER ARMS — pivot at shoulder (body Y=0.56) ── */
     const mkArm = (side: number) => {
       const sh2 = new THREE.Group();
       sh2.position.set(side * 0.27, 0.56, 0);
       const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.066, 0.34, 8), SH);
       upper.position.y = -0.17;
       sh2.add(upper);
-      // elbow pivot
       const elbow = new THREE.Group();
       elbow.position.y = -0.34;
       const fore = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.057, 0.30, 8), S);
       fore.position.y = -0.15;
       elbow.add(fore);
-      // hand
       const hand = new THREE.Group();
       hand.position.y = -0.30;
       const palm = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.11, 0.07), S);
@@ -921,15 +1138,14 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       body.add(sh2);
       return { sh: sh2, el: elbow };
     };
+
     const { sh: lArm, el: lFArm } = mkArm(-1);
     const { sh: rArm, el: rFArm } = mkArm(1);
 
-    /* ── NECK (Y 2.24→2.38) ── */
     const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 0.16, 8), S);
     neck.position.set(0, 1.90, 0);
     root.add(neck);
 
-    /* ── HEAD GROUP (center Y~2.52) ── */
     const headG = new THREE.Group();
     headG.position.set(0, 2.10, 0);
     root.add(headG);
@@ -937,26 +1153,22 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     headM.scale.set(1, 1.08, 0.93);
     headG.add(headM);
 
-    /* ── HAIR — thick & stylish, no bald spots ── */
-    // === LAYER 1: Full scalp coverage (slightly larger than head) ===
+    // Simplified hair for performance
     const hScalp = new THREE.Mesh(new THREE.SphereGeometry(0.232, 14, 11), H);
     hScalp.position.set(0, 0.03, -0.005);
     hScalp.scale.set(1.01, 0.72, 1.04);
     headG.add(hScalp);
 
-    // === LAYER 2: Top volume — raised up for full look ===
     const hTop = new THREE.Mesh(new THREE.SphereGeometry(0.225, 12, 9), H);
     hTop.position.set(0, 0.10, -0.015);
     hTop.scale.set(1.0, 0.55, 1.0);
     headG.add(hTop);
 
-    // === LAYER 3: Back of head — thick coverage ===
     const hBack = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 9), H);
     hBack.position.set(0, 0.0, -0.095);
     hBack.scale.set(1.05, 0.80, 0.78);
     headG.add(hBack);
 
-    // === LAYER 4: Side curtains — wide, cover temple & sides fully ===
     const hSideL = new THREE.Mesh(new THREE.SphereGeometry(0.19, 11, 8), H);
     hSideL.position.set(-0.175, 0.02, -0.01);
     hSideL.scale.set(0.52, 0.68, 0.85);
@@ -966,39 +1178,11 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     hSideR.scale.set(0.52, 0.68, 0.85);
     headG.add(hSideR);
 
-    // === LAYER 5: Long hair — flows below ears ===
-    const hLongL = new THREE.Mesh(new THREE.SphereGeometry(0.155, 10, 8), H);
-    hLongL.position.set(-0.165, -0.14, -0.04);
-    hLongL.scale.set(0.48, 0.90, 0.70);
-    headG.add(hLongL);
-    const hLongR = new THREE.Mesh(new THREE.SphereGeometry(0.155, 10, 8), H);
-    hLongR.position.set(0.165, -0.14, -0.04);
-    hLongR.scale.set(0.48, 0.90, 0.70);
-    headG.add(hLongR);
-
-    // === LAYER 6: Back tail — long hair going down neck ===
-    const hTail = new THREE.Mesh(new THREE.SphereGeometry(0.17, 10, 8), H);
-    hTail.position.set(0, -0.24, -0.07);
-    hTail.scale.set(0.92, 1.0, 0.68);
-    headG.add(hTail);
-
-    // === LAYER 7: Front bangs — swept style, NOT thin strip ===
     const hBangs = new THREE.Mesh(new THREE.SphereGeometry(0.18, 11, 8), H);
     hBangs.position.set(0, 0.09, 0.14);
     hBangs.scale.set(1.05, 0.38, 0.55);
     headG.add(hBangs);
 
-    // Side bangs — frame the face
-    const hBangSL = new THREE.Mesh(new THREE.SphereGeometry(0.09, 9, 7), H);
-    hBangSL.position.set(-0.18, 0.04, 0.16);
-    hBangSL.scale.set(0.55, 0.75, 0.65);
-    headG.add(hBangSL);
-    const hBangSR = new THREE.Mesh(new THREE.SphereGeometry(0.09, 9, 7), H);
-    hBangSR.position.set(0.18, 0.04, 0.16);
-    hBangSR.scale.set(0.55, 0.75, 0.65);
-    headG.add(hBangSR);
-
-    /* ── EYES ── */
     ([[-0.085], [0.085]] as number[][]).forEach(([ex]) => {
       const ew = new THREE.Mesh(new THREE.SphereGeometry(0.052, 10, 8), W);
       ew.position.set(ex, 0.04, 0.195);
@@ -1010,70 +1194,13 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       const pu = new THREE.Mesh(new THREE.SphereGeometry(0.019, 7, 5), DK);
       pu.position.set(ex, 0.04, 0.226);
       headG.add(pu);
-      const lid = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.013, 0.016), S);
-      lid.position.set(ex, 0.085, 0.207);
-      headG.add(lid);
-      const br = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.016, 0.016), BR);
-      br.position.set(ex, 0.098, 0.206);
-      br.rotation.z = ex < 0 ? 0.1 : -0.1;
-      headG.add(br);
     });
 
-    /* ── NOSE ── */
-    const nBr = new THREE.Mesh(new THREE.SphereGeometry(0.025, 7, 5), S);
-    nBr.position.set(0, -0.01, 0.211);
-    nBr.scale.set(0.62, 1.30, 0.80);
-    headG.add(nBr);
-    const nTp = new THREE.Mesh(new THREE.SphereGeometry(0.022, 7, 5), S);
-    nTp.position.set(0, -0.046, 0.216);
-    nTp.scale.set(1.14, 0.7, 0.88);
-    headG.add(nTp);
-    const nL = new THREE.Mesh(new THREE.SphereGeometry(0.012, 6, 4), NO);
-    nL.position.set(-0.024, -0.057, 0.210);
-    headG.add(nL);
-    const nR = nL.clone();
-    nR.position.set(0.024, -0.057, 0.210);
-    headG.add(nR);
-
-    /* ── MOUTH ── */
-    const mG = new THREE.SphereGeometry(0.046, 8, 4);
-    const uL = new THREE.Mesh(mG, LP);
-    uL.position.set(0, -0.095, 0.210);
-    uL.scale.set(1.3, 0.34, 0.62);
-    headG.add(uL);
-    const lL = new THREE.Mesh(mG, LP);
-    lL.position.set(0, -0.115, 0.210);
-    lL.scale.set(1.2, 0.42, 0.65);
-    headG.add(lL);
-
-    /* ── EARS ── */
-    const eG = new THREE.SphereGeometry(0.052, 8, 6);
-    const lE = new THREE.Mesh(eG, S);
-    lE.position.set(-0.211, 0.015, 0);
-    lE.scale.set(0.42, 0.72, 0.5);
-    headG.add(lE);
-    const rE = lE.clone();
-    rE.position.set(0.211, 0.015, 0);
-    headG.add(rE);
-
-    /* ── PLAYER EXTRAS (backpack, watch) ── */
     if (isP) {
       const bagM = new THREE.MeshLambertMaterial({ color: 0x1a2234 });
       const bag = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.40, 0.15), bagM);
       bag.position.set(0, 0.31, -0.22);
       body.add(bag);
-      const sM2 = new THREE.MeshLambertMaterial({ color: 0x101a2a });
-      const sL2 = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.38, 0.04), sM2);
-      sL2.position.set(-0.12, 0.31, 0.06);
-      body.add(sL2);
-      const sR2 = sL2.clone();
-      sR2.position.set(0.12, 0.31, 0.06);
-      body.add(sR2);
-      // Watch
-      const watchM = new THREE.MeshLambertMaterial({ color: 0x222222 });
-      const watch = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.015, 10, 1, true), watchM);
-      watch.position.y = -0.01;
-      lFArm.add(watch);
     }
 
     return {
@@ -1088,118 +1215,26 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   /* ── Learning Buildings ── */
   private mkLearningBuildings() {
     this.LEARN_BLDGS.forEach(b => {
-      // Main building body
       const bMat = new THREE.MeshLambertMaterial({ color: b.color });
       const w = 16, h = 14, d = 16;
       const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bMat);
       body.position.set(b.x, h / 2, b.z);
       this.scene.add(body);
-      // Collider (leave door gap at front centre)
       this.boxes.push({ x0: b.x - w / 2 - 0.3, x1: b.x + w / 2 + 0.3, z0: b.z - d / 2 - 0.3, z1: b.z + d / 2 + 0.3 });
 
-      // Roof
       const roof = new THREE.Mesh(new THREE.BoxGeometry(w + 0.6, 0.6, d + 0.6), new THREE.MeshLambertMaterial({ color: Math.max(0, b.color - 0x0a0a0a) }));
       roof.position.set(b.x, h + 0.3, b.z);
       this.scene.add(roof);
 
-      // Roof parapet / ledge detail
-      const parapet = new THREE.Mesh(new THREE.BoxGeometry(w + 1.2, 0.8, d + 1.2), new THREE.MeshLambertMaterial({ color: Math.max(0, b.color - 0x050505) }));
-      parapet.position.set(b.x, h + 0.8, b.z);
-      this.scene.add(parapet);
-
-      // Glass curtain wall panels (front face)
-      const glassMat = new THREE.MeshLambertMaterial({ color: 0x88ccff, transparent: true, opacity: 0.35 });
-      const glassPanel = new THREE.Mesh(new THREE.BoxGeometry(w - 0.5, h - 1, 0.12), glassMat);
-      glassPanel.position.set(b.x, h / 2, b.z + d / 2 + 0.08);
-      this.scene.add(glassPanel);
-
-      // Windows — instanced on main body
-      const winMat = new THREE.MeshLambertMaterial({ color: 0x99ddff });
-      const winGeo = new THREE.BoxGeometry(1.0, 1.1, 0.05);
-      const cols = 8, rows = 6, wc = cols * rows * 2;
-      const iW = new THREE.InstancedMesh(winGeo, winMat, wc);
-      const du = new THREE.Object3D();
-      let wi = 0;
-      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-        const wx = b.x - ((cols - 1) * 1.6) / 2 + c * 1.6, wy = 2 + r * 2.0;
-        du.position.set(wx, wy, b.z + d / 2 + 0.07);
-        du.rotation.set(0, 0, 0);
-        du.updateMatrix();
-        if (wi < wc) iW.setMatrixAt(wi++, du.matrix);
-        du.position.set(wx, wy, b.z - d / 2 - 0.07);
-        du.rotation.set(0, Math.PI, 0);
-        du.updateMatrix();
-        if (wi < wc) iW.setMatrixAt(wi++, du.matrix);
-      }
-      iW.instanceMatrix.needsUpdate = true;
-      this.scene.add(iW);
-
-      // SIGN — big illuminated sign on front
       const signBgMat = new THREE.MeshLambertMaterial({ color: b.signColor });
       const signBg = new THREE.Mesh(new THREE.BoxGeometry(10, 1.8, 0.25), signBgMat);
       signBg.position.set(b.x, h - 1.5, b.z + d / 2 + 0.15);
       this.scene.add(signBg);
-      // Sign border
-      const signBdr = new THREE.Mesh(new THREE.BoxGeometry(10.4, 2.2, 0.18), this.mat(0xffffff));
-      signBdr.position.set(b.x, h - 1.5, b.z + d / 2 + 0.12);
-      this.scene.add(signBdr);
-      // Second sign row — field name
-      const sign2 = new THREE.Mesh(new THREE.BoxGeometry(8, 0.9, 0.2), this.mat(Math.max(0, b.signColor - 0x222222)));
-      sign2.position.set(b.x, h - 3.0, b.z + d / 2 + 0.14);
-      this.scene.add(sign2);
 
-      // Neon glow light for sign
       const signLight = new THREE.PointLight(b.signColor, 0, 25, 1.2);
       signLight.position.set(b.x, h - 1.5, b.z + d / 2 + 2);
       this.scene.add(signLight);
       this.neonLights.push(signLight);
-      const signMat2 = new THREE.MeshLambertMaterial({ color: b.signColor });
-      signMat2.emissive = new THREE.Color(b.signColor);
-      signMat2.emissiveIntensity = 1.5;
-      this.neonMats.push(signMat2);
-      // Re-apply to sign bg
-      signBgMat.emissive = new THREE.Color(b.signColor);
-      signBgMat.emissiveIntensity = 0.8;
-      this.neonMats.push(signBgMat);
-
-      // DOOR — prominent entrance
-      const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(2.8, 4.2, 0.3), this.mat(0xcccccc));
-      doorFrame.position.set(b.x, 2.1, b.z + d / 2 + 0.18);
-      this.scene.add(doorFrame);
-      const door1 = new THREE.Mesh(new THREE.BoxGeometry(1.1, 3.6, 0.1), new THREE.MeshLambertMaterial({ color: 0x334455, transparent: true, opacity: 0.8 }));
-      door1.position.set(b.x - 0.6, 1.8, b.z + d / 2 + 0.28);
-      this.scene.add(door1);
-      const door2 = door1.clone();
-      door2.position.set(b.x + 0.6, 1.8, b.z + d / 2 + 0.28);
-      this.scene.add(door2);
-      // Door handle
-      const handle = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.4, 0.08), this.mat(0xddaa44));
-      handle.position.set(b.x - 0.08, 1.8, b.z + d / 2 + 0.35);
-      this.scene.add(handle);
-
-      // Steps leading to door
-      [0, 1, 2].forEach(i => {
-        const step = new THREE.Mesh(new THREE.BoxGeometry(3.5 - i * 0.3, 0.2, 0.6), this.mat(0x888888));
-        step.position.set(b.x, 0.1 + i * 0.2, b.z + d / 2 + 0.9 - i * 0.6);
-        this.scene.add(step);
-      });
-
-      // Pillars on sides of door
-      [-1.6, 1.6].forEach(ox => {
-        const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.22, 4.5, 8), this.mat(0xdddddd));
-        pillar.position.set(b.x + ox, 2.25, b.z + d / 2 + 0.12);
-        this.scene.add(pillar);
-      });
-
-      // Antenna on roof
-      const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.1, 4, 6), this.mat(0xcccccc));
-      ant.position.set(b.x, h + 3, b.z);
-      this.scene.add(ant);
-      const blMat = this.matEm(0xff0000, 0xff0000, 1);
-      const bl = new THREE.Mesh(new THREE.SphereGeometry(0.1, 7, 5), blMat);
-      bl.position.set(b.x, h + 5, b.z);
-      bl.userData['blink'] = blMat;
-      this.scene.add(bl);
     });
   }
 
@@ -1207,8 +1242,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   private mkPlayer() {
     const { root, bones } = this.mkHuman(0xffccaa, 0x1c1c1c, 0x0d1a2e, 0x111111, 0x2a1400, true);
     root.scale.setScalar(0.60);
-    // Start facing away from camera (camera starts at yaw=0, behind player on +Z)
-    root.rotation.y = Math.PI; // player faces -Z (into the scene)
+    root.rotation.y = Math.PI;
     this.player = root;
     this.pBones = bones;
     this.scene.add(root);
@@ -1221,7 +1255,9 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     const pants = [0x222244, 0x442222, 0x224422, 0x333333, 0x1a1a1a];
     const hairs = [0x1a0800, 0x2a1800, 0x8b4513, 0xd4a017, 0x111111, 0x3a2010];
     const names = ['Alex', 'Emma', 'Sam', 'Olivia', 'Marcus', 'Lisa', 'James', 'Anna', 'Rob', 'Maria', 'Chen', 'Fatima'];
-    const count = this.quality === 'Low' ? 8 : this.quality === 'High' ? 18 : 12;
+
+    let count = this.quality === 'Low' ? 8 : this.quality === 'High' ? 18 : 12;
+    if (this.isMobile) count = Math.min(count, 6);
 
     for (let i = 0; i < count; i++) {
       const { root, bones } = this.mkHuman(
@@ -1230,7 +1266,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       );
       const a = Math.random() * Math.PI * 2, r2 = 12 + Math.random() * 90;
       root.position.set(Math.cos(a) * r2, 0, Math.sin(a) * r2);
-      root.scale.setScalar(0.65 + Math.random() * 0.06); // slight variation
+      root.scale.setScalar(0.65 + Math.random() * 0.06);
       this.scene.add(root);
       this.npcs.push({
         mesh: root, name: names[i % names.length],
@@ -1331,7 +1367,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // Antenna blink every 48 frames
     if (this.fr % 48 === 0) {
       const bOn = Math.floor(Date.now() / 800) % 2 === 0;
       this.scene.traverse(o => {
@@ -1339,7 +1374,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
 
-    // Stars
     if (this.fr % 4 === 0) {
       const tOp = this.isDaytime ? 0 : Math.max(0, Math.min(1, t < 5 || t > 21 ? 1 : (t > 20 ? (t - 20) : (7 - t))));
       (this.stars.material as THREE.PointsMaterial).opacity += (tOp - (this.stars.material as THREE.PointsMaterial).opacity) * 0.08;
@@ -1357,31 +1391,25 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* ═══════════════════════════════════════
-     BONE ANIMATION — realistic walk
+     BONE ANIMATION
   ═══════════════════════════════════════ */
   private animP(moving: boolean, run: boolean, back = false) {
     const b = this.pBones;
     if (!b) return;
     if (moving) {
-      // Sync walk cycle to speed for natural look
       this.wc += run ? 0.20 : 0.12;
       const dir = back ? -1 : 1;
       const c = this.wc, sw = dir * (run ? 0.60 : 0.44) * Math.sin(c);
       const lf = 0.18;
-      // Thighs
       b.lLeg.rotation.x += (sw - b.lLeg.rotation.x) * lf;
       b.rLeg.rotation.x += (-sw - b.rLeg.rotation.x) * lf;
-      // Arms — opposite swing
       b.lArm.rotation.x += (-sw * .5 - b.lArm.rotation.x) * lf;
       b.rArm.rotation.x += (sw * .5 - b.rArm.rotation.x) * lf;
-      // Forearm elbow bend when arm swings back
       const lEB = Math.max(0, -Math.sin(c)) * (run ? .9 : .55);
       const rEB = Math.max(0, -Math.sin(c + Math.PI)) * (run ? .9 : .55);
       b.lFArm.rotation.x += (lEB - b.lFArm.rotation.x) * lf;
       b.rFArm.rotation.x += (rEB - b.rFArm.rotation.x) * lf;
-      // Body bob — subtle Y offset
       b.body.rotation.y = sw * 0.08;
-      // Head stays stable
       b.head.rotation.z = Math.sin(c * .5) * 0.035;
     } else {
       this.wc += 0.02;
@@ -1394,7 +1422,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       b.rFArm.rotation.x *= (1 - lf);
       b.body.rotation.y *= (1 - lf);
       b.lArm.rotation.z = br;
-      b.rArm.rotation.z = -br; // idle arm sway
+      b.rArm.rotation.z = -br;
     }
   }
 
@@ -1407,21 +1435,34 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* ═══════════════════════════════════════
-     MOVEMENT — professional third-person
-     - Player ALWAYS faces camera (yaw locked)
-     - S = walk backward WITH BACK TO CAMERA
-     - A/D = strafe left/right
-     - No facing flip when going back
+     MOVEMENT
   ═══════════════════════════════════════ */
   private upMove(dt: number) {
-    const fwd = this.keys.has('w') || this.keys.has('arrowup');
-    const back = this.keys.has('s') || this.keys.has('arrowdown');
-    const left = this.keys.has('a') || this.keys.has('arrowleft');
-    const righ = this.keys.has('d') || this.keys.has('arrowright');
-    const run = this.keys.has('shift');
+    let fwd = false, back = false, left = false, righ = false;
+
+    if (!this.isMobile) {
+      fwd = this.keys.has('w') || this.keys.has('arrowup');
+      back = this.keys.has('s') || this.keys.has('arrowdown');
+      left = this.keys.has('a') || this.keys.has('arrowleft');
+      righ = this.keys.has('d') || this.keys.has('arrowright');
+    }
+
+    if (this.isMobile && this.mobileJoystickActive) {
+      const joyX = this.mobileJoystickVector.x;
+      const joyY = this.mobileJoystickVector.y;
+
+      if (Math.abs(joyX) > 0.15 || Math.abs(joyY) > 0.15) {
+        fwd = joyY < -0.2;
+        back = joyY > 0.2;
+        left = joyX < -0.2;
+        righ = joyX > 0.2;
+      }
+    }
+
+    const run = this.keys.has('shift') || this.mobileRunActive;
 
     const dtCap = Math.min(dt, 0.033);
-    const spd = (run ? 7.0 : 3.2) * dtCap;
+    const spd = (run ? 6.0 : 2.8) * dtCap;
     let dx = 0, dz = 0;
     if (fwd) dz -= spd;
     if (back) dz += spd;
@@ -1430,10 +1471,8 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (dx && dz) { dx *= 0.707; dz *= 0.707; }
 
     const moving = dx !== 0 || dz !== 0;
-    const goingBack = back && !fwd;
 
     if (moving) {
-      // World-space movement relative to camera yaw
       const ca = Math.cos(this.yaw), sa = Math.sin(this.yaw);
       const nx = this.player.position.x + dx * ca - dz * sa;
       const nz = this.player.position.z + dx * sa + dz * ca;
@@ -1441,25 +1480,17 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (Math.abs(nx) < bnd && !this.hit(nx, this.player.position.z)) this.player.position.x = nx;
       if (Math.abs(nz) < bnd && !this.hit(this.player.position.x, nz)) this.player.position.z = nz;
 
-      // ── PLAYER FACING ──
-      // Player ALWAYS faces away from camera (back to camera).
-      // We smoothly lock player.rotation.y to yaw + PI.
-      // This means:
-      //   W = walks forward (back to camera, into scene)
-      //   S = walks backward (still back to camera, backing up)
-      //   Mouse rotate = rotates player WITH camera
       const targetFacing = this.yaw + Math.PI;
       let faceDiff = targetFacing - this.player.rotation.y;
       while (faceDiff > Math.PI) faceDiff -= Math.PI * 2;
       while (faceDiff < -Math.PI) faceDiff += Math.PI * 2;
-      this.player.rotation.y += faceDiff * 0.18; // smooth follow
+      this.player.rotation.y += faceDiff * 0.18;
 
-      this.spd = run ? 20 : 10;
+      this.spd = run ? 18 : 8;
     } else {
       this.spd = 0;
     }
 
-    // Jump physics
     if (this.jumping) {
       this.player.position.y += this.jumpV * dt;
       this.jumpV -= 9.8 * dt * 0.32;
@@ -1482,31 +1513,21 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     const pz = this.player.position.z;
 
     if (this.camMode === 0) {
-      // Third-person orbit:
-      // Camera sits at (yaw, pitch) orbit around player
-      // yaw=0 → camera is behind player (positive Z)
       const cosPitch = Math.cos(this.pitch);
       const sinPitch = Math.sin(this.pitch);
 
-      // Camera target: behind & above player
-      // sin(yaw) for X, cos(yaw) for Z keeps camera behind
       const tx = px + Math.sin(this.yaw) * this.CAM_D * cosPitch;
       const ty = py + this.CAM_H + sinPitch * this.CAM_D * 0.55;
       const tz = pz + Math.cos(this.yaw) * this.CAM_D * cosPitch;
 
-      // Smooth exponential spring (frame-rate independent)
-      const k = 1 - Math.pow(1 - this.CAM_SP, 1); // already per-frame
+      const k = 1 - Math.pow(1 - this.CAM_SP, 1);
       this.cx_ += (tx - this.cx_) * k;
-      this.cy_ += (ty - this.cy_) * k * 0.65; // Y slower — no bounce
+      this.cy_ += (ty - this.cy_) * k * 0.65;
       this.cz_ += (tz - this.cz_) * k;
 
       this.cam.position.set(this.cx_, Math.max(0.5, this.cy_), this.cz_);
-
-      // Look at player upper back / head area
       this.cam.lookAt(px, py + 0.75, pz);
-
     } else {
-      // First person
       this.cam.position.set(px, py + 0.90, pz);
       this.cam.rotation.order = 'YXZ';
       this.cam.rotation.y = this.yaw + Math.PI;
@@ -1570,16 +1591,15 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   /* ── HUD ── */
   private upHUD(now: number) {
     this.hudN++;
-    // FPS
     this.fpsN++;
     if (now - this.fpsT > 1000) { this.fpsVal = Math.round(this.fpsN * 1000 / (now - this.fpsT)); this.fpsN = 0; this.fpsT = now; }
-    // Clock
+
     const h = Math.floor(this.timeOfDay), m = Math.floor((this.timeOfDay - h) * 60);
     this.timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
     this.sunIco = this.isDaytime ? '☀' : '🌙';
     const t = this.timeOfDay;
     this.todTxt = t < 5 ? 'NIGHT' : t < 7 ? 'DAWN' : t < 12 ? 'MORNING' : t < 16 ? 'AFTERNOON' : t < 20 ? 'EVENING' : 'NIGHT';
-    // Location + nearby NPC (every 20 ticks)
+
     if (this.hudN % 20 === 0) {
       const px = this.player.position.x, pz = this.player.position.z;
       let loc = this.locName;
@@ -1587,7 +1607,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       let cl: Npc | null = null, minD = 25;
       for (const n of this.npcs) { const dx = n.mesh.position.x - px, dz = n.mesh.position.z - pz, d2 = dx * dx + dz * dz; if (d2 < minD * minD) { minD = Math.sqrt(d2); cl = n; } }
 
-      // Check proximity to learning buildings (within 6 units)
       let nearB: LearningBuilding | null = null;
       for (const b of this.LEARN_BLDGS) {
         const dx = b.x - px, dz = b.z - pz;
@@ -1601,9 +1620,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ngZone.run(() => { });
       }
     }
-    // Minimap every 4 ticks (~67ms at 60fps)
     if (this.hudN % 4 === 0) this.upMinimap();
-    // Angular CD every 8 ticks
     if (this.hudN % 8 === 0) this.ngZone.run(() => { });
   }
 
@@ -1612,19 +1629,34 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   ═══════════════════════════════════════ */
   private loop = (now: number) => {
     this.aid = requestAnimationFrame(this.loop);
+
+    // تخطي الإطارات لتحسين الأداء على الموبايل
+    if (this.performanceMode) {
+      this.frameCounter++;
+      if (this.frameCounter % this.frameSkip !== 0) {
+        // تخطي بعض الإطارات
+        this.lastT = now;
+        return;
+      }
+    }
+
     this.fr++;
-    // Delta time — cap at 50ms (1/20fps) to prevent tunneling on tab switch
     const rawDt = (now - this.lastT) / 1000;
     const dt = Math.min(rawDt, 0.05);
     this.lastT = now;
-    // Skip heavy rendering if tab is hidden or frame too slow
-    if (rawDt > 0.2) return; // skip frames > 200ms gap (tab was hidden)
+
+    if (rawDt > 0.2) return;
 
     if (!this.isPaused && !this.showSplash) {
       this.upMove(dt);
       this.upCam();
       this.upNpcs(now);
-      this.upLighting();
+
+      // تقليل تحديث الإضاءة على الموبايل
+      if (!this.performanceMode || this.fr % 2 === 0) {
+        this.upLighting();
+      }
+
       this.upHUD(now);
     }
     this.rdr.render(this.scene, this.cam);
@@ -1701,7 +1733,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   startGame() {
-    // Show name input before entering game
     this.showNameForm = true;
   }
 

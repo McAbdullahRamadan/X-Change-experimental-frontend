@@ -6,9 +6,7 @@
     <div class="splash-body">
       <div class="s-icon">🏙</div>
       <h1 class="s-title">X-<span>CHANGE</span></h1>
-      <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
-        Back to Home
-     </button>
+      <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>Back to Home</button>
       <p class="s-tag">LEARN · EXPLORE · GROW</p>
       <div class="s-badge">Quality: {{quality}}</div>
       <div class="s-keys">
@@ -34,20 +32,10 @@
       <h2 class="name-title">What's your name?</h2>
       <p class="name-sub">We'll use it to personalise your experience</p>
       <div class="name-input-wrap">
-        <input
-          class="name-input"
-          type="text"
-          placeholder="Enter your name..."
-          [(ngModel)]="playerName"
-          maxlength="20"
-          (keydown.enter)="submitName()"
-          autofocus
-        />
+        <input class="name-input" type="text" placeholder="Enter your name..." [(ngModel)]="playerName" maxlength="20" (keydown.enter)="submitName()" autofocus />
         <div class="name-error" *ngIf="nameError">⚠ {{nameError}}</div>
       </div>
-      <button class="btn-play" (click)="submitName()">
-        🏙 Enter X-Change City
-      </button>
+      <button class="btn-play" (click)="submitName()">🏙 Enter X-Change City</button>
       <p class="s-hint">Press Enter or click the button</p>
     </div>
   </div>
@@ -55,6 +43,42 @@
   <!-- ══ ALWAYS-IN-DOM CANVASES ══ -->
   <canvas #gameCanvas class="gc__canvas"></canvas>
   <canvas #mmCanvas width="170" height="170" class="mm-offscreen"></canvas>
+
+  <!-- ══ MOBILE CONTROLS (Virtual Joystick & Buttons) ══ -->
+  <div class="mobile-controls" *ngIf="isMobile && !showSplash && !showNameForm && !isPaused">
+    <!-- Virtual Joystick -->
+    <div class="joystick-container">
+      <div class="joystick-base" id="joystickBase">
+        <div class="joystick-thumb" id="joystickThumb"></div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn jump-btn" id="mobileJumpBtn">
+        <span>🦘</span>
+        <span class="btn-label">JUMP</span>
+      </button>
+      <button class="action-btn interact-btn" id="mobileInteractBtn">
+        <span>🔘</span>
+        <span class="btn-label">INTERACT</span>
+      </button>
+      <button class="action-btn run-btn" id="mobileRunBtn">
+        <span>⚡</span>
+        <span class="btn-label">RUN</span>
+      </button>
+      <button class="action-btn camera-btn" id="mobileCameraBtn">
+        <span>🎥</span>
+        <span class="btn-label">CAMERA</span>
+      </button>
+    </div>
+
+    <!-- Quick Actions Row -->
+    <div class="quick-actions">
+      <button class="quick-btn" id="mobileTimeBtn">🌙 DAY/NIGHT</button>
+      <button class="quick-btn" id="mobilePauseBtn">⏸ PAUSE</button>
+    </div>
+  </div>
 
   <!-- ══ HUD ══ -->
   <div class="hud" [style.display]="showSplash || showNameForm ? 'none' : 'block'">
@@ -120,19 +144,14 @@
         <div class="bp-name">{{nearBldg.label}}</div>
         <div class="bp-field">{{nearBldg.field}}</div>
         <div class="bp-prog">
-          <div class="bp-prog-bar">
-            <div class="bp-prog-fill" [style.width.%]="getBldgProgress(nearBldg.id)"></div>
-          </div>
+          <div class="bp-prog-bar"><div class="bp-prog-fill" [style.width.%]="getBldgProgress(nearBldg.id)"></div></div>
           <span>{{getBldgProgress(nearBldg.id)}}%</span>
         </div>
       </div>
-      <div class="bp-key">
-        <div class="kb">E</div>
-        <span>Enter</span>
-      </div>
+      <div class="bp-key"><div class="kb">E</div><span>Enter</span></div>
     </div>
 
-    <!-- NPC prompt (only when no building near) -->
+    <!-- NPC prompt -->
     <div class="iprompt" *ngIf="nearNpc && !nearBldg">
       <div class="kb">E</div>
       <span>Talk to <strong>{{nearNpc.name}}</strong></span>
@@ -143,9 +162,7 @@
 
     <!-- Controls panel -->
     <div class="ctrl-panel">
-      <div class="ctrl-head" (click)="toggleCtrl()">
-        🎮 Controls <span class="caret" [class.open]="showCtrl">▾</span>
-      </div>
+      <div class="ctrl-head" (click)="toggleCtrl()">🎮 Controls <span class="caret" [class.open]="showCtrl">▾</span></div>
       <div class="ctrl-body" [class.open]="showCtrl">
         <div class="cr"><kbd>WASD</kbd><span>Move</span></div>
         <div class="cr"><kbd>Shift</kbd><span>Run</span></div>
@@ -156,133 +173,53 @@
         <div class="cr"><kbd>Esc</kbd><span>Pause</span></div>
         <div class="sens-row">
           <span class="sens-lbl">🖱 Sensitivity</span>
-          <div class="sens-ctrl">
-            <button class="sbtn" (click)="decSens()">−</button>
-            <span class="sval">{{getSens()}}</span>
-            <button class="sbtn" (click)="incSens()">+</button>
-          </div>
+          <div class="sens-ctrl"><button class="sbtn" (click)="decSens()">−</button><span class="sval">{{getSens()}}</span><button class="sbtn" (click)="incSens()">+</button></div>
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- ══ LESSON MODAL ══ -->
   <div class="lesson-overlay" *ngIf="showLesson && activeBldg">
     <div class="lesson-modal">
-
-      <!-- Header -->
       <div class="lm-header" [style.background]="'#0a1628'">
-        <div class="lm-hd-left">
-          <span class="lm-icon">{{activeBldg.icon}}</span>
-          <div>
-            <div class="lm-title">{{activeBldg.label}}</div>
-            <div class="lm-field">{{activeBldg.field}}</div>
-          </div>
-        </div>
+        <div class="lm-hd-left"><span class="lm-icon">{{activeBldg.icon}}</span><div><div class="lm-title">{{activeBldg.label}}</div><div class="lm-field">{{activeBldg.field}}</div></div></div>
         <button class="lm-close" (click)="closeLesson()">✕</button>
       </div>
-
       <div class="lm-body">
-        <!-- Lesson list sidebar -->
         <div class="lm-sidebar">
           <div class="lm-sidebar-title">LESSONS</div>
-          <div
-            *ngFor="let lesson of activeBldg.lessons; let i = index"
-            class="lm-lesson-item"
-            [class.active]="lessonIndex === i"
-            [class.done]="isLessonDone(activeBldg.id, lesson.id)"
-            (click)="selectLesson(i)"
-          >
+          <div *ngFor="let lesson of activeBldg.lessons; let i = index" class="lm-lesson-item" [class.active]="lessonIndex === i" [class.done]="isLessonDone(activeBldg.id, lesson.id)" (click)="selectLesson(i)">
             <span class="lli-icon">{{lesson.icon}}</span>
-            <div class="lli-info">
-              <div class="lli-title">{{lesson.title}}</div>
-              <div class="lli-dur">{{lesson.duration}}</div>
-            </div>
+            <div class="lli-info"><div class="lli-title">{{lesson.title}}</div><div class="lli-dur">{{lesson.duration}}</div></div>
             <span class="lli-check" *ngIf="isLessonDone(activeBldg.id, lesson.id)">✓</span>
           </div>
-
-          <!-- Overall progress -->
           <div class="lm-progress-wrap">
             <div class="lm-progress-label">Your Progress</div>
-            <div class="lm-progress-bar">
-              <div class="lm-progress-fill" [style.width.%]="getBldgProgress(activeBldg.id)"></div>
-            </div>
+            <div class="lm-progress-bar"><div class="lm-progress-fill" [style.width.%]="getBldgProgress(activeBldg.id)"></div></div>
             <div class="lm-progress-pct">{{getBldgProgress(activeBldg.id)}}%</div>
           </div>
         </div>
-
-        <!-- Lesson content -->
         <div class="lm-content" *ngIf="activeLesson">
-          <div class="lc-header">
-            <span class="lc-icon">{{activeLesson.icon}}</span>
-            <div>
-              <h2 class="lc-title">{{activeLesson.title}}</h2>
-              <span class="lc-dur">⏱ {{activeLesson.duration}}</span>
-            </div>
-          </div>
-
-          <!-- Content paragraphs -->
-          <div class="lc-body">
-            <div class="lc-paragraph" *ngFor="let para of activeLesson.content; let i = index">
-              <div class="lc-num">{{i+1}}</div>
-              <p>{{para}}</p>
-            </div>
-          </div>
-
-          <!-- Quiz section -->
+          <div class="lc-header"><span class="lc-icon">{{activeLesson.icon}}</span><div><h2 class="lc-title">{{activeLesson.title}}</h2><span class="lc-dur">⏱ {{activeLesson.duration}}</span></div></div>
+          <div class="lc-body"><div class="lc-paragraph" *ngFor="let para of activeLesson.content; let i = index"><div class="lc-num">{{i+1}}</div><p>{{para}}</p></div></div>
           <div class="lc-quiz" *ngIf="activeLesson.quiz">
-            <div class="quiz-header">
-              <span class="quiz-ico">🧠</span>
-              <span class="quiz-title">Quick Check</span>
-            </div>
+            <div class="quiz-header"><span class="quiz-ico">🧠</span><span class="quiz-title">Quick Check</span></div>
             <p class="quiz-q">{{activeLesson.quiz.q}}</p>
             <div class="quiz-options">
-              <button
-                *ngFor="let opt of activeLesson.quiz.options; let i = index"
-                class="quiz-opt"
-                [class.correct]="quizAnswered >= 0 && i === activeLesson.quiz.answer"
-                [class.wrong]="quizAnswered === i && i !== activeLesson.quiz.answer"
-                [class.disabled]="quizAnswered >= 0"
-                (click)="answerQuiz(i)"
-              >
-                <span class="qo-letter">{{['A','B','C','D'][i]}}</span>
-                <span>{{opt}}</span>
-                <span class="qo-check" *ngIf="quizAnswered >= 0 && i === activeLesson.quiz.answer">✓</span>
-                <span class="qo-x"     *ngIf="quizAnswered === i && i !== activeLesson.quiz.answer">✗</span>
+              <button *ngFor="let opt of activeLesson.quiz.options; let i = index" class="quiz-opt" [class.correct]="quizAnswered >= 0 && i === activeLesson.quiz.answer" [class.wrong]="quizAnswered === i && i !== activeLesson.quiz.answer" [class.disabled]="quizAnswered >= 0" (click)="answerQuiz(i)">
+                <span class="qo-letter">{{['A','B','C','D'][i]}}</span><span>{{opt}}</span><span class="qo-check" *ngIf="quizAnswered >= 0 && i === activeLesson.quiz.answer">✓</span><span class="qo-x" *ngIf="quizAnswered === i && i !== activeLesson.quiz.answer">✗</span>
               </button>
             </div>
-            <div class="quiz-result correct-result" *ngIf="quizAnswered >= 0 && quizCorrect">
-              🎉 Correct! Well done, {{playerName || 'learner'}}!
-            </div>
-            <div class="quiz-result wrong-result" *ngIf="quizAnswered >= 0 && !quizCorrect">
-              ❌ Not quite — the correct answer is highlighted above.
-              <button class="btn-retry" (click)="quizAnswered=-1; quizCorrect=false">Try Again</button>
-            </div>
+            <div class="quiz-result correct-result" *ngIf="quizAnswered >= 0 && quizCorrect">🎉 Correct! Well done, {{playerName || 'learner'}}!</div>
+            <div class="quiz-result wrong-result" *ngIf="quizAnswered >= 0 && !quizCorrect">❌ Not quite — the correct answer is highlighted above.<button class="btn-retry" (click)="quizAnswered=-1; quizCorrect=false">Try Again</button></div>
           </div>
-
-          <!-- Complete / next -->
           <div class="lc-actions">
-            <button class="btn-done" *ngIf="!lessonCompleted" (click)="finishLesson()">
-              Mark as Complete ✓
-            </button>
-            <div class="done-badge" *ngIf="lessonCompleted">
-              ✅ Lesson Complete!
-              <button class="btn-next"
-                *ngIf="lessonIndex < activeBldg.lessons.length - 1"
-                (click)="selectLesson(lessonIndex+1)">
-                Next Lesson →
-              </button>
-              <button class="btn-next btn-next--finish"
-                *ngIf="lessonIndex === activeBldg.lessons.length - 1"
-                (click)="closeLesson()">
-                🏆 All Done! Back to City
-              </button>
-            </div>
+            <button class="btn-done" *ngIf="!lessonCompleted" (click)="finishLesson()">Mark as Complete ✓</button>
+            <div class="done-badge" *ngIf="lessonCompleted">✅ Lesson Complete!<button class="btn-next" *ngIf="lessonIndex < activeBldg.lessons.length - 1" (click)="selectLesson(lessonIndex+1)">Next Lesson →</button><button class="btn-next btn-next--finish" *ngIf="lessonIndex === activeBldg.lessons.length - 1" (click)="closeLesson()">🏆 All Done! Back to City</button></div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -290,41 +227,10 @@
   <div class="pause-overlay" *ngIf="isPaused && !showSplash && !showNameForm">
     <div class="pause-modal">
       <div class="pause-title">⏸ PAUSED</div>
-
-      <div class="p-sect">
-        <label class="p-lbl">🕐 Time of Day</label>
-        <div class="slider-row">
-          <span class="sl-e">00:00</span>
-          <input type="range" class="pslider" min="0" max="23.99" step="0.1"
-                 [(ngModel)]="timeOfDay" (input)="setTOD()">
-          <span class="sl-e">24:00</span>
-        </div>
-        <div class="p-disp">{{timeStr}} — {{todTxt | titlecase}}</div>
-      </div>
-
-      <div class="p-sect">
-        <label class="p-lbl">🖱 Mouse Sensitivity</label>
-        <div class="slider-row">
-          <span class="sl-e">Slow</span>
-          <input type="range" class="pslider" min="0.02" max="0.5" step="0.01"
-                 [(ngModel)]="sens">
-          <span class="sl-e">Fast</span>
-        </div>
-        <div class="p-disp">{{getSens()}}</div>
-      </div>
-
-      <div class="p-sect p-stats">
-        <div class="pst"><span>👤 Player</span><strong>{{playerName || 'Anonymous'}}</strong></div>
-        <div class="pst"><span>📍 Location</span><strong>{{locName}}</strong></div>
-        <div class="pst"><span>📊 FPS</span><strong [style.color]="fpsColor()">{{fpsVal}}</strong></div>
-        <div class="pst"><span>🖥 Quality</span><strong>{{quality}}</strong></div>
-      </div>
-
-      <div class="p-btns">
-        <button class="btn-resume" (click)="resume()">▶ Resume</button>
-        <button class="btn-main" (click)="showSplash=true; resume()">🏠 Main Menu</button>
-      </div>
+      <div class="p-sect"><label class="p-lbl">🕐 Time of Day</label><div class="slider-row"><span class="sl-e">00:00</span><input type="range" class="pslider" min="0" max="23.99" step="0.1" [(ngModel)]="timeOfDay" (input)="setTOD()"><span class="sl-e">24:00</span></div><div class="p-disp">{{timeStr}} — {{todTxt | titlecase}}</div></div>
+      <div class="p-sect"><label class="p-lbl">🖱 Mouse Sensitivity</label><div class="slider-row"><span class="sl-e">Slow</span><input type="range" class="pslider" min="0.02" max="0.5" step="0.01" [(ngModel)]="sens"><span class="sl-e">Fast</span></div><div class="p-disp">{{getSens()}}</div></div>
+      <div class="p-sect p-stats"><div class="pst"><span>👤 Player</span><strong>{{playerName || 'Anonymous'}}</strong></div><div class="pst"><span>📍 Location</span><strong>{{locName}}</strong></div><div class="pst"><span>📊 FPS</span><strong [style.color]="fpsColor()">{{fpsVal}}</strong></div><div class="pst"><span>🖥 Quality</span><strong>{{quality}}</strong></div></div>
+      <div class="p-btns"><button class="btn-resume" (click)="resume()">▶ Resume</button><button class="btn-main" (click)="showSplash=true; resume()">🏠 Main Menu</button></div>
     </div>
   </div>
-
 </div>
