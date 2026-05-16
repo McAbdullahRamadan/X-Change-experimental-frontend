@@ -64,7 +64,8 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('mmCanvas', { static: true }) mmRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('mmDisplay', { static: false }) mmDispRef?: ElementRef<HTMLCanvasElement>;
-
+  @ViewChild('joystickBase') joystickBaseRef!: ElementRef;
+  @ViewChild('joystickThumb') joystickThumbRef!: ElementRef;
   /* ── UI state ── */
   showSplash = true;
   showNameForm = false;
@@ -92,6 +93,8 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   private mobileLookStartYaw = 0;
   private mobileLookStartPitch = 0;
   touchSensitivity = 0.5;
+  private playerMarker!: THREE.Group;
+private markerLight!: THREE.PointLight;
 
   // Learning system
   showLesson = false;
@@ -396,9 +399,10 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       this.detectMobile();
+      this.initMobileControls();
       this.initMobileTouchControls();
       this.initAimAreaControls();
-    }, 0);
+    }, 500);
 
     this.ngZone.runOutsideAngular(() => {
       this.initRdr();
@@ -514,15 +518,35 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sens = 0.15;
       this.touchSensitivity = 0.5;
 
+      // إضافة class للـ body
+      document.body.classList.add('mobile-performance');
+
       setTimeout(() => {
         this.initMobileControls();
+        this.initMobileTouchControls();
+        this.initAimAreaControls();
         this.cdr.detectChanges();
+
+        // تأكيد ظهور الأزرار بعد 1 ثانية
+        setTimeout(() => {
+          this.ensureMobileControlsVisible();
+        }, 1000);
       }, 100);
+
       this.requestLandscapeOrientation();
 
       this.ngZone.runOutsideAngular(() => {
         this.enableMobilePerformanceMode();
       });
+    }
+  }
+  private ensureMobileControlsVisible(): void {
+    const controls = document.querySelector('.mobile-controls');
+    if (controls) {
+      (controls as HTMLElement).style.display = 'block';
+      console.log('Mobile controls are now visible');
+    } else {
+      console.log('Mobile controls element not found');
     }
   }
 
@@ -831,7 +855,100 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
+private mkPlayerMarker(): void {
+  // إنشاء مجموعة للعلامة
+  const markerGroup = new THREE.Group();
 
+  // 1. الحلقة المتوهجة (Glow Ring)
+  const ringGeometry = new THREE.TorusGeometry(0.45, 0.05, 32, 64);
+  const ringMaterial = new THREE.MeshStandardMaterial({
+    color: 0x00ff88,
+    emissive: 0x00aa44,
+    emissiveIntensity: 0.8,
+    transparent: true,
+    opacity: 0.9
+  });
+  const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+  ring.rotation.x = Math.PI / 2;
+  markerGroup.add(ring);
+
+  // 2. حلقة ثانية أصغر
+  const ring2Geometry = new THREE.TorusGeometry(0.32, 0.04, 32, 64);
+  const ring2Material = new THREE.MeshStandardMaterial({
+    color: 0x00ffaa,
+    emissive: 0x00ff88,
+    emissiveIntensity: 0.6,
+    transparent: true,
+    opacity: 0.8
+  });
+  const ring2 = new THREE.Mesh(ring2Geometry, ring2Material);
+  ring2.rotation.x = Math.PI / 2;
+  markerGroup.add(ring2);
+
+  // 3. الكرة المتوهجة في المنتصف
+  const coreGeometry = new THREE.SphereGeometry(0.12, 16, 16);
+  const coreMaterial = new THREE.MeshStandardMaterial({
+    color: 0x00ff88,
+    emissive: 0x00ff44,
+    emissiveIntensity: 1.2,
+    metalness: 0.8,
+    roughness: 0.2
+  });
+  const core = new THREE.Mesh(coreGeometry, coreMaterial);
+  markerGroup.add(core);
+
+  // 4. أشعة حول العلامة (خيوط ضوئية)
+  const beamCount = 8;
+  for (let i = 0; i < beamCount; i++) {
+    const angle = (i / beamCount) * Math.PI * 2;
+    const beamGeometry = new THREE.CylinderGeometry(0.02, 0.04, 0.35, 4);
+    const beamMaterial = new THREE.MeshStandardMaterial({
+      color: 0x00ff88,
+      emissive: 0x00aa44,
+      emissiveIntensity: 0.5,
+      transparent: true,
+      opacity: 0.7
+    });
+    const beam = new THREE.Mesh(beamGeometry, beamMaterial);
+    beam.position.x = Math.cos(angle) * 0.55;
+    beam.position.z = Math.sin(angle) * 0.55;
+    beam.position.y = -0.1;
+    beam.rotation.z = angle;
+    markerGroup.add(beam);
+  }
+
+  // 5. عمود ضوئي خفيف (Light Pillar)
+  const pillarGeometry = new THREE.CylinderGeometry(0.08, 0.12, 0.6, 8);
+  const pillarMaterial = new THREE.MeshStandardMaterial({
+    color: 0x44ffaa,
+    emissive: 0x22aa66,
+    emissiveIntensity: 0.4,
+    transparent: true,
+    opacity: 0.6
+  });
+  const pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+  pillar.position.y = -0.35;
+  markerGroup.add(pillar);
+
+  // وضع العلامة فوق رأس اللاعب
+  markerGroup.position.y = 1.6; // ارتفاع مناسب فوق الرأس
+
+  // إضافة نقطة ضوئية صغيرة
+  this.markerLight = new THREE.PointLight(0x00ff88, 0.8, 8, 1.5);
+  this.markerLight.position.y = 1.6;
+  markerGroup.add(this.markerLight);
+
+  // إضافة تأثير flicker خفيف
+  setInterval(() => {
+    if (this.markerLight && !this.isPaused) {
+      const intensity = 0.6 + Math.random() * 0.6;
+      this.markerLight.intensity = intensity;
+    }
+  }, 150);
+
+  this.playerMarker = markerGroup;
+  this.player.add(this.playerMarker);
+}
   /* ── Buildings ── */
   private mkBuildings() {
     const defs: any[] = [

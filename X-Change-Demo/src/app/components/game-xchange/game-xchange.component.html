@@ -45,11 +45,11 @@
   <canvas #mmCanvas width="170" height="170" class="mm-offscreen"></canvas>
 
   <!-- ══ منطقة التصويب باللمس (النصف الأيمن من الشاشة) ══ -->
-  <div class="touch-aim-area" *ngIf="isMobile && !showSplash && !showNameForm && !isPaused"></div>
-  <div class="aim-hint" *ngIf="isMobile && !showSplash && !showNameForm && !isPaused"></div>
+  <div class="touch-aim-area" *ngIf="showMobileControls && !showSplash && !showNameForm && !isPaused"></div>
+  <div class="aim-hint" *ngIf="showMobileControls && !showSplash && !showNameForm && !isPaused"></div>
 
   <!-- ══ MOBILE CONTROLS (Virtual Joystick & Buttons) ══ -->
-  <div class="mobile-controls" *ngIf="isMobile && !showSplash && !showNameForm && !isPaused">
+  <div class="mobile-controls" *ngIf="showMobileControls && !showSplash && !showNameForm && !isPaused">
     <!-- Virtual Joystick -->
     <div class="joystick-container">
       <div class="joystick-base" id="joystickBase">
