@@ -85,7 +85,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   private joystickCenter = { x: 0, y: 0 };
   private joystickRadius = 0;
 
-  // Mobile touch look (زي ببجي)
+  // Mobile touch look (مثل ببجي)
   private mobileLookActive = false;
   private mobileLookStartX = 0;
   private mobileLookStartY = 0;
@@ -187,7 +187,190 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   readonly LEARN_BLDGS: LearningBuilding[] = [
-    // ... (نفس البيانات الموجودة في الكود الأصلي، اختصاراً للطول)
+    {
+      id: 'finance', label: 'FINANCE', field: 'Financial Skills', icon: '💰',
+      color: 0x1a3a6e, signColor: 0x00aaff, x: -38, z: -50,
+      lessons: [
+        {
+          id: 1, title: 'What is Money?', icon: '💵', duration: '3 min',
+          content: [
+            'Money is a medium of exchange that allows people to trade goods and services without bartering.',
+            'Throughout history, people used gold, silver, shells, and other items as money. Today we use paper currency and digital payments.',
+            'Money has three main functions: Medium of Exchange, Store of Value, and Unit of Account.',
+            'Understanding money is the first step to financial freedom!'
+          ],
+          quiz: { q: 'What are the three main functions of money?', options: ['Save, Spend, Invest', 'Exchange, Store, Account', 'Earn, Borrow, Pay', 'None of these'], answer: 1 }
+        },
+        {
+          id: 2, title: 'Budgeting Basics', icon: '📊', duration: '4 min',
+          content: [
+            'A budget is a plan for how you will spend your money each month. It helps you live within your means.',
+            'The 50/30/20 rule: 50% on needs (rent, food), 30% on wants (entertainment), 20% on savings.',
+            'Track every expense for one month. You will be surprised where your money goes!',
+            'Apps like Mint, YNAB, or even a simple spreadsheet can help you budget effectively.'
+          ],
+          quiz: { q: 'In the 50/30/20 rule, what % goes to savings?', options: ['10%', '30%', '20%', '50%'], answer: 2 }
+        },
+        {
+          id: 3, title: 'Saving & Emergency Fund', icon: '🏦', duration: '4 min',
+          content: [
+            'An emergency fund is 3–6 months of expenses saved for unexpected events like job loss or medical bills.',
+            'Start small — even saving $50 per month builds a habit. Consistency beats large one-time deposits.',
+            'Keep your emergency fund in a separate high-yield savings account, not your everyday account.',
+            'Once your emergency fund is full, redirect that money to investments!'
+          ],
+          quiz: { q: 'How many months of expenses should an emergency fund cover?', options: ['1 month', '3–6 months', '10 months', '1 year'], answer: 1 }
+        },
+        {
+          id: 4, title: 'Introduction to Investing', icon: '📈', duration: '5 min',
+          content: [
+            'Investing means putting your money to work so it grows over time. The stock market averages ~10% return per year historically.',
+            'Compound interest is the 8th wonder of the world. $1,000 invested at 10% for 30 years becomes over $17,000!',
+            'Diversification: Don\'t put all eggs in one basket. Spread investments across stocks, bonds, and real estate.',
+            'Start investing early — time in the market beats timing the market every single time.'
+          ],
+          quiz: { q: 'What does diversification mean?', options: ['Investing in one stock', 'Spreading investments to reduce risk', 'Saving in a bank only', 'Spending more money'], answer: 1 }
+        }
+      ]
+    },
+    {
+      id: 'coding', label: 'CODING', field: 'Programming & Tech', icon: '💻',
+      color: 0x0a2a1a, signColor: 0x00ff88, x: 40, z: -50,
+      lessons: [
+        {
+          id: 1, title: 'What is Programming?', icon: '🖥️', duration: '3 min',
+          content: [
+            'Programming is giving instructions to a computer to solve problems. It\'s like writing a recipe for a machine.',
+            'Programs are written in programming languages like Python, JavaScript, Java, and C++.',
+            'Every app on your phone, every website you visit — all built by programmers!',
+            'You don\'t need to be a math genius to code. Logical thinking is more important.'
+          ],
+          quiz: { q: 'What is programming?', options: ['Drawing on a computer', 'Giving instructions to a computer', 'Playing video games', 'Fixing hardware'], answer: 1 }
+        },
+        {
+          id: 2, title: 'Variables & Data Types', icon: '📦', duration: '4 min',
+          content: [
+            'A variable is a container that stores data. Think of it as a labeled box holding information.',
+            'Main data types: Numbers (42, 3.14), Text/Strings ("Hello"), Booleans (true/false), Arrays ([1,2,3]).',
+            'Example: let age = 25; let name = "Ahmed"; let isStudent = true;',
+            'Good variable names are descriptive: "userAge" is better than just "x".'
+          ],
+          quiz: { q: 'What is a variable in programming?', options: ['A type of bug', 'A container that stores data', 'A programming language', 'A website'], answer: 1 }
+        },
+        {
+          id: 3, title: 'Loops & Conditions', icon: '🔄', duration: '4 min',
+          content: [
+            'Conditions (if/else) let your program make decisions: if (score > 90) { grade = "A"; }',
+            'Loops repeat code: for (let i = 0; i < 10; i++) — runs the block 10 times.',
+            'While loops run until a condition is false: while (lives > 0) { playGame(); }',
+            'These two concepts — conditions and loops — are the backbone of all programming logic!'
+          ],
+          quiz: { q: 'What does a loop do?', options: ['Stops the program', 'Connects to internet', 'Repeats code multiple times', 'Stores data'], answer: 2 }
+        },
+        {
+          id: 4, title: 'Web Development Basics', icon: '🌐', duration: '5 min',
+          content: [
+            'The web is built on 3 technologies: HTML (structure), CSS (style), JavaScript (behavior).',
+            'HTML: <h1>Hello World</h1> — creates headings, paragraphs, images, and links.',
+            'CSS: h1 { color: blue; font-size: 24px; } — makes things look beautiful.',
+            'JavaScript: document.getElementById("btn").onclick = () => alert("Clicked!") — adds interactivity.'
+          ],
+          quiz: { q: 'Which language makes a website interactive?', options: ['HTML', 'CSS', 'JavaScript', 'SQL'], answer: 2 }
+        }
+      ]
+    },
+    {
+      id: 'business', label: 'BUSINESS', field: 'Entrepreneurship', icon: '🏢',
+      color: 0x3a2010, signColor: 0xff8800, x: -3, z: -80,
+      lessons: [
+        {
+          id: 1, title: 'What is a Business?', icon: '🏪', duration: '3 min',
+          content: [
+            'A business is an organization that sells products or services to make a profit.',
+            'Businesses come in all sizes: sole traders (one person), small businesses, and large corporations.',
+            'The key to a business is solving a problem or fulfilling a need for customers.',
+            'Every great business started with a simple idea. Apple started in a garage!'
+          ],
+          quiz: { q: 'What is the key to a successful business?', options: ['Having a big office', 'Solving a problem for customers', 'Spending a lot of money', 'Having many employees'], answer: 1 }
+        },
+        {
+          id: 2, title: 'Business Plan Essentials', icon: '📋', duration: '4 min',
+          content: [
+            'A business plan is your roadmap. It describes what your business does and how it will succeed.',
+            'Key sections: Executive Summary, Market Analysis, Products/Services, Marketing Plan, Financial Projections.',
+            'Know your target market — who are your customers? What do they need? How much will they pay?',
+            'A good plan doesn\'t guarantee success, but no plan almost guarantees failure.'
+          ],
+          quiz: { q: 'What is a business plan?', options: ['A financial statement', 'A roadmap for your business', 'A marketing advertisement', 'A legal contract'], answer: 1 }
+        },
+        {
+          id: 3, title: 'Marketing Fundamentals', icon: '📢', duration: '4 min',
+          content: [
+            'Marketing is how you communicate the value of your product to potential customers.',
+            'The 4 P\'s of Marketing: Product (what you sell), Price (what you charge), Place (where you sell), Promotion (how you advertise).',
+            'Digital marketing: Social media, SEO, email marketing, and paid ads are key modern channels.',
+            'Your brand is your reputation. Build it with consistency, quality, and great customer service.'
+          ],
+          quiz: { q: 'What are the 4 P\'s of Marketing?', options: ['Plan, Profit, People, Place', 'Product, Price, Place, Promotion', 'Produce, Perform, Publish, Profit', 'None of these'], answer: 1 }
+        },
+        {
+          id: 4, title: 'Revenue & Profit', icon: '💹', duration: '4 min',
+          content: [
+            'Revenue is total money coming IN from sales. Profit = Revenue - Expenses.',
+            'Gross profit = Revenue - Cost of Goods Sold. Net profit = after ALL expenses including taxes.',
+            'Break-even point: when revenue equals total costs. Above this = profit!',
+            'Focus on profit margins, not just revenue. A business with $1M revenue but $1.1M expenses is losing money.'
+          ],
+          quiz: { q: 'What is the formula for Profit?', options: ['Revenue + Expenses', 'Revenue - Expenses', 'Expenses × Revenue', 'Revenue ÷ Expenses'], answer: 1 }
+        }
+      ]
+    },
+    {
+      id: 'health', label: 'HEALTH', field: 'Health & Wellness', icon: '🏥',
+      color: 0x0a3a2a, signColor: 0x00ff44, x: 56, z: 22,
+      lessons: [
+        {
+          id: 1, title: 'Nutrition Basics', icon: '🥗', duration: '3 min',
+          content: [
+            'Food is fuel. The three macronutrients are: Proteins (build muscle), Carbohydrates (energy), Fats (brain health).',
+            'Eat the rainbow — different colored vegetables provide different vitamins and minerals.',
+            'Processed foods are often high in sugar, salt, and unhealthy fats. Cook whole foods when possible.',
+            'Hydration matters! Drink 8 glasses (2 liters) of water daily for optimal body function.'
+          ],
+          quiz: { q: 'What are the three macronutrients?', options: ['Vitamins, Minerals, Water', 'Proteins, Carbs, Fats', 'Sugar, Salt, Fat', 'None of these'], answer: 1 }
+        },
+        {
+          id: 2, title: 'Exercise & Fitness', icon: '💪', duration: '4 min',
+          content: [
+            'The WHO recommends 150 minutes of moderate exercise per week — just 30 minutes, 5 days!',
+            'Types: Cardio (running, swimming) for heart health. Strength training for muscle. Flexibility for joints.',
+            'Exercise releases endorphins — natural mood boosters. It\'s one of the best anti-depressants.',
+            'Start small. A 10-minute walk daily is infinitely better than zero exercise. Build the habit first.'
+          ],
+          quiz: { q: 'How many minutes of exercise per week does WHO recommend?', options: ['60 minutes', '100 minutes', '150 minutes', '200 minutes'], answer: 2 }
+        },
+        {
+          id: 3, title: 'Mental Health Awareness', icon: '🧠', duration: '4 min',
+          content: [
+            'Mental health is as important as physical health. 1 in 4 people experience mental health issues.',
+            'Common conditions: Anxiety (excessive worry), Depression (persistent sadness), Stress (overwhelm).',
+            'Techniques: Mindfulness meditation, deep breathing, regular sleep, social connections, therapy.',
+            'Seeking help is a sign of strength, not weakness. Talk to someone you trust or a professional.'
+          ],
+          quiz: { q: 'What fraction of people experience mental health issues?', options: ['1 in 10', '1 in 4', '1 in 2', '1 in 20'], answer: 1 }
+        },
+        {
+          id: 4, title: 'Sleep Science', icon: '😴', duration: '3 min',
+          content: [
+            'Adults need 7–9 hours of sleep per night. Sleep deprivation impairs memory, mood, and immunity.',
+            'During sleep, your brain clears toxins, consolidates memories, and repairs the body.',
+            'Tips for better sleep: consistent schedule, dark/cool room, no screens 1hr before bed, limit caffeine.',
+            'Power naps (15–20 min) can boost alertness. Longer naps cause grogginess — the sleep inertia effect.'
+          ],
+          quiz: { q: 'How many hours of sleep do adults need?', options: ['4–5 hours', '5–6 hours', '7–9 hours', '10–12 hours'], answer: 2 }
+        }
+      ]
+    }
   ];
 
   constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {
@@ -214,6 +397,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.detectMobile();
       this.initMobileTouchControls();
+      this.initAimAreaControls();
     }, 0);
 
     this.ngZone.runOutsideAngular(() => {
@@ -234,43 +418,87 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* ═══════════════════════════════════════
-     MOBILE CONTROLS (مثل ببجي)
+     MOBILE TOUCH CONTROLS (مثل ببجي)
   ═══════════════════════════════════════ */
   private initMobileTouchControls(): void {
     const canvas = this.canvasRef.nativeElement;
 
-    canvas.addEventListener('touchstart', (e: TouchEvent) => {
-      const touchX = e.touches[0].clientX;
-      const screenWidth = window.innerWidth;
+    canvas.addEventListener('touchstart', this.handleTouchStart as EventListener);
+    canvas.addEventListener('touchmove', this.handleTouchMove as EventListener);
+    canvas.addEventListener('touchend', this.handleTouchEnd as EventListener);
+  }
 
-      if (touchX > screenWidth / 2) {
-        this.mobileLookActive = true;
-        this.mobileLookStartX = e.touches[0].clientX;
-        this.mobileLookStartY = e.touches[0].clientY;
-        this.mobileLookStartYaw = this.yaw;
-        this.mobileLookStartPitch = this.pitch;
-        e.preventDefault();
-      }
-    });
+  private handleTouchStart = (e: Event) => {
+    const touchEvent = e as TouchEvent;
+    const touchX = touchEvent.touches[0].clientX;
+    const screenWidth = window.innerWidth;
 
-    canvas.addEventListener('touchmove', (e: TouchEvent) => {
-      if (this.mobileLookActive && e.touches.length > 0) {
-        const deltaX = (e.touches[0].clientX - this.mobileLookStartX) * this.touchSensitivity * 0.005;
-        const deltaY = (e.touches[0].clientY - this.mobileLookStartY) * this.touchSensitivity * 0.005;
+    if (touchX > screenWidth / 2) {
+      this.mobileLookActive = true;
+      this.mobileLookStartX = touchEvent.touches[0].clientX;
+      this.mobileLookStartY = touchEvent.touches[0].clientY;
+      this.mobileLookStartYaw = this.yaw;
+      this.mobileLookStartPitch = this.pitch;
+      touchEvent.preventDefault();
+    }
+  };
+
+  private handleTouchMove = (e: Event) => {
+    if (this.mobileLookActive) {
+      const touchEvent = e as TouchEvent;
+      if (touchEvent.touches.length > 0) {
+        const deltaX = (touchEvent.touches[0].clientX - this.mobileLookStartX) * this.touchSensitivity * 0.005;
+        const deltaY = (touchEvent.touches[0].clientY - this.mobileLookStartY) * this.touchSensitivity * 0.005;
 
         this.yaw = this.mobileLookStartYaw + deltaX;
         this.pitch = Math.max(-0.60, Math.min(0.78, this.mobileLookStartPitch + deltaY));
-        e.preventDefault();
+        touchEvent.preventDefault();
       }
-    });
+    }
+  };
 
-    canvas.addEventListener('touchend', () => {
-      this.mobileLookActive = false;
-    });
+  private handleTouchEnd = () => {
+    this.mobileLookActive = false;
+  };
+  private initAimAreaControls(): void {
+    const aimArea = document.querySelector('.touch-aim-area');
+    if (!aimArea) return;
+
+    aimArea.addEventListener('touchstart', this.handleAimStart as EventListener);
+    aimArea.addEventListener('touchmove', this.handleAimMove as EventListener);
+    aimArea.addEventListener('touchend', this.handleAimEnd as EventListener);
   }
 
+  private handleAimStart = (e: Event) => {
+    const touchEvent = e as TouchEvent;
+    this.mobileLookActive = true;
+    this.mobileLookStartX = touchEvent.touches[0].clientX;
+    this.mobileLookStartY = touchEvent.touches[0].clientY;
+    this.mobileLookStartYaw = this.yaw;
+    this.mobileLookStartPitch = this.pitch;
+    touchEvent.preventDefault();
+  };
+
+  private handleAimMove = (e: Event) => {
+    if (this.mobileLookActive) {
+      const touchEvent = e as TouchEvent;
+      if (touchEvent.touches.length > 0) {
+        const deltaX = (touchEvent.touches[0].clientX - this.mobileLookStartX) * this.touchSensitivity * 0.008;
+        const deltaY = (touchEvent.touches[0].clientY - this.mobileLookStartY) * this.touchSensitivity * 0.008;
+
+        this.yaw = this.mobileLookStartYaw + deltaX;
+        this.pitch = Math.max(-0.60, Math.min(0.78, this.mobileLookStartPitch + deltaY));
+        touchEvent.preventDefault();
+      }
+    }
+  };
+
+  private handleAimEnd = () => {
+    this.mobileLookActive = false;
+  };
+
   setTouchSensitivity(value: number): void {
-    this.touchSensitivity = Math.max(0.3, Math.min(1.0, value));
+    this.touchSensitivity = Math.max(0.3, Math.min(1.2, value));
     this.toast(`🎮 Touch sensitivity: ${Math.round(this.touchSensitivity * 100)}%`);
   }
 
@@ -371,9 +599,10 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mobileJoystickActive = distance > 10;
     };
 
-    const handleStart = (e: TouchEvent) => {
-      e.preventDefault();
-      const touch = e.touches[0];
+    const handleStart = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      touchEvent.preventDefault();
+      const touch = touchEvent.touches[0];
       const rect = this.joystickBase!.getBoundingClientRect();
       this.joystickCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
       handleMove(touch.clientX, touch.clientY);
@@ -387,12 +616,15 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
 
-    this.joystickBase.addEventListener('touchstart', handleStart);
-    this.joystickBase.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
+    const handleMoveEvent = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      touchEvent.preventDefault();
+      const touch = touchEvent.touches[0];
       handleMove(touch.clientX, touch.clientY);
-    });
+    };
+
+    this.joystickBase.addEventListener('touchstart', handleStart as EventListener);
+    this.joystickBase.addEventListener('touchmove', handleMoveEvent as EventListener);
     this.joystickBase.addEventListener('touchend', handleEnd);
   }
 
@@ -408,34 +640,48 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
     const sensitivitySlider = document.querySelector('.sensitivity-slider') as HTMLInputElement;
     const sensitivityValue = document.querySelector('.sensitivity-value');
 
-    if (jumpBtn) jumpBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.doJump(); });
-    if (interactBtn) interactBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.interact(); });
-    if (cameraBtn) cameraBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.camMode ^= 1; this.toast(this.camMode ? '👁 First Person' : '📷 Third Person'); });
-    if (timeBtn) timeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.timeOfDay = this.isDaytime ? 22 : 10; this.toast(this.isDaytime ? '🌙 Night mode' : '☀ Day mode'); });
-    if (pauseBtn) pauseBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.isPaused = true; });
+    const preventDefaultAndCall = (fn: () => void) => (e: Event) => {
+      e.preventDefault();
+      fn();
+    };
+
+    if (jumpBtn) jumpBtn.addEventListener('touchstart', preventDefaultAndCall(() => this.doJump()));
+    if (interactBtn) interactBtn.addEventListener('touchstart', preventDefaultAndCall(() => this.interact()));
+    if (cameraBtn) cameraBtn.addEventListener('touchstart', preventDefaultAndCall(() => { this.camMode ^= 1; this.toast(this.camMode ? '👁 First Person' : '📷 Third Person'); }));
+    if (timeBtn) timeBtn.addEventListener('touchstart', preventDefaultAndCall(() => { this.timeOfDay = this.isDaytime ? 22 : 10; this.toast(this.isDaytime ? '🌙 Night mode' : '☀ Day mode'); }));
+    if (pauseBtn) pauseBtn.addEventListener('touchstart', preventDefaultAndCall(() => { this.isPaused = true; }));
 
     if (runBtn) {
-      runBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.mobileRunActive = true; (runBtn as HTMLElement).style.background = 'rgba(0, 255, 136, 0.3)'; });
-      runBtn.addEventListener('touchend', (e) => { e.preventDefault(); this.mobileRunActive = false; (runBtn as HTMLElement).style.background = ''; });
+      runBtn.addEventListener('touchstart', (e: Event) => {
+        e.preventDefault();
+        this.mobileRunActive = true;
+        (runBtn as HTMLElement).style.background = 'rgba(0, 255, 136, 0.3)';
+      });
+      runBtn.addEventListener('touchend', (e: Event) => {
+        e.preventDefault();
+        this.mobileRunActive = false;
+        (runBtn as HTMLElement).style.background = '';
+      });
     }
 
     if (senseBtn && sensitivityPanel) {
-      senseBtn.addEventListener('touchstart', (e) => {
+      senseBtn.addEventListener('touchstart', (e: Event) => {
         e.preventDefault();
-        sensitivityPanel.style.display = sensitivityPanel.style.display === 'block' ? 'none' : 'block';
+        const isVisible = sensitivityPanel.style.display === 'block';
+        sensitivityPanel.style.display = isVisible ? 'none' : 'block';
       });
     }
 
     if (sensitivitySlider) {
       sensitivitySlider.value = this.touchSensitivity.toString();
-      sensitivitySlider.addEventListener('input', (e) => {
+      sensitivitySlider.addEventListener('input', (e: Event) => {
         const val = parseFloat((e.target as HTMLInputElement).value);
         this.setTouchSensitivity(val);
         if (sensitivityValue) sensitivityValue.textContent = `${Math.round(val * 100)}%`;
       });
     }
 
-    document.addEventListener('touchstart', (e) => {
+    document.addEventListener('touchstart', (e: Event) => {
       if (sensitivityPanel && sensitivityPanel.style.display === 'block') {
         const target = e.target as HTMLElement;
         if (!sensitivityPanel.contains(target) && target !== senseBtn) {
@@ -493,6 +739,7 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!this.showSplash && !this.isPaused && !this.locked) cv.requestPointerLock();
     });
   }
+
   /* ═══════════════════════════════════════
      MATERIAL HELPERS
   ═══════════════════════════════════════ */
@@ -1441,11 +1688,9 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
   private loop = (now: number) => {
     this.aid = requestAnimationFrame(this.loop);
 
-    // تخطي الإطارات لتحسين الأداء على الموبايل
     if (this.performanceMode) {
       this.frameCounter++;
       if (this.frameCounter % this.frameSkip !== 0) {
-        // تخطي بعض الإطارات
         this.lastT = now;
         return;
       }
@@ -1463,7 +1708,6 @@ export class GameXChangeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.upCam();
       this.upNpcs(now);
 
-      // تقليل تحديث الإضاءة على الموبايل
       if (!this.performanceMode || this.fr % 2 === 0) {
         this.upLighting();
       }
