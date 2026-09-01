@@ -1,18 +1,12 @@
 {
-  "version": 2,
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/x-change-demo"
+        "distDir": "dist"
       }
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  "buildCommand": "bash -c 'git rm --cached X-Change-Demo/X-Change-new 2>/dev/null || true && npm run build'"
 }
