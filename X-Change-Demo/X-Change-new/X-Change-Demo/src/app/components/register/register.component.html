@@ -1,0 +1,141 @@
+<section class="auth-section">
+  <div class="auth-card">
+    <h2>Create Account 🚀</h2>
+    <p class="subtitle">Join the squad and start swapping skills</p>
+    <button class="back-btn" routerLink="/"><i class="bi bi-box-arrow-in-left"></i>
+       Back to Home
+    </button>
+
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+      <div class="row">
+        <div class="input-group">
+          <label>User Name</label>
+          <input formControlName="userName" type="text" placeholder="Username" [class.is-invalid]="isFieldInvalid('userName')">
+          <div class="error-message" *ngIf="isFieldInvalid('userName')">
+            {{ getErrorMessage('userName') }}
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Email</label>
+          <input formControlName="email" type="email" placeholder="Email" [class.is-invalid]="isFieldInvalid('email')">
+          <div class="error-message" *ngIf="isFieldInvalid('email')">
+            {{ getErrorMessage('email') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <label>Confirm Email</label>
+          <input formControlName="confirmEmail" type="email" placeholder="Confirm Email" [class.is-invalid]="isFieldInvalid('confirmEmail')">
+          <div class="error-message" *ngIf="isFieldInvalid('confirmEmail')">
+            {{ getErrorMessage('confirmEmail') }}
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Gender (Optional)</label>
+          <select formControlName="gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <label>First Name</label>
+          <input formControlName="firstName" type="text" placeholder="First Name" [class.is-invalid]="isFieldInvalid('firstName')">
+          <div class="error-message" *ngIf="isFieldInvalid('firstName')">
+            {{ getErrorMessage('firstName') }}
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Last Name</label>
+          <input formControlName="lastName" type="text" placeholder="Last Name" [class.is-invalid]="isFieldInvalid('lastName')">
+          <div class="error-message" *ngIf="isFieldInvalid('lastName')">
+            {{ getErrorMessage('lastName') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <label>Password</label>
+          <div class="password-wrapper">
+            <input formControlName="password" [type]="passwordType" placeholder="Password" [class.is-invalid]="isFieldInvalid('password')">
+            <span class="spanpass" (click)="togglePasswordVisibility()" [class]="'bi ' + passwordIcon"></span>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('password')">
+            {{ getErrorMessage('password') }}
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Phone Number</label>
+          <input formControlName="phoneNumber" type="text" placeholder="Phone" [class.is-invalid]="isFieldInvalid('phoneNumber')">
+          <div class="error-message" *ngIf="isFieldInvalid('phoneNumber')">
+            {{ getErrorMessage('phoneNumber') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <label>Date Of Birth</label>
+          <input formControlName="dateOfBirth" type="date" [class.is-invalid]="isFieldInvalid('dateOfBirth')">
+          <div class="error-message" *ngIf="isFieldInvalid('dateOfBirth')">
+            {{ getErrorMessage('dateOfBirth') }}
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>City</label>
+          <input formControlName="city" type="text" placeholder="City" [class.is-invalid]="isFieldInvalid('city')">
+          <div class="error-message" *ngIf="isFieldInvalid('city')">
+            {{ getErrorMessage('city') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <label>Country</label>
+          <input formControlName="country" type="text" placeholder="Country" [class.is-invalid]="isFieldInvalid('country')">
+          <div class="error-message" *ngIf="isFieldInvalid('country')">
+            {{ getErrorMessage('country') }}
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>National ID (Optional)</label>
+          <input formControlName="nationalId" type="text" placeholder="National ID">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <label>University (Optional)</label>
+          <input formControlName="university" type="text" placeholder="University">
+        </div>
+
+        <div class="input-group">
+          <label>Major (Optional)</label>
+          <input formControlName="major" type="text" placeholder="Major">
+        </div>
+      </div>
+
+      <button type="submit" class="primary-btn full">
+        Register
+      </button>
+    </form>
+
+    <p class="switch">
+      Already have an account?
+      <a routerLink="/login">Log in</a>
+    </p>
+  </div>
+</section>

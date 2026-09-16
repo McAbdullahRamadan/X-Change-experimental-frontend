@@ -1,0 +1,155 @@
+<nav class="navbar" [class.navbar-hidden]="!navbarVisible">
+  <div class="logo">
+    <img src="logo.png" alt="Logo" routerLink="/">
+
+    <div class="theme-toggle-btn" (click)="toggleTheme()">
+      <i class="bi" [ngClass]="isDark ? 'bi-moon-fill' : 'bi-sun-fill'"></i>
+      <span>{{ isDark ? 'Dark' : 'Light' }}</span>
+    </div>
+  </div>
+
+  <ul class="menu">
+    <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="bi bi-house-fill"></i> Home
+    </li>
+    <li routerLinkActive="active" routerLink="/courses">
+      <i class="bi bi-layers-fill"></i> Explore Skills
+    </li>
+    <li routerLinkActive="active" routerLink="/usercommunity">
+      <i class="bi bi-people-fill"></i> Community
+    </li>
+    <li routerLink="/about" routerLinkActive="active">
+      <i class="bi bi-info-circle"></i> About Us
+    </li>
+  </ul>
+
+  <div class="actions">
+    <ng-container *ngIf="!isLoggedIn">
+      <button class="login" routerLink="/login">
+        <i class="bi bi-person"></i> <span>Log In</span>
+      </button>
+      <button class="login" routerLink="/register">
+        <i class="bi bi-file-text-fill"></i> <span>Register</span>
+      </button>
+    </ng-container>
+    <div *ngIf="isLoggedIn" class="notification-icon-wrapper">
+      <div class="notification-bell">
+        <i class="bi bi-bell-fill"></i>
+        <span class="notification-badge">0</span>
+      </div>
+    </div>
+
+    <div *ngIf="isLoggedIn" class="profile-container">
+      <div class="profile-trigger" (click)="toggleProfile()">
+        <!-- XP Battery Design -->
+        <div class="xp-battery">
+          <div class="xp-battery-icon">
+            <i class="bi bi-lightning-charge-fill"></i>
+            <span class="xp-value">{{userTotalXp}}</span>
+            <span class="xp-label"> XP</span>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <span class="display-name">{{ displayName }}</span>
+          <!-- Battery Progress Bar Under Name -->
+          <div class="battery-progress-container">
+            <div class="battery-progress-bar">
+              <div class="battery-progress-fill" [style.width.%]="xpProgressPercent" [attr.data-level]="xpProgressPercent"></div>
+            </div>
+            <span class="battery-progress-text">{{ xpInCurrentLevel }} / {{ xpNeededForNextLevel }} XP</span>
+          </div>
+        </div>
+
+        <img [src]="profileImageUrl" class="profile-img" (error)="profileImageUrl='default user.png'">
+        <span class="arrow" [class.rotate]="showProfileMenu">▼</span>
+      </div>
+
+      <div class="profile-dropdown" *ngIf="showProfileMenu">
+        <!-- XP Progress in Dropdown -->
+        <div class="dropdown-xp-section">
+          <div class="xp-header">
+            <i class="bi bi-lightning-charge-fill"></i>
+            <span>Your Power Level</span>
+          </div>
+          <div class="xp-stats-dropdown">
+            <div class="xp-total">
+              <span class="xp-number">{{userTotalXp}}<span class="xp-label-sm"> XP</span></span>
+            </div>
+            <div class="level-indicator">
+              <span class="level-number">Level{{userLevel}}</span>
+              <div class="level-progress">
+                <div class="level-progress-fill" [style.width.%]="xpProgressPercent"></div>
+              </div>
+              <span class="next-level">{{ xpNeededForNextLevel - xpInCurrentLevel }} </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dropdown-item"
+             [routerLink]="['/profile', authService.getUsernameFromToken()]"
+             (click)="showProfileMenu=false">
+          <i class="bi bi-person-circle"></i> My Profile
+        </div>
+        <div class="dropdown-item" routerLink="/dashboard" (click)="showProfileMenu=false">
+          <i class="bi bi-grid"></i> Dashboard
+        </div>
+        <div class="dropdown-item" (click)="showProfileMenu=false">
+          <i class="bi bi-gear"></i> Account Settings
+        </div>
+        <div class="dropdown-item" (click)="showProfileMenu=false">
+          <i class="bi bi-phone"></i> Device Management
+        </div>
+        <div class="divider"></div>
+        <div class="dropdown-item logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </div>
+      </div>
+    </div>
+
+    <!-- زر القائمة للجوال -->
+    <div class="hamburger" (click)="toggleMenu()">
+      ☰
+    </div>
+  </div>
+</nav>
+
+<!-- القائمة الجانبية للجوال -->
+<div class="mobile-menu" [class.open]="isMenuOpen">
+  <a routerLink="/" (click)="isMenuOpen=false">
+    <i class="bi bi-house-fill"></i> Home
+  </a>
+  <a (click)="isMenuOpen=false" routerLink="/courses">
+    <i class="bi bi-layers-half"></i> Explore Skills
+  </a>
+  <a (click)="isMenuOpen=false" routerLink="/usercommunity">
+    <i class="bi bi-people-fill"></i> Community
+  </a>
+  <a (click)="isMenuOpen=false" routerLink="/about">
+    <i class="bi bi-info-circle"></i> About Us
+  </a>
+
+  <!-- Mobile XP Display -->
+  <div class="mobile-xp-display">
+    <div class="mobile-xp-header">
+      <i class="bi bi-lightning-charge-fill"></i>
+      <span>1,250 XP</span>
+    </div>
+    <div class="mobile-battery">
+      <div class="mobile-battery-body">
+        <div class="mobile-battery-fill" [style.width.%]="xpProgressPercent"></div>
+      </div>
+      <div class="mobile-battery-terminal"></div>
+    </div>
+    <div class="mobile-level-text">Level 3 · {{ xpNeededForNextLevel - xpInCurrentLevel }} XP to Level 4</div>
+  </div>
+
+  <ng-container *ngIf="!isLoggedIn">
+    <button class="mobile-btn" routerLink="/login" (click)="isMenuOpen=false">
+      <i class="bi bi-person"></i> Log In
+    </button>
+    <button class="mobile-btn" routerLink="/register" (click)="isMenuOpen=false">
+      <i class="bi bi-file-text-fill"></i> Register
+    </button>
+  </ng-container>
+</div>
